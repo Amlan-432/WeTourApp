@@ -135,7 +135,7 @@
           </div>
         </div>
 
-        <button (click)="confirmBooking()" class="btn-book-now w-100 py-3 mb-3">
+        <button (click)="confirmBooking()" class="btn-book-now w-100 py-3 mb-3" [disabled]="bookingForm.invalid">
           Confirm & Book Now
         </button>
 

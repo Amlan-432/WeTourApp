@@ -73,4 +73,28 @@ export class HotelForm {
     return `${year}-${month}-${day}`;
   }
 
+
+  getMinCheckoutDate(): string {
+    if (!this.searchData.start) {
+      return this.getCurrentDate();
+    }
+ 
+    const checkIn = new Date(this.searchData.start);
+    // Add 1 day to the check-in date
+    checkIn.setDate(checkIn.getDate() + 1);
+ 
+    const year = checkIn.getFullYear();
+    const month = String(checkIn.getMonth() + 1).padStart(2, '0');
+    const day = String(checkIn.getDate()).padStart(2, '0');
+ 
+    return `${year}-${month}-${day}`;
+  }
+  onCheckInChange() {
+  if (this.searchData.start && this.searchData.end) {
+    if (new Date(this.searchData.end) <= new Date(this.searchData.start)) {
+      this.searchData.end = ''; // Reset check-out if it's now invalid
+    }
+  }
+}
+
 }

@@ -87,7 +87,7 @@ get passengers() {
 
   confirmBooking() {
     const hotelData = this.hotel();
-  const guests = this.bookingForm.value.passengers; // This gets the array of names/phones
+   const guests = this.bookingForm.value.passengers; // This gets the array of names/phones
 
   console.log("Booking Summary:", {
     hotel: hotelData?.Name,

@@ -44,7 +44,7 @@
         <div class="col-md-3">
           <div class="form-floating custom-input-group">
             <span class="input-icon material-symbols-rounded">calendar_month</span>
-            <input type="date" class="form-control border-0 bg-light ps-5" id="start" [(ngModel)]="searchData.start" [min]="getCurrentDate()">
+            <input type="date" class="form-control border-0 bg-light ps-5" id="start" [(ngModel)]="searchData.start" (change)="onCheckInChange()" [min]="getCurrentDate()">
             <label for="start" class="ms-4 text-muted inputlabel">Check-in</label>
           </div>
         </div>
@@ -52,7 +52,7 @@
         <div class="col-md-3">
           <div class="form-floating custom-input-group">
             <span class="input-icon material-symbols-rounded">logout</span>
-            <input type="date" class="form-control border-0 bg-light ps-5" id="end" [(ngModel)]="searchData.end" [min]="getCurrentDate()">
+            <input type="date" class="form-control border-0 bg-light ps-5" id="end" [(ngModel)]="searchData.end"  [min]="searchData.start || getCurrentDate()" [min]="getMinCheckoutDate()">
             <label for="end" class="ms-4 text-muted inputlabel">Check-out</label>
           </div>
         </div>
