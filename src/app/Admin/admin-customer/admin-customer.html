@@ -1,85 +1,98 @@
-<div class="user-management-container p-4">
-  <div class="row align-items-center mb-5">
-    <div class="col-md-6">
-      <h2 class="title-font">Community Members</h2>
-      <p class="accent-subtitle">Managing the heartbeat of WeTour</p>
+@if(adminservice.isLoading()){
+  <div class="d-flex justify-content-center p-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
     </div>
-    <div class="col-md-6 d-flex gap-3">
-      <div class="input-group search-pill shadow-sm">
-        <span class="input-group-text bg-white border-0"><span class="material-icons-round">search</span></span>
-        <input type="text" class="form-control border-0" placeholder="Search by name or email" 
-               [(ngModel)]="searchQuery" (input)="applyFilters()">
+  </div>
+} @else {
+  <div class="user-management-container p-4">
+    <div class="row align-items-center mb-5">
+      <div class="col-md-6">
+        <h2 class="title-font">Community Members</h2>
+        <p class="accent-subtitle">Managing the heartbeat of WeTour</p>
       </div>
-      <select class="form-select role-dropdown shadow-sm" [(ngModel)]="roleFilter" (change)="applyFilters()">
-        <option value="All">All Roles</option>
-        <option value="Admin">Admins</option>
-        <option value="Customer">Customers</option>
-        <option value="Hotel Manager">Hotel Managers</option>
-        <option value="Travel Agent">Travel Agents</option>
-      </select>
+      <div class="col-md-6 d-flex gap-3">
+        <div class="input-group search-pill shadow-sm">
+          <span class="input-group-text bg-white border-0"><span class="material-icons-round">search</span></span>
+          <input type="text" class="form-control border-0" placeholder="Search by name or email" 
+                 [ngModel]="searchQuery()" (ngModelChange)="searchQuery.set($event)">
+        </div>
+        
+        <select class="form-select role-dropdown shadow-sm" 
+                [ngModel]="roleFilter()" (ngModelChange)="roleFilter.set($event)">
+          <option value="All">All Roles</option>
+          <option value="ADMIN">Admins</option>
+          <option value="CUSTOMER">Customers</option>
+          <option value="PACKAGE_MANAGER">Package Managers</option>
+          <option value="HOTEL_MANAGER">Hotel Managers</option>
+        </select>
+      </div>
     </div>
-  </div>
 
-  <div class="table-card card border-0 shadow-sm">
-    <div class="table-responsive">
-      <table class="table table-hover align-middle mb-0">
-        <thead>
-          <tr>
-            <th>User Info</th>
-            <th>Contact Details</th>
-            <th>Account Role</th>
-            <th>Joined Date</th>
-            <th>Status</th>
-            <th class="text-center">Manage</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let user of filteredUsers">
-            <td>
-              <div class="d-flex align-items-center">
-                <div class="avatar-circle me-3">
-                  {{ user.name.charAt(0) }}
-                </div>
-                <div>
-                  <h6 class="mb-0 fw-bold">{{ user.name }}</h6>
-                  <small class="text-muted">{{ user.id }}</small>
-                </div>
-              </div>
-            </td>
-            <td>
-              <div class="d-flex flex-column">
-                <span class="small"><span class="material-icons-round tiny-icon">email</span> {{ user.email }}</span>
-                <span class="small text-muted"><span class="material-icons-round tiny-icon">phone</span> {{ user.phone }}</span>
-              </div>
-            </td>
-            <td>
-              <span class="role-badge" [ngClass]="user.role.replace(' ', '-').toLowerCase()">
-                {{ user.role }}
-              </span>
-            </td>
-            <td>{{ user.joined | date:'mediumDate' }}</td>
-            <td>
-              <div class="status-indicator d-flex align-items-center gap-2">
-                <span class="status-dot" [ngClass]="user.status.toLowerCase()"></span>
-                {{ user.status }}
-              </div>
-            </td>
-            <td>
-              <div class="d-flex justify-content-center gap-2">
-                <button class="btn-action edit" title="Edit Profile">
-                  <span class="material-icons-round">edit</span>
-                </button>
-                <button class="btn-action toggle" [title]="user.status === 'Active' ? 'Deactivate' : 'Activate'" (click)="toggleStatus(user)">
-                  <span class="material-icons-round">{{ user.status === 'Active' ? 'block' : 'check_circle' }}</span>
-                </button>
-                <button class="btn-action delete" title="Remove User" (click)="deleteUser(user.id)">
-                  <span class="material-icons-round">delete_outline</span>
-                </button>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="table-card card border-0 shadow-sm">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+          <thead>
+            <tr>
+              <th>User Info</th>
+              <th>Contact Details</th>
+              <th>Account Role</th>
+              <th>Status</th>
+              <th class="text-center">Manage</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- FIX: Track by _id -->
+            @for (user of filteredUsers(); track user._id) {
+              <tr>
+                <td>
+                  <div class="d-flex align-items-center">
+                    <div class="avatar-circle me-3">
+                      {{ (user.name || '?').charAt(0) }}
+                    </div>
+                    <div>
+                      <h6 class="mb-0 fw-bold">{{ user.name }}</h6>
+                      <small class="text-muted">{{ user._id }}</small>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div class="d-flex flex-column">
+                    <span class="small"><span class="material-icons-round tiny-icon">email</span> {{ user.email }}</span>
+                    <span class="small text-muted"><span class="material-icons-round tiny-icon">phone</span> {{ user.phone }}</span>
+                  </div>
+                </td>
+                <td>
+                  <!-- Clean display for roles like PACKAGE_MANAGER -->
+                  <span class="role-badge" [ngClass]="(user.role || '').toLowerCase().replace('_', '-')">
+                    {{ user.role?.replace('_', ' ') }}
+                  </span>
+                </td>
+                <td>
+                  <div class="status-indicator d-flex align-items-center gap-2">
+                    <span class="status-dot" [ngClass]="user.status?.toLowerCase() || 'active'"></span>
+                    {{ user.status || 'Active' }}
+                  </div>
+                </td>
+                <td>
+                  <div class="d-flex justify-content-center gap-2">
+                    <!-- <button class="btn-action toggle" (click)="toggleStatus(user)">
+                      <span class="material-icons-round">{{ user.status === 'Inactive' ? 'check_circle' : 'block' }}</span>
+                    </button> -->
+                    <button class="btn-action delete" (click)="deleteUser(user._id)">
+                      <span class="material-icons-round">delete_outline</span>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="5" class="text-center p-5 text-muted">No users found matching your criteria.</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
-</div>
+}

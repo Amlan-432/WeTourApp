@@ -64,7 +64,7 @@ export class Login {
       this.isLoading.set(true);
       setTimeout(()=>{
         this.authService.loginUser(this.loginForm.value.email,this.loginForm.value.password).subscribe(res=>{
-        if(res.success && res.res.token){
+        if(res.success && res.data.token){
 
           this.router.navigateByUrl('').then(()=>{this.isLoading.set(false)});
         }else{

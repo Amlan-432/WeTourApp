@@ -27,15 +27,15 @@ export class Authservice {
 
 //userLogin---->>>>>
 
-  loginUser(email:string,password:string):Observable<{res:{token:string},msg:string,success:boolean}>{
+  loginUser(email:string,password:string):Observable<{data:{token:string},msg:string,success:boolean}>{
 
     // debugger;
 
-    return this.http.post<{res:{token:string},msg:string,success:boolean}>(`${this.API_URL}/auth`,{email,password}).pipe(
+    return this.http.post<{data:{token:string},msg:string,success:boolean}>(`${this.API_URL}/auth`,{email,password}).pipe(
       tap(r=>{
-        if(r?.res?.token && r?.success){
-          localStorage.setItem("WeTourjwt_token",r.res.token);
-          const decodedtoken =this.tokenservice.tokenDecode(r.res.token);
+        if(r?.data?.token && r?.success){
+          localStorage.setItem("WeTourjwt_token",r.data.token);
+          const decodedtoken =this.tokenservice.tokenDecode(r.data.token);
           this.currentUser.next(decodedtoken.user);
         }else{
           r.msg="Invalid Credentials";
