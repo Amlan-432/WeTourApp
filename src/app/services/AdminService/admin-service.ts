@@ -20,7 +20,7 @@ export class AdminService {
   getAllUsers():Observable<{statusCode:number,data:any[],message:string,success:boolean}>{
     debugger;
     this.isLoading.set(true);
-    return this.http.get<{statusCode:number,data:any[],message:string,success:boolean}>(`${this.API_URL}/allUsers`).pipe(
+    return this.http.get<{statusCode:number,data:any[],message:string,success:boolean}>(`${this.API_URL}/users`).pipe(
       tap(res=>{
         debugger;
         this.allUsers.next(res.data);

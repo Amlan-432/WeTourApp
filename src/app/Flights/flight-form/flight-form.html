@@ -29,12 +29,19 @@
                                 <label class="d-flex align-items-center text-muted small fw-bold mb-1">
                                     <span class="material-icons fs-6 me-1">location_on</span>FROM
                                 </label>
-                                <input type="text" formControlName="from" class="form-control border-0 p-0 fw-bold fs-5"
-                                    placeholder="City or Airport">
 
-                                    @if(flightForm.get('from')?.touched && flightForm.get('from')?.invalid){
-          <div class="text-danger error-text">please provide origin</div>
-        }
+                                <input type="text" formControlName="from" class="form-control border-0 p-0 fw-bold fs-5"
+                                    placeholder="City or Airport" list="originOptions">
+
+                                <datalist id="originOptions">
+                                    @for (item of filteredOrigins; track item.origin.airport_code) {
+                                    <option [value]="item.origin.airport_code">{{item.origin.city}}</option>
+                                    }
+                                </datalist>
+
+                                @if(flightForm.get('from')?.touched && flightForm.get('from')?.invalid){
+                                <div class="text-danger error-text">please provide origin</div>
+                                }
                             </div>
                         </div>
 
@@ -43,12 +50,19 @@
                                 <label class="d-flex align-items-center text-muted small fw-bold mb-1">
                                     <span class="material-icons fs-6 me-1">flight_land</span> TO
                                 </label>
-                                <input type="text" formControlName="to" class="form-control border-0 p-0 fw-bold fs-5"
-                                    placeholder="Destination">
 
-                                    @if(flightForm.get('to')?.touched && flightForm.get('to')?.invalid){
-          <div class="text-danger error-text">please provide Destination</div>
-        }
+                                <input type="text" formControlName="to" class="form-control border-0 p-0 fw-bold fs-5"
+                                    placeholder="Destination" list="destOptions">
+
+                                <datalist id="destOptions">
+                                    @for (item of filteredDestinations; track item.destination.airport_code) {
+                                    <option [value]="item.destination.airport_code">{{item.destination.city}}</option>
+                                    }
+                                </datalist>
+
+                                @if(flightForm.get('to')?.touched && flightForm.get('to')?.invalid){
+                                <div class="text-danger error-text">please provide Destination</div>
+                                }
                             </div>
                         </div>
 
@@ -57,12 +71,12 @@
                                 <label class="d-flex align-items-center text-muted small fw-bold mb-1">
                                     <span class="material-icons fs-6 me-1">calendar_month</span> DEPARTURE
                                 </label>
-                                <input type="date" formControlName="date"
-                                    class="form-control border-0 p-0 fw-bold fs-5" [min]="getCurrentDate()">
+                                <input type="date" formControlName="date" class="form-control border-0 p-0 fw-bold fs-5"
+                                    [min]="getCurrentDate()">
 
-                                    @if(flightForm.get('date')?.touched && flightForm.get('date')?.invalid){
-          <div class="text-danger error-text">Select a date</div>
-        }
+                                @if(flightForm.get('date')?.touched && flightForm.get('date')?.invalid){
+                                <div class="text-danger error-text">Select a date</div>
+                                }
                             </div>
                         </div>
 
@@ -74,14 +88,14 @@
                                 <input type="number" formControlName="people"
                                     class="form-control border-0 p-0 fw-bold fs-5">
 
-                                    @if(flightForm.get('people')?.touched && flightForm.get('people')?.invalid){
-          <div class="text-danger error-text">Enter 1-9 people</div>
-        }
+                                @if(flightForm.get('people')?.touched && flightForm.get('people')?.invalid){
+                                <div class="text-danger error-text">Enter 1-9 people</div>
+                                }
                             </div>
                         </div>
                     </div>
 
-                   
+
 
                     <div class="mt-4 text-center">
                         <button type="submit"

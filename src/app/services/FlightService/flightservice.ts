@@ -1,5 +1,6 @@
-import { Injectable, signal } from '@angular/core';
-import { BehaviorSubject, delay, Observable, of } from 'rxjs';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { inject, Injectable, signal } from '@angular/core';
+import { BehaviorSubject, catchError, delay, Observable, of, tap, throwError } from 'rxjs';
 
 export interface FlightSearchCriteria {
   from?: string;
@@ -12,12 +13,19 @@ export interface FlightSearchCriteria {
   providedIn: 'root',
 })
 export class Flightservice {
+  http =inject(HttpClient);
+  API_URL_Traveller:string="http://localhost:8000/traveller";
+  API_URL_User:string="http://localhost:8000/user";
 
   private searchCriteria = new BehaviorSubject<FlightSearchCriteria | null>(null);
 
 
   currentSearch$ = this.searchCriteria.asObservable();
   fdate=signal<any>('');
+  searchedFlights$= new BehaviorSubject<any[]>([]);
+  // searchedFlights$=this.searchedFlights.asObservable();
+  isLoading=signal<boolean>(false);
+  hasErrors:boolean=false;
 
 
   private readonly flights = [
@@ -61,24 +69,55 @@ export class Flightservice {
     this.searchCriteria.next(criteria);
   }
 
-  getFlight(from: string, to: string, date: string): Observable<any[]> {
-  const origin = from?.toLowerCase() || '';
-  const dest = to?.toLowerCase() || '';
+  getFlight(from: string, to: string, date: string): Observable<{statusCode:number,data:any[],msg:string,success:true}> {
+    debugger;
+     this.isLoading.set(true);
+     const params = new HttpParams()
+      .set('origin', from)
+      .set('destination', to)
+      .set('date', date);
 
-  const filtered = this.flights.filter(f => {
-    const matchFrom = !origin || f.From.toLowerCase().includes(origin);
-    const matchTo = !dest || f.To.toLowerCase().includes(dest);
-    const matchDate = !date ||  this.fdate.set(date);
-
-    return matchFrom && matchTo ;
-  });
-
-  return of(filtered).pipe(delay(400));
+      return this.http.get<{statusCode:number,data:any[],msg:string,success:true}>(`${this.API_URL_User}/searchFlight`,{params}).pipe(
+        tap(res=>{
+          debugger;
+          if(res.success){
+            debugger;
+            this.searchedFlights$.next(res.data);
+          }
+          this.isLoading.set(false);
+        }),
+         catchError(err=>{
+              this.hasErrors=true;
+              this.isLoading.set(false);
+              return throwError(()=>err);
+        }));
 }
 
  
   getLatestSearchValue(): FlightSearchCriteria | null {
     return this.searchCriteria.getValue();
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+getOriginAndDest(code:string):Observable<{statusCode:number,data:any[],msg:string,success:boolean}>{
+
+  return this.http.get<{statusCode:number,data:any[],msg:string,success:boolean}>(`${this.API_URL_User}/searchOrigin/${code}`);
+
+}
+
   
 }

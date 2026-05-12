@@ -18,9 +18,10 @@ export const authInterceptorsInterceptor: HttpInterceptorFn = (req, next) => {
   return next(authReq).pipe(
     catchError((err:HttpErrorResponse)=>{
       if(err.status===401){
-        console.warn("session expired or invalid Role.Redirecting to login...");
+        console.warn("session expired.Redirecting to login...");
+        alert("session expired or invalid Role. Redirecting to login...");
         localStorage.removeItem('WeTourjwt_token');
-        router.navigateByUrl('/login'),{queryParams:{msg:"Token Expired or login with admin id"}};
+        router.navigate(['/login'], { queryParams: { msg: "Token Expired" } });
       }
       return throwError(()=>err);
     })

@@ -140,6 +140,12 @@
   position: relative;
 }
 
+
+.search-field input:focus {
+    outline: none;
+    box-shadow: none;
+}
+
 .hero-section {
   min-height: 90vh;
   background: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.2)), 

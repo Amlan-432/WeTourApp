@@ -61,7 +61,7 @@ private route = inject(ActivatedRoute);
     });
 
     this.flightService.getFlight('', '','').subscribe(flights => {
-      const found = flights.find((f: any) => f.FlightID === id);
+      const found = flights.data.find((f: any) => f.FlightID === id);
       if (found) {
         this.flight.set(found);
         if (found.Classes && found.Classes.length > 0) {

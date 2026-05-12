@@ -13,7 +13,7 @@ import { Authservice } from '../../services/AuthService/authservice';
 })
 export class FlightSerched {
 
-  private flightservice = inject(Flightservice);
+  flightservice = inject(Flightservice);
   private authService = inject(Authservice);
 
 
@@ -37,25 +37,21 @@ export class FlightSerched {
   flights = signal<any[]>([]);
 
   ngOnInit() {
+    this.flightservice.searchedFlights$.subscribe(f=>{
+   
+      this.flights.set(f);
+    });
     
     this.flightservice.currentSearch$.subscribe(criteria => {
       this.flight.from = criteria?.from || '';
       this.flight.to = criteria?.destination || '';
       this.flight.date=criteria?.date||'';
-      this.fetchFlights();
     });
+
   }
 
-  fetchFlights() {
-  
-  this.flightservice.getFlight(this.flight.from, this.flight.to, this.flight.date)
-    .subscribe(data => {
-      this.flights.set(data);
-    });
-}
-
   applyFilter() {
-    this.fetchFlights();
+    this.flightservice.getFlight(this.flight.from, this.flight.to, this.flight.date).subscribe();
   }
 
 
@@ -88,6 +84,23 @@ export class FlightSerched {
     const month = String(date.getMonth()+1).padStart(2,'0');
     const day = date.getDate().toString().padStart(2,'0');
     return `${year}-${month}-${day}`;
+  }
+
+
+  getTimediff(startTime:string,endTime:string):string{
+
+    let start:any= new Date(`1970-01-01T${startTime}:00`).getTime();
+    let end:any = new Date(`1970-01-01T${endTime}:00`).getTime();
+    if(start>end){
+      end+=(1000*60*60*24);
+    }
+    const diff:any= Math.abs(end-start);
+    const diffhr=Math.floor(diff/(1000*60*60));
+    const diffmin=Math.floor((diff/(1000*60))%60);
+
+    return `${diffhr}h:${diffmin}m`;
+    
+
   }
 
 }

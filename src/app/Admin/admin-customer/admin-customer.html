@@ -1,7 +1,7 @@
 @if(adminservice.isLoading()){
   <div class="d-flex justify-content-center p-5">
     <div class="spinner-border text-primary" role="status">
-      <span class="visually-hidden">Loading...</span>
+      <span class="visually-hidden"></span>
     </div>
   </div>
 } @else {
@@ -49,11 +49,8 @@
                   <div class="d-flex align-items-center">
                     <div class="avatar-circle me-3">
                       {{ (user.name || '?').charAt(0) }}
-                    </div>
-                    <div>
+                    </div>                    
                       <h6 class="mb-0 fw-bold">{{ user.name }}</h6>
-                      <small class="text-muted">{{ user._id }}</small>
-                    </div>
                   </div>
                 </td>
                 <td>
