@@ -4,6 +4,19 @@ import { RouterModule } from '@angular/router';
 import { Flightservice } from '../../services/FlightService/flightservice';
 import { FormsModule } from '@angular/forms';
 import { Authservice } from '../../services/AuthService/authservice';
+import { debounceTime, distinctUntilChanged, EMPTY, switchMap } from 'rxjs';
+
+
+type locationarr = {
+  origin: {
+    airport_code: string,
+    city: string
+  },
+  destination: {
+    airport_code: string,
+    city: string
+  }
+}
 
 @Component({
   selector: 'app-flight-serched',
@@ -11,22 +24,15 @@ import { Authservice } from '../../services/AuthService/authservice';
   templateUrl: './flight-serched.html',
   styleUrl: './flight-serched.css',
 })
+
+
 export class FlightSerched {
 
   flightservice = inject(Flightservice);
   private authService = inject(Authservice);
 
-
-  private readonly airlineLogos: { [key: string]: string } = {
-    "Air India": "https://www.gstatic.com/flights/airline_logos/70px/AI.png",
-    "IndiGo": "https://www.gstatic.com/flights/airline_logos/70px/6E.png",
-    "SpiceJet": "https://www.gstatic.com/flights/airline_logos/70px/SG.png",
-    "Vistara": "https://www.gstatic.com/flights/airline_logos/70px/UK.png",
-    "GoAir": "https://www.gstatic.com/flights/airline_logos/70px/G8.png",
-    "AirAsia": "https://www.gstatic.com/flights/airline_logos/70px/I5.png",
-    "Akasa Air": "https://www.gstatic.com/flights/airline_logos/70px/QP.png" 
-  };
-
+  filteredOrigins: locationarr[] = [];
+  filteredDestinations: locationarr[] = [];
 
   flight = {
     from: '',
@@ -53,7 +59,39 @@ export class FlightSerched {
   applyFilter() {
     this.flightservice.getFlight(this.flight.from, this.flight.to, this.flight.date).subscribe();
   }
+ onSearchInput(event:Event, target:'filteredOrigins'|'filteredDestinations'){
+  const inputElement = event.target as HTMLInputElement;
+  const value = inputElement.value;
 
+  if (!value || value.trim().length === 0) {
+    if (target === 'filteredOrigins') {
+      this.filteredOrigins = []; 
+    } else {
+      this.filteredDestinations = [];
+    }
+    return;
+  }
+  this.flightservice.getOriginAndDest(value).subscribe({
+    next: res => {
+      if (res && res.success) {
+        if (target === 'filteredOrigins') {
+          this.filteredOrigins = [
+                ...new Map(
+                  [...this.filteredOrigins, ...res.data].map(item => [item.origin.airport_code, item])
+                ).values()
+              ];          
+        } else {
+          this.filteredDestinations = this.filteredDestinations = [
+                ...new Map(
+                  [...this.filteredDestinations, ...res.data].map(item => [item.destination.airport_code, item])
+                ).values()
+              ];
+        }
+      }
+    },
+    error: err => console.error('Search Error:', err)
+  });
+  }
 
 
   getUrl(endpoint:string):string{
@@ -68,15 +106,6 @@ export class FlightSerched {
     
   }
 
-
-
-   getLogo(airlineName: string): string {
-    if (this.airlineLogos[airlineName]) return this.airlineLogos[airlineName];
-    const key = Object.keys(this.airlineLogos).find(
-      k => k.toLowerCase() === airlineName.toLowerCase()
-    );
-    return key ? this.airlineLogos[key] : 'https://www.gstatic.com/flights/airline_logos/70px/default.png';
-  }
 
   getCurrentDate(){
     const date = new Date(Date.now());
@@ -101,6 +130,21 @@ export class FlightSerched {
     return `${diffhr}h:${diffmin}m`;
     
 
+  }
+
+  flightBeforePNRscheduled(departure_time:string):boolean{
+    const date = this.flightservice.fdate(); 
+    const time = departure_time;//07:30
+    
+    const dateOfFlight = new Date(`${date}T${time}:00`).getTime();
+    const current = Date.now();
+    
+    const diffInHr = Math.floor((dateOfFlight-current)/(1000*60*60));
+
+    if(diffInHr>=4){
+      return true;
+    }
+    return false;
   }
 
 }

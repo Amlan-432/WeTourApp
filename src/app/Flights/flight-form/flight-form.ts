@@ -67,11 +67,10 @@ export class FlightForm {
   private setUpSearch(code: 'from' | 'to', target: 'filteredOrigins' | 'filteredDestinations') {
 
     this.flightForm.get(code)?.valueChanges.pipe(
-      debounceTime(300),
+      debounceTime(200),
       distinctUntilChanged(),
       switchMap(v => {
-        debugger;
-        if (v && v.length >= 2) {
+        if (v && v.length >= 1) {
           return this.flightService.getOriginAndDest(v);
         } else {
           return EMPTY;

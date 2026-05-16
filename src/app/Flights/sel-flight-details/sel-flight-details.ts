@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Flightservice } from '../../services/FlightService/flightservice';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Authservice } from '../../services/AuthService/authservice';
+import { Tokenservice } from '../../services/tokenService/tokenservice';
 
 @Component({
   selector: 'app-sel-flight-details',
@@ -12,26 +13,19 @@ import { Authservice } from '../../services/AuthService/authservice';
   styleUrl: './sel-flight-details.css',
 })
 export class SelFlightDetails {
-private route = inject(ActivatedRoute);
-  private flightService = inject(Flightservice);
+  private route = inject(ActivatedRoute);
+  flightService = inject(Flightservice);
+  private authService=inject(Authservice);
   private fb = inject(FormBuilder);
   private router = inject(Router);
-  private authService=inject(Authservice);
+  private tokenService = inject(Tokenservice);
 
   flight = signal<any>(null);
   numOfTravellers = signal<number>(1);
   selectedBonus = signal<number>(0);
+  selectedClassName = signal<string>('');
+  selectedSeats = signal<string[]>([]);
 
-  // Airline Logo Mapping
-  private readonly airlineLogos: { [key: string]: string } = {
-    "Air India": "https://www.gstatic.com/flights/airline_logos/70px/AI.png",
-    "IndiGo": "https://www.gstatic.com/flights/airline_logos/70px/6E.png",
-    "SpiceJet": "https://www.gstatic.com/flights/airline_logos/70px/SG.png",
-    "Vistara": "https://www.gstatic.com/flights/airline_logos/70px/UK.png",
-    "GoAir": "https://www.gstatic.com/flights/airline_logos/70px/G8.png",
-    "AirAsia": "https://www.gstatic.com/flights/airline_logos/70px/I5.png",
-    "Akasa Air": "https://www.gstatic.com/flights/airline_logos/70px/QP.png"
-  };
 
   // --- Reactive Form for Passengers ---
   bookingForm: FormGroup = this.fb.group({
@@ -41,15 +35,37 @@ private route = inject(ActivatedRoute);
   totalPrice = computed(() => {
     const f = this.flight();
     if (!f) return 0;
-    return (f.BasePrice + this.selectedBonus()) * this.numOfTravellers();
+    const selSeatIds = this.selectedSeats();
+    let totalCost=0;
+    selSeatIds.forEach(Sno=>{
+       const seat_details =f.seats.find((s:any)=>s.seat_number===Sno);
+       if(seat_details){
+        const classInfo = this.Classes.find((c:any)=>c.name===seat_details.class);
+        const bonus = classInfo?classInfo.bonus:0;
+        totalCost+=(f.base_price+bonus+(seat_details.price||0));
+       }
+    });
+     return totalCost;
+    
   });
 
+  totalUpgradeBonus = computed(() => {
+  const f = this.flight();
+  if (!f) return 0;
+  
+  return this.selectedSeats().reduce((sum, seatNo) => {
+    const seatDetail = f.seats.find((s: any) => s.seat_number === seatNo);
+    const classInfo = this.Classes.find(c => c.name === seatDetail?.class);
+    return sum + (classInfo ? classInfo.bonus : 0);
+  }, 0);
+});
+
   get passengers() {
-    return this.bookingForm.get('passengers') as FormArray;
+     return this.bookingForm.get('passengers') as FormArray;
   }
 
   ngOnInit() {
-    const id = this.route.snapshot.paramMap.get('id');
+    const id = this.route.snapshot.paramMap.get('id')??"";
 
     this.flightService.currentSearch$.subscribe(criteria => {
       const count = criteria?.people || 1;
@@ -60,26 +76,37 @@ private route = inject(ActivatedRoute);
       }
     });
 
-    this.flightService.getFlight('', '','').subscribe(flights => {
-      const found = flights.data.find((f: any) => f.FlightID === id);
-      if (found) {
-        this.flight.set(found);
-        if (found.Classes && found.Classes.length > 0) {
-          this.selectedBonus.set(found.Classes[0].bonus);
-        }
+    const fdate = this.flightService.fdate();
+
+    this.flightService.getFlightFromID(id,fdate).subscribe(flight => {
+      if(flight.success){
+        this.flight.set(flight.data);
+        console.log(flight.data);
       }
+    
     });
   }
 
 
-  getLogo(airlineName: string): string {
-    if (!airlineName) return '';
+
+
+  filteredSeatsByClass=computed(()=>{
+    const flightData = this.flight();
+    const className = this.selectedClassName();
+
+    if(!flightData || !className)return [];
+
+    const classSeats = flightData.seats.filter((s:any)=>s.class===className);
+    const rowsMap = new Map<string,any[]>();
+    classSeats.forEach((seat:any) => {
+        const rowNum = seat.seat_number.match(/\d+/)?.[0] || '0';
+        if (!rowsMap.has(rowNum)) rowsMap.set(rowNum, []);
+        rowsMap.get(rowNum)?.push(seat);
+    });
+    return Array.from(rowsMap.values());
+  });
+
   
-    const key = Object.keys(this.airlineLogos).find(
-      k => k.toLowerCase() === airlineName.toLowerCase()
-    );
-    return key ? this.airlineLogos[key] : 'https://www.gstatic.com/flights/airline_logos/70px/default.png';
-  }
 
   addPassenger() {
     if (this.passengers.length < this.numOfTravellers()) {
@@ -97,30 +124,127 @@ private route = inject(ActivatedRoute);
       this.passengers.removeAt(index);
     }
   }
-
-  selectClass(bonus: number) {
-    this.selectedBonus.set(bonus);
-  }
-
+  
   onProceedToPayment() {
     if (this.bookingForm.valid) {
-      const bookingData = {
-        flight: this.flight(),
-        passengers: this.bookingForm.value.passengers,
-        totalAmount: this.totalPrice(),
-        fareClassBonus: this.selectedBonus()
-      };
-      console.log('Final Booking Data:', bookingData);
-      this.authService.currentUser.subscribe(res=>{
-        if(res){
-           this.router.navigateByUrl('/landingDash/traveller/flights/flightssummary');
-        }else{
-          this.router.navigateByUrl('/landingDash/flights/flightssummary');
+
+      // let arr = []
+      // for(let seat of this.selectedSeats()){
+      //   arr.push({...this.bookingForm.value[i],})
+      // }
+      const Passengers = this.bookingForm.value.passengers||[];
+      const finalPassengers = Passengers.map((passenger:any,index:number)=>{
+      const seatNo = this.selectedSeats()[index]||"";
+      const seatDetail = this.flight()?.seats?.find((s: any) => s.seat_number === seatNo);
+
+        const seatClass = seatDetail ? seatDetail.class : "";
+        return {
+          ...passenger,
+          seat:seatNo,
+          class:seatClass
         }
       });
-      
-        
+
+      const token = localStorage.getItem('WeTourjwt_token')??"";
+      const payload = this.tokenService.tokenDecode(token);
+      const user_Id = payload.user?.user_id||"";
+      const template_id = this.flight()?._id||"";
+      const fdate = this.flightService.fdate();
+      const total_price = this.totalPrice();
+
+      // const bookingData = {
+      //   flight: this.flight(),
+      //   passengers: finalPassengers,
+      //   totalAmount: this.totalPrice(),
+      //   user_Id,
+      //   template_id
+      // };
+      // console.log('Final Booking Data:', bookingData);
+
+      this.flightService.bookFlight(user_Id,template_id,fdate,total_price,finalPassengers).subscribe({
+        next:res=>{
+          if(res.success){
+            this.authService.currentUser.subscribe(res => {
+            if (res) {
+              this.router.navigateByUrl('/landingDash/traveller/flights/flightssummary');
+            }
+          });
+          }
+        },
+        error:err=>{
+          alert(err.message);
+        }
+      });
+
+
+
+
+
+      // this.authService.currentUser.subscribe(res => {
+      //   if (res) {
+      //     this.router.navigateByUrl('/landingDash/traveller/flights/flightssummary');
+      //   } else {
+      //     this.router.navigateByUrl('/landingDash/flights/flightssummary');
+      //   }
+      // });
+
+
     }
   }
+
+
+  Classes = [
+    {
+      name: 'Economy',
+      bonus: 0,
+      features: ['Basic seating', 'Standard meal', '1 carry-on bag']
+    },
+    {
+      name: 'First',
+      bonus: 5000,
+      features: ['Luxury seating', 'Premium meal', 'Extra baggage allowance']
+    },
+    {
+      name: 'Business',
+      bonus: 10000,
+      features: ['Spacious seating', 'Exclusive lounge access', 'Priority boarding']
+    }
+  ];
+
+
+  selectClass(bonus: number,className:string) {
+    this.selectedBonus.set(bonus);
+    this.selectedClassName.set(className);
+    
+  }
+
+  seatAction(seatNo:string){
+    if (this.flight()?.bookedSeats?.includes(seatNo)) return;
+    const current =this.selectedSeats();
+    if(current.includes(seatNo)){
+      this.selectedSeats.set(current.filter(s=>s!==seatNo));
+    }else if(current.length<this.numOfTravellers()){
+      this.selectedSeats.set([...current,seatNo]);
+    }
+
+  }
+
+
+    getTimediff(startTime:string,endTime:string):string{
+
+    let start:any= new Date(`1970-01-01T${startTime}:00`).getTime();
+    let end:any = new Date(`1970-01-01T${endTime}:00`).getTime();
+    if(start>end){
+      end+=(1000*60*60*24);
+    }
+    const diff:any= Math.abs(end-start);
+    const diffhr=Math.floor(diff/(1000*60*60));
+    const diffmin=Math.floor((diff/(1000*60))%60);
+
+    return `${diffhr}h:${diffmin}m`;
+    
+
+  }
+
 
 }

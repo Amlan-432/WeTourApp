@@ -17,20 +17,54 @@
 
                 <div class="mb-3">
                     <label class="form-label small fw-bold text-secondary">Origin</label>
-                    <div class="input-group bg-light rounded-3">
-                        <span class="input-group-text border-0 bg-transparent"><span
-                                class="material-icons-round fs-5">flight_takeoff</span></span>
-                        <input type="text" class="form-control border-0 bg-transparent p-2" [(ngModel)]="flight.from">
+
+                    <div class="input-group bg-light rounded-3"
+                        [class.border]="originCtrl.touched && originCtrl.invalid"
+                        [class.border-danger]="originCtrl.touched && originCtrl.invalid">
+                        <span class="input-group-text border-0 bg-transparent">
+                            <span class="material-icons-round fs-5">flight_takeoff</span>
+                        </span>
+
+                        <input type="text" (input)="onSearchInput($event, 'filteredOrigins')"
+                            class="form-control border-0 bg-transparent p-2" [(ngModel)]="flight.from" name="origin"
+                            #originCtrl="ngModel" list="originOptions" required placeholder="Select Origin">
                     </div>
+
+                    <datalist id="originOptions">
+                        @for (item of filteredOrigins; track item.origin.airport_code) {
+                        <option [value]="item.origin.airport_code">{{item.origin.city}}</option>
+                        }
+                    </datalist>
+
+                    @if(originCtrl.touched && originCtrl.invalid){
+                    <div class="text-danger small mt-1">Please provide an Origin</div>
+                    }
                 </div>
+
 
                 <div class="mb-3">
                     <label class="form-label small fw-bold text-secondary">Destination</label>
-                    <div class="input-group bg-light rounded-3">
-                        <span class="input-group-text border-0 bg-transparent"><span
-                                class="material-icons-round fs-5">flight_land</span></span>
-                        <input type="text" class="form-control border-0 bg-transparent p-2" [(ngModel)]="flight.to">
+
+                    <div class="input-group bg-light rounded-3" [class.border]="destCtrl.touched && destCtrl.invalid"
+                        [class.border-danger]="destCtrl.touched && destCtrl.invalid">
+                        <span class="input-group-text border-0 bg-transparent">
+                            <span class="material-icons-round fs-5">flight_land</span>
+                        </span>
+
+                        <input type="text" (input)="onSearchInput($event, 'filteredDestinations')"
+                            class="form-control border-0 bg-transparent p-2" [(ngModel)]="flight.to" name="destination"
+                            #destCtrl="ngModel" list="destOptions" required placeholder="Select Destination">
                     </div>
+
+                    <datalist id="destOptions">
+                        @for (item of filteredDestinations; track item.destination.airport_code) {
+                        <option [value]="item.destination.airport_code">{{item.destination.city}}</option>
+                        }
+                    </datalist>
+
+                    @if(destCtrl.touched && destCtrl.invalid){
+                    <div class="text-danger small mt-1">Please provide a Destination</div>
+                    }
                 </div>
 
                 <div class="mb-4">
@@ -40,7 +74,7 @@
                             <span class="material-icons-round text-primary">calendar_today</span>
                         </span>
                         <input type="date" class="form-control border-0 bg-transparent p-2" [(ngModel)]="flight.date"
-                             [min]="getCurrentDate()">
+                            [min]="getCurrentDate()">
                     </div>
                 </div>
 
@@ -53,23 +87,27 @@
         <main class="col-lg-9">
             <div *ngIf="flights().length > 0; else noFlights">
                 <div *ngFor="let flight of flights()" class="flight-card card mb-3 border-0 shadow-sm overflow-hidden">
-                    <div class="card-body p-0">
+                    <div *ngIf="flightBeforePNRscheduled(flight.departure_time)" class="card-body p-0">
                         <div class="row g-0 align-items-center">
 
                             <div class="col-md-2 p-4 text-center border-end-md">
-                                <img [src]="getLogo(flight.airline.name)" alt="Airline" class="airline-logo mb-2">
-                                <h6 class="small fw-bold text-dark mb-0">{{flight.airline.name}}</h6>
+                                <img [src]="flightservice.getLogo(flight?.airline?.name)" alt="Airline"
+                                    class="airline-logo mb-2">
+                                <h6 class="small fw-bold text-dark mb-0">{{flight?.airline?.name}}</h6>
                             </div>
 
                             <div class="col-md-7 p-4">
                                 <div class="d-flex justify-content-between align-items-center px-lg-4">
                                     <div class="text-start">
                                         <h4 class="fw-bold mb-0">{{flight.departure_time}}</h4>
-                                        <span class="badge bg-light text-secondary rounded-pill">{{flight.origin.city}}</span>
+                                        <span
+                                            class="badge bg-light text-secondary rounded-pill">{{flight.origin.city}}</span>
                                     </div>
 
                                     <div class="flex-grow-1 px-4 text-center">
-                                        <div class="duration-text text-muted x-small fw-bold mb-1">{{getTimediff(flight?.departure_time??"00:00",flight.arrival_time??"00:00") ||
+                                        <div class="duration-text text-muted x-small fw-bold mb-1">
+                                            {{getTimediff(flight?.departure_time??"00:00",flight.arrival_time??"00:00")
+                                            ||
                                             '2h 30m'}}</div>
                                         <div class="flight-path-ui d-flex align-items-center">
                                             <div class="dot"></div>
@@ -83,7 +121,8 @@
 
                                     <div class="text-end">
                                         <h4 class="fw-bold mb-0">{{flight.arrival_time}}</h4>
-                                        <span class="badge bg-light text-secondary rounded-pill">{{flight.destination.city}}</span>
+                                        <span
+                                            class="badge bg-light text-secondary rounded-pill">{{flight.destination.city}}</span>
                                     </div>
                                 </div>
                             </div>
@@ -91,8 +130,7 @@
                             <div class="col-md-3 p-4 bg-light-alt text-center text-md-end border-start-md">
                                 <p class="text-muted small mb-1">Price per adult</p>
                                 <h3 class="fw-bold text-primary mb-3">₹{{flight.base_price}}</h3>
-                                <a class="btn btn-primary w-100 rounded-pill fw-bold"
-                                    [routerLink]="getUrl(flight.FlightID)">
+                                <a class="btn btn-primary w-100 rounded-pill fw-bold" [routerLink]="getUrl(flight._id)">
                                     Book Now
                                 </a>
                             </div>

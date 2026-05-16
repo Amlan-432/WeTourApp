@@ -12,21 +12,19 @@ export class AdminService {
 
   allUsers= new BehaviorSubject<any[]>([]);
   allUsers$=this.allUsers.asObservable();
+
+  allFlights$=new BehaviorSubject<any[]>([]);
   isLoading=signal<boolean>(false);
   hasErrors:boolean=false;
 
 
-
   getAllUsers():Observable<{statusCode:number,data:any[],message:string,success:boolean}>{
-    debugger;
     this.isLoading.set(true);
     return this.http.get<{statusCode:number,data:any[],message:string,success:boolean}>(`${this.API_URL}/users`).pipe(
       tap(res=>{
-        debugger;
         this.allUsers.next(res.data);
         this.isLoading.set(false);
-        debugger;
-        
+            
       }),
       catchError(err=>{
         this.hasErrors=true;
@@ -34,6 +32,22 @@ export class AdminService {
         return throwError(()=>err);
       })
     );
+  }
+
+  getAllFlights():Observable<{statusCode:number,data:any[],message:string,success:boolean}>{
+    this.isLoading.set(true);
+    return this.http.get<{statusCode:number,data:any[],message:string,success:boolean}>(`${this.API_URL}/flight`).pipe(
+      tap(flights=>{
+        if(flights.success){
+          this.allFlights$.next(flights.data);
+        }
+        this.isLoading.set(false);
+      }),
+       catchError(err=>{
+        this.hasErrors=true;
+        this.isLoading.set(false);
+        return throwError(()=>err);
+      }));
   }
   
 }

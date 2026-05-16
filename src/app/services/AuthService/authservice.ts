@@ -17,7 +17,6 @@ export class Authservice {
 
   private getDecodedToken() {
     const token = localStorage.getItem("WeTourjwt_token");
-    debugger;
     if (token) {
       const decoded = this.tokenservice.tokenDecode(token);
       return decoded?.user || null;

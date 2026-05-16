@@ -13,111 +13,157 @@ export interface FlightSearchCriteria {
   providedIn: 'root',
 })
 export class Flightservice {
-  http =inject(HttpClient);
-  API_URL_Traveller:string="http://localhost:8000/traveller";
-  API_URL_User:string="http://localhost:8000/user";
+  http = inject(HttpClient);
+  API_URL_Traveller: string = "http://localhost:8000/traveller";
+  API_URL_User: string = "http://localhost:8000/user";
 
   private searchCriteria = new BehaviorSubject<FlightSearchCriteria | null>(null);
 
 
   currentSearch$ = this.searchCriteria.asObservable();
-  fdate=signal<any>('');
-  searchedFlights$= new BehaviorSubject<any[]>([]);
-  // searchedFlights$=this.searchedFlights.asObservable();
-  isLoading=signal<boolean>(false);
-  hasErrors:boolean=false;
+  fdate = signal<any>('');
+  passengers$ = new BehaviorSubject<any[]>([]);
+  searchedFlights$ = new BehaviorSubject<any[]>([]);
+  bookFlightdetails$=new BehaviorSubject<any[]>([]);
+  userAllbfd$=new BehaviorSubject<any[]>([]);
+  isLoading = signal<boolean>(false);
+  hasErrors: boolean = false;
+
+  // Airline Logo Mapping
+  private readonly airlineLogos: { [key: string]: string } = {
+  "Emirates": "https://www.gstatic.com/flights/airline_logos/70px/EK.png",
+  "Qatar Airways": "https://www.gstatic.com/flights/airline_logos/70px/QR.png",
+  "Air India": "https://www.gstatic.com/flights/airline_logos/70px/AI.png",
+  "IndiGo": "https://www.gstatic.com/flights/airline_logos/70px/6E.png",
+  "Lufthansa": "https://www.gstatic.com/flights/airline_logos/70px/LH.png",
+  "British Airways": "https://www.gstatic.com/flights/airline_logos/70px/BA.png",
+  "Singapore Airlines": "https://www.gstatic.com/flights/airline_logos/70px/SQ.png",
+  "Etihad Airways": "https://www.gstatic.com/flights/airline_logos/70px/EY.png",
+  "Air France": "https://www.gstatic.com/flights/airline_logos/70px/AF.png",
+  "Turkish Airlines": "https://www.gstatic.com/flights/airline_logos/70px/TK.png",
+  "United Airlines": "https://www.gstatic.com/flights/airline_logos/70px/UA.png"
+  };
 
 
-  private readonly flights = [
-  { 
-    FlightID: 'F1-22', 
-    Airline: 'Akasa Air', 
-    From: 'New Delhi', 
-    To: 'Bangalore', 
-    BasePrice: 6600, 
-    Departure: '10:10 AM', 
-    Arrival:'12:55 PM', 
-    Duration: '2h 45m',
-    Classes: [
-      { name: 'Economy', bonus: 0, features: ['Standard Seat', '1 Free Meal'] },
-      { name: 'Premium', bonus: 2500, features: ['Extra Legroom', 'Priority Boarding'] },
-      { name: 'Business', bonus: 8000, features: ['Luxury Seat', 'Lounge Access', 'Free Drinks'] }
-    ],
-  },
-  { 
-    FlightID: 'JS-44', 
-    Airline: 'Indigo', 
-    From: 'Bagdogra', 
-    To: 'Bangalore', 
-    BasePrice: 8000, 
-    Departure: '04:55 PM',
-    Arrival:'07:55 PM',  
-    Duration: '3h',
-    Classes: [
-      { name: 'Economy', bonus: 0, features: ['Standard Seat', '1 Free Meal'] },
-      { name: 'Premium', bonus: 2500, features: ['Extra Legroom', 'Priority Boarding'] },
-      { name: 'Business', bonus: 8000, features: ['Luxury Seat', 'Lounge Access', 'Free Drinks'] }
-    ],
-  }
-];
 
 
-  constructor() {}
-  
+  constructor() { }
+
   updateSearch(criteria: FlightSearchCriteria): void {
     console.log('Updating search store with:', criteria);
     this.searchCriteria.next(criteria);
   }
 
-  getFlight(from: string, to: string, date: string): Observable<{statusCode:number,data:any[],msg:string,success:true}> {
-    debugger;
-     this.isLoading.set(true);
-     const params = new HttpParams()
+  getFlight(from: string, to: string, date: string): Observable<{ statusCode: number, data: any[], msg: string, success: true }> {
+
+    this.isLoading.set(true);
+    this.fdate.set(date);
+    const params = new HttpParams()
       .set('origin', from)
       .set('destination', to)
       .set('date', date);
 
-      return this.http.get<{statusCode:number,data:any[],msg:string,success:true}>(`${this.API_URL_User}/searchFlight`,{params}).pipe(
-        tap(res=>{
-          debugger;
-          if(res.success){
-            debugger;
-            this.searchedFlights$.next(res.data);
-          }
-          this.isLoading.set(false);
-        }),
-         catchError(err=>{
-              this.hasErrors=true;
-              this.isLoading.set(false);
-              return throwError(()=>err);
-        }));
-}
+    return this.http.get<{ statusCode: number, data: any[], msg: string, success: true }>(`${this.API_URL_User}/searchFlight`, { params }).pipe(
+      tap(res => {
+        if (res.success) {
+          this.searchedFlights$.next(res.data);
+        }
+        this.isLoading.set(false);
+      }),
+      catchError(err => {
+        this.hasErrors = true;
+        this.isLoading.set(false);
+        return throwError(() => err);
+      }));
+  }
 
- 
+  getFlightFromID(flightId:string,fDate:string):Observable<{statusCode: number, data: any[], msg: string, success: true}>{
+    this.isLoading.set(true);
+    const params = new HttpParams()
+      .set('flightId', flightId)
+      .set('fDate', fDate);
+
+    return this.http.get<{statusCode: number, data: any[], msg: string, success: true}>(`${this.API_URL_Traveller}/flights`,{params}).pipe(
+      tap(res=>{
+        if(res.success){
+          this.isLoading.set(false);
+        }
+      }),
+      catchError(err => {
+        this.hasErrors = true;
+        this.isLoading.set(false);
+        return throwError(() => err);
+      }));
+  }
+
+
+  bookFlight(user_Id:string,template_Id:string,date:string,total_price:number,passengers:any[]):Observable<{ statusCode: number, data: any[], msg: string, success: boolean }>{
+    this.isLoading.set(true);
+    return this.http.post<{ statusCode: number, data: any[], msg: string, success: boolean }>(`${this.API_URL_Traveller}/flights`,{user_Id,template_Id,date,total_price,passengers}).pipe(
+      tap(res=>{
+        if(res.success){
+          this.bookFlightdetails$.next(res.data);
+        }
+        this.isLoading.set(false);
+      }),
+      catchError(err => {
+        this.hasErrors = true;
+        this.isLoading.set(false);
+        return throwError(() => err);
+      }));
+  }
+
+  cancelBooking(pnr_number:string):Observable<{ statusCode: number, data: any[], msg: string, success: true }>{
+    this.isLoading.set(true);
+    const params = new HttpParams()
+    .set('pnr_number', pnr_number);    
+    return this.http.patch<{ statusCode: number, data: any[], msg: string, success: true }>(`${this.API_URL_Traveller}/flights`,{},{params}).pipe(
+      tap(res=>{
+        debugger;
+        if(res.success){
+          this.isLoading.set(false);
+        }
+      })
+    )
+  }
+
+  getFlightBookedDetails():Observable<{ statusCode: number, data: any[], msg: string, success: true }>{
+    this.isLoading.set(true);
+    return this.http.get<{ statusCode: number, data: any[], msg: string, success: true }>(`${this.API_URL_Traveller}/flight/bookingDetails`).pipe(
+      tap(res=>{
+        if(res.success){
+          this.userAllbfd$.next(res.data);
+        }
+        this.isLoading.set(false);
+      }),
+    catchError(err => {
+        this.hasErrors = true;
+        this.isLoading.set(false);
+        return throwError(() => err);
+      }));
+  }
+
+
   getLatestSearchValue(): FlightSearchCriteria | null {
     return this.searchCriteria.getValue();
   }
 
 
+  getOriginAndDest(code: string): Observable<{ statusCode: number, data: any[], msg: string, success: boolean }> {
+
+    return this.http.get<{ statusCode: number, data: any[], msg: string, success: boolean }>(`${this.API_URL_User}/searchOrigin/${code}`);
+
+  }
 
 
+  getLogo(airlineName: string): string {
+    if (!airlineName) return '';
+
+    const key = Object.keys(this.airlineLogos).find(
+      k => k.toLowerCase() === airlineName.toLowerCase()
+    );
+    return key ? this.airlineLogos[key] : 'https://www.gstatic.com/flights/airline_logos/70px/default.png';
+  }
 
 
-
-
-
-
-
-
-
-
-
-
-getOriginAndDest(code:string):Observable<{statusCode:number,data:any[],msg:string,success:boolean}>{
-
-  return this.http.get<{statusCode:number,data:any[],msg:string,success:boolean}>(`${this.API_URL_User}/searchOrigin/${code}`);
-
-}
-
-  
 }

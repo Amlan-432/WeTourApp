@@ -51,7 +51,6 @@ export class HotelForm {
 
     // Navigate to the hotels page
     this.authservice.currentUser.subscribe(res=>{
-      // debugger;
     
       
       if(res){

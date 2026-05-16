@@ -1,0 +1,102 @@
+@if(flightService.isLoading()){
+<div class="d-flex justify-content-center p-5">
+  <div class="spinner-border text-primary" role="status">
+    <span class="visually-hidden"></span>
+  </div>
+</div>
+}@else {
+
+<div #ticketCard class="ticket-card">
+  <div class="ticket-header d-flex justify-content-between align-items-center">
+    <div class="airline-logo-placeholder">
+            <div class="logo-container me-3 shadow-sm p-2 rounded-3 bg-white">
+              <img [src]="flightService.getLogo(this.bookedFlightDetails()?.instance_id?.template_id?.airline?.name)" [alt]="this.bookedFlightDetails()?.instance_id?.template_id?.airline?.name"
+                style="width: 50px; height: 50px; object-fit: contain;">
+            </div>
+    </div>
+    <div class="status-badge">
+      <span class="material-icons-round" style="font-size: 16px;">check_circle</span>
+      Confirmed
+    </div>
+  </div>
+
+  <div class="ticket-body">
+    <div class="d-flex align-items-center justify-content-between mb-4">
+      <div class="text-start">
+        <div class="iata-code">{{bookedFlightDetails()?.instance_id?.template_id?.origin?.airport_code}}</div>
+        <div class="small text-muted">{{bookedFlightDetails()?.instance_id?.template_id?.origin?.city}}</div>
+      </div>
+      <div class="flight-route-divider">
+        <span class="material-icons-round">flight</span>
+      </div>
+      <div class="text-end">
+        <div class="iata-code">{{bookedFlightDetails()?.instance_id?.template_id?.destination?.airport_code}}</div>
+        <div class="small text-muted">{{bookedFlightDetails()?.instance_id?.template_id?.destination?.city}}</div>
+      </div>
+    </div>
+
+    <div class="row g-3 mb-4">
+      <div class="col-6">
+        <div class="info-label">Departure</div>
+        <div class="info-value">{{bookedFlightDetails()?.instance_id?.template_id?.departure_time}}</div>
+        <div class="small text-muted">{{bookedFlightDetails()?.date}}</div>
+      </div>
+      <div class="col-6 text-end">
+        <div class="info-label">Arrival</div>
+        <div class="info-value">{{bookedFlightDetails()?.instance_id?.template_id?.arrival_time}}</div>
+      </div>
+    </div>
+
+    <div *ngFor="let p of bookedFlightDetails()?.passengers" class="row g-3 pt-3 border-top border-light">
+      <div class="col-6">
+        <div class="info-label">Passenger</div>
+        <div class="info-value">{{p?.name}}</div>
+      </div>
+      <div class="col-3">
+        <div class="info-label">Seat</div>
+        <div class="info-value">{{p?.seat}}</div>
+      </div>
+      <div class="col-3 text-end">
+        <div class="info-label">Class</div>
+        <div class="info-value">{{p?.class}}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ticket-stub-divider">
+    <div class="dashed-line"></div>
+  </div>
+
+  <div class="ticket-footer">
+    <div class="row align-items-center">
+      <div class="col-7">
+        <div class="pnr-box mb-3 mb-sm-0">
+          <div class="info-label" style="font-size: 0.65rem;">Booking Reference (PNR)</div>
+          <div class="pnr-value">{{bookedFlightDetails()?.pnr_number}}</div>
+        </div>
+      </div>
+      <div class="col-5 d-flex justify-content-end">
+        <div class="qr-placeholder">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=WT98X2B-Dhar" crossOrigin="anonymous" alt="Boarding Pass QR">
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-4 g-2">
+      <div class="col-sm-6">
+        <button (click)="downloadTicket()" class="btn-download w-100">
+          <span class="material-icons-round">download</span>
+          Download E-Ticket
+        </button>
+      </div>
+      <div class="col-sm-6">
+        <button (click)="goHome()" class="btn-download w-100">
+          <span class="material-icons-round">home</span>
+          Back to Home
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+}

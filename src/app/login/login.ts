@@ -63,15 +63,17 @@ export class Login {
       // debugger;
       this.isLoading.set(true);
       setTimeout(()=>{
-        this.authService.loginUser(this.loginForm.value.email,this.loginForm.value.password).subscribe(res=>{
-        if(res.success && res.data.token){
-
-          this.router.navigateByUrl('').then(()=>{this.isLoading.set(false)});
-        }else{
-          this.isLoading.set(false);
-          alert(res.msg);
-        }
-      })
+        this.authService.loginUser(this.loginForm.value.email,this.loginForm.value.password).subscribe({
+          next:res=>{
+            if(res.success && res.data.token){
+                this.router.navigateByUrl('').then(()=>{this.isLoading.set(false)});
+              }
+          },
+          error:err=>{
+              this.isLoading.set(false);
+              alert("Invalid password");
+          }
+        })
       },3000);
     }
   }
