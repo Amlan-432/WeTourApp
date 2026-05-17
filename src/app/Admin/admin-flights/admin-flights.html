@@ -1,62 +1,75 @@
-<div class="flights-container p-4">
-  <div class="d-flex justify-content-between align-items-end mb-4">
-    <div>
-      <h2 class="title-text">Flight Operations</h2>
-      <p class="subtitle-text">Todays Flights</p>
-    </div>
-    
-    <div class="btn-group shadow-sm bg-white p-1 rounded-pill">
-      <button class="btn btn-pill" [class.active]="filterStatus === 'All'" (click)="applyFilter('All')">All</button>
-      <button class="btn btn-pill" [class.active]="filterStatus === 'Flying'" (click)="applyFilter('Flying')">In Air</button>
-      <button class="btn btn-pill" [class.active]="filterStatus === 'Cancelled'" (click)="applyFilter('Cancelled')">Cancelled</button>
-    </div>
+@if(adminService.isLoading()){
+<div class="d-flex justify-content-center p-5">
+  <div class="spinner-border text-primary" role="status">
+    <span class="visually-hidden"></span>
   </div>
+</div>
+}@else {
 
-  <div class="row g-4">
-    <div class="col-12" *ngFor="let flight of filteredFlights">
-      <div class="flight-card shadow-sm border-0 card p-3" [ngClass]="'status-' + flight.status.replace(' ', '-').toLowerCase()">
-        <div class="row align-items-center">
-          
-          <div class="col-md-2 border-end text-center">
-            <h6 class="mb-0 fw-bold">{{ flight.airline }}</h6>
-            <span class="badge bg-light text-dark small">{{ flight.number }}</span>
-          </div>
-
-          <div class="col-md-2 text-center">
-            <div class="time">{{ flight.departure }}</div>
-            <div class="airport-code text-primary">{{ flight.origin }}</div>
-          </div>
-
-          <div class="col-md-3 text-center position-relative">
-            <div class="flight-path">
-              <span class="material-icons-round flight-icon">flight_takeoff</span>
-              <div class="dotted-line"></div>
+  <div class="flights-container p-4">
+    <div class="d-flex justify-content-between align-items-end mb-4">
+      <div>
+        <h2 class="title-text">Flight Operations</h2>
+        <p class="subtitle-text">Upcoming Flights</p>
+      </div>
+      
+      <div class="btn-group shadow-sm bg-white p-1 rounded-pill">
+        <button class="btn btn-pill" [class.active]="filterStatus === 'All'" (click)="applyFilter('All')">All</button>
+        <button class="btn btn-pill" [class.active]="filterStatus === 'Scheduled'" (click)="applyFilter('Scheduled')">Scheduled</button>
+        <button class="btn btn-pill" [class.active]="filterStatus === 'Cancelled'" (click)="applyFilter('Cancelled')">Cancelled</button>
+        <button class="btn btn-pill" [class.active]="filterStatus === 'Completed'" (click)="applyFilter('Completed')">Completed</button>
+        <button class="btn btn-pill" [class.active]="filterStatus === 'Delayed'" (click)="applyFilter('Delayed')">Delayed</button>
+      </div>
+    </div>
+  
+    <div class="row g-4">
+      <div class="col-12" *ngFor="let flight of filteredFlights">
+        <div class="flight-card shadow-sm border-0 card p-3" [ngClass]="'status-' + flight.status.replace(' ', '-').toLowerCase()">
+          <div class="row align-items-center">
+            
+            <div class="col-md-2 border-end text-center">
+              <h6 class="mb-0 fw-bold">{{ flight?.template_id?.airline.name }}</h6>
+              <span class="badge bg-light text-dark small">{{ flight.template_id?.airline?.flight_number}}</span>
             </div>
-            <div class="gate-info mt-2">Gate: <strong>{{ flight.gate }}</strong></div>
-          </div>
-
-          <div class="col-md-2 text-center">
-            <div class="time">{{ flight.landing }}</div>
-            <div class="airport-code text-success">{{ flight.destination }}</div>
-          </div>
-
-          <div class="col-md-3 text-end d-flex align-items-center justify-content-end gap-3">
-            <div class="status-indicator">
-              <span class="dot"></span> {{ flight.status }}
+  
+            <div class="col-md-2 text-center">
+              <div class="time">{{ flight?.template_id?.departure_time}}</div>
+              <div class="airport-code text-primary">{{ flight?.template_id?.origin?.city}}</div>
             </div>
-            <div class="dropdown">
-              <button class="btn btn-icon" data-bs-toggle="dropdown">
-                <span class="material-icons-round">more_vert</span>
-              </button>
-              <ul class="dropdown-menu shadow border-0">
-                <li><a class="dropdown-item"><span class="material-icons-round small">edit</span> Reschedule</a></li>
-                <li><a class="dropdown-item text-danger" (click)="cancelFlight(flight.id)"><span class="material-icons-round small">block</span> Cancel Flight</a></li>
-              </ul>
+  
+            <div class="col-md-3 text-center position-relative">
+              <div class="flight-path">
+                <span class="material-icons-round flight-icon">flight_takeoff</span>
+                <div class="dotted-line"></div>
+              </div>
+              <div class="gate-info mt-2">Date: <strong>{{ flight?.date |  date:'mediumDate'}}</strong></div>
             </div>
+  
+            <div class="col-md-2 text-center">
+              <div class="time">{{ flight?.template_id?.arrival_time }}</div>
+              <div class="airport-code text-success">{{flight?.template_id?.destination?.city}}</div>
+            </div>
+  
+            <div class="col-md-3 text-end d-flex align-items-center justify-content-end gap-3">
+              <div class="status-indicator">
+                <span class="dot"></span> {{ flight?.status }}
+              </div>
+              <div class="dropdown">
+                <button class="btn btn-icon" data-bs-toggle="dropdown">
+                  <span class="material-icons-round">more_vert</span>
+                </button>
+                <ul class="dropdown-menu shadow border-0">
+                  <li><a class="dropdown-item"><span class="material-icons-round small">edit</span> Reschedule</a></li>
+                  <li><a class="dropdown-item text-danger" (click)="cancelFlight(flight?._id)"><span class="material-icons-round small">block</span> Cancel Flight</a></li>
+                </ul>
+              </div>
+            </div>
+  
           </div>
-
         </div>
       </div>
     </div>
   </div>
-</div>
+
+}
+

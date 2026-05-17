@@ -4,10 +4,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { Hotelservice } from '../../services/HotelService/hotelservice';
 import { Authservice } from '../../services/AuthService/authservice';
+import { ChatBox } from '../../chatAi/chat-box/chat-box';
 
 @Component({
   selector: 'app-hotel-form',
-  imports: [CommonModule,FormsModule,RouterModule],
+  imports: [CommonModule,FormsModule,RouterModule,ChatBox],
   templateUrl: './hotel-form.html',
   styleUrl: './hotel-form.css',
 })

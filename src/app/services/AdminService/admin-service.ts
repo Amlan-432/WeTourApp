@@ -1,4 +1,4 @@
-import { HttpClient, httpResource } from '@angular/common/http';
+import { HttpClient, HttpParams, httpResource } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { BehaviorSubject, catchError, Observable, tap, throwError } from 'rxjs';
 
@@ -13,7 +13,7 @@ export class AdminService {
   allUsers= new BehaviorSubject<any[]>([]);
   allUsers$=this.allUsers.asObservable();
 
-  allFlights$=new BehaviorSubject<any[]>([]);
+  allFlightsIns$=new BehaviorSubject<any[]>([]);
   isLoading=signal<boolean>(false);
   hasErrors:boolean=false;
 
@@ -34,12 +34,12 @@ export class AdminService {
     );
   }
 
-  getAllFlights():Observable<{statusCode:number,data:any[],message:string,success:boolean}>{
+  getAllFlightsIns():Observable<{statusCode:number,data:any[],message:string,success:boolean}>{
     this.isLoading.set(true);
     return this.http.get<{statusCode:number,data:any[],message:string,success:boolean}>(`${this.API_URL}/flight`).pipe(
       tap(flights=>{
         if(flights.success){
-          this.allFlights$.next(flights.data);
+          this.allFlightsIns$.next(flights.data);
         }
         this.isLoading.set(false);
       }),
@@ -48,6 +48,18 @@ export class AdminService {
         this.isLoading.set(false);
         return throwError(()=>err);
       }));
+  }
+
+  cancelFlight(fIid:string):Observable<{statusCode:number,data:any[],message:string,success:boolean}>{
+    this.isLoading.set(true);
+    const params=new HttpParams().set('fIid',fIid);
+    return this.http.patch<{statusCode:number,data:any[],message:string,success:boolean}>(`${this.API_URL}/flight`,{},{params}).pipe(
+      tap(f=>{
+        if(f.success){
+          this.isLoading.set(false);
+        }
+      })
+    )
   }
   
 }

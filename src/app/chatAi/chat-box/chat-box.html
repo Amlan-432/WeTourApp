@@ -1,0 +1,40 @@
+<!-- chat-box.html -->
+<div class="chat-launcher" (click)="toggleChat()" [class.active]="isOpen()">
+  <span class="material-icons">{{ isOpen() ? 'close' : 'chat' }}</span>
+</div>
+
+<div class="wetour-chat-container" [class.show]="isOpen()">
+  <div class="chat-header">
+    <div class="status-dot"></div>
+    <span>WeTour Concierge</span>
+  </div>
+
+  <div class="chat-messages" #scrollMe>
+    @for (msg of userService.messages(); track $index) {
+      <div class="message-wrapper" [ngClass]="msg.role">
+        <div class="bubble">
+          {{ msg.text }}
+        </div>
+      </div>
+    }
+
+    @if (userService.isLoading()) {
+      <div class="message-wrapper model">
+        <div class="bubble typing-dots">
+          <span>.</span><span>.</span><span>.</span>
+        </div>
+      </div>
+    }
+  </div>
+
+  <div class="chat-input-area">
+    <input 
+      [(ngModel)]="userInput" 
+      (keyup.enter)="sendMessage()" 
+      placeholder="Ask about flights or hotels..."
+    />
+    <button (click)="sendMessage()" [disabled]="userService.isLoading()">
+      <span class="material-icons">send</span>
+    </button>
+  </div>
+</div>
