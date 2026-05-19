@@ -1,1 +1,204 @@
-<p>sel-tour-packages-info works!</p>
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-9 col-lg-8">
+      
+      <!-- Main Voucher Container Card -->
+      <div class="card border-0 shadow-lg rounded-3 overflow-hidden">
+        
+        <!-- Header Banner Block -->
+        <div class="card-header border-0 p-4 text-white d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3" 
+             style="background: linear-gradient(135deg, #1e3a8a, #2563eb);">
+          <div>
+            <span class="badge bg-white text-success text-uppercase tracking-wider px-3 py-2 rounded-pill mb-2 fw-bold shadow-sm d-inline-flex align-items-center">
+              <i class="material-icons fs-6 me-1">check_circle</i>
+              {{ confirmedPackageDetails()?.msg || 'Booking Successful' }}
+            </span>
+            <h2 class="h3 fw-bold mb-1" style="letter-spacing: -0.5px;">
+              {{ confirmedPackageDetails()?.package_id?.destination }}
+            </h2>
+            <p class="mb-0 small opacity-75">Package Voyage Confirmation Voucher</p>
+          </div>
+          
+          <div class="text-sm-end">
+            <span class="text-uppercase small d-block opacity-75 tracking-wider mb-1">Booking Reference</span>
+            <code class="text-white bg-dark bg-opacity-25 px-2 py-1 rounded fw-bold small">
+              {{ confirmedPackageDetails()?._id }}
+            </code>
+          </div>
+        </div>
+
+        <!-- Main Content Body -->
+        <div class="card-body p-4 bg-white">
+          
+          <!-- Info Details Segment Matrix -->
+          <div class="row g-4 mb-4">
+            
+            <!-- Left Column: Flight & Hotel Itinerary Details -->
+            <div class="col-sm-6 border-end-sm">
+              <h6 class="text-uppercase tracking-widest text-muted fw-bold small border-bottom pb-2 mb-3">
+                Itinerary Parameters
+              </h6>
+              
+              <!-- Flight Sub-Node -->
+              <div class="d-flex align-items-start mb-3" *ngIf="confirmedPackageDetails()?.package_id?.travel">
+                <i class="material-icons text-primary me-3 mt-1">flight_takeoff</i>
+                <div>
+                  <small class="text-muted text-uppercase d-block lh-1 mb-1" style="font-size: 0.75rem;">Transit Arrangement</small>
+                  <span class="fw-bold text-dark">
+                    {{ confirmedPackageDetails()?.package_id?.travel?.mode }} 
+                    <span class="text-muted fw-normal">
+                      ({{ confirmedPackageDetails()?.package_id?.travel?.departure_from }} &rarr; {{ confirmedPackageDetails()?.package_id?.travel?.arrival_at }})
+                    </span>
+                  </span>
+                </div>
+              </div>
+
+              <!-- Hotel Sub-Node -->
+              <div class="d-flex align-items-start mb-3" *ngIf="confirmedPackageDetails()?.package_id?.accommodation">
+                <i class="material-icons text-primary me-3 mt-1">hotel</i>
+                <div>
+                  <small class="text-muted text-uppercase d-block lh-1 mb-1" style="font-size: 0.75rem;">Accommodation</small>
+                  <span class="fw-bold text-dark">
+                    {{ confirmedPackageDetails()?.package_id?.accommodation?.hotel_name }}
+                    <span class="text-warning small ms-1">
+                      ★ {{ confirmedPackageDetails()?.package_id?.accommodation?.star_rating }}
+                    </span>
+                  </span>
+                </div>
+              </div>
+
+              <!-- Scheduled Timeline Node -->
+              <div class="d-flex align-items-start mb-3" *ngIf="confirmedPackageDetails()?.package_id?.start_date">
+                <i class="material-icons text-primary me-3 mt-1">date_range</i>
+                <div>
+                  <small class="text-muted text-uppercase d-block lh-1 mb-1" style="font-size: 0.75rem;">Schedule Timeline</small>
+                  <span class="fw-bold text-dark text-nowrap">
+                    {{ confirmedPackageDetails()?.package_id?.start_date | date:'mediumDate' }} - 
+                    {{ confirmedPackageDetails()?.package_id?.end_date | date:'mediumDate' }}
+                  </span>
+                </div>
+              </div>
+
+              <!-- Activities Node -->
+              <div class="d-flex align-items-start" *ngIf="confirmedPackageDetails()?.package_id?.activities">
+                <i class="material-icons text-primary me-3 mt-1">explore</i>
+                <div>
+                  <small class="text-muted text-uppercase d-block lh-1 mb-1" style="font-size: 0.75rem;">Planned Experience</small>
+                  <span class="text-secondary small fst-italic">
+                    "{{ confirmedPackageDetails()?.package_id?.activities }}"
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Column: Status & Metadata Verification Metrics -->
+            <div class="col-sm-6">
+              <h6 class="text-uppercase tracking-widest text-muted fw-bold small border-bottom pb-2 mb-3">
+                Status Matrix
+              </h6>
+
+              <!-- Reservation Status -->
+              <div class="d-flex align-items-center mb-3">
+                <i class="material-icons text-primary me-3">verified</i>
+                <div>
+                  <small class="text-muted text-uppercase d-block lh-1 mb-1" style="font-size: 0.75rem;">Reservation State</small>
+                  <span class="badge px-3 py-1.5 rounded"
+                        [ngClass]="confirmedPackageDetails()?.booking_status === 'Confirmed' ? 'bg-success bg-opacity-10 text-success border border-success border-opacity-25' : 'bg-secondary text-white'">
+                    {{ confirmedPackageDetails()?.booking_status }}
+                  </span>
+                </div>
+              </div>
+
+              <!-- Payment Status -->
+              <div class="d-flex align-items-center mb-3">
+                <i class="material-icons text-primary me-3">payment</i>
+                <div>
+                  <small class="text-muted text-uppercase d-block lh-1 mb-1" style="font-size: 0.75rem;">Settlement Status</small>
+                  <span class="badge px-3 py-1.5 rounded"
+                        [ngClass]="confirmedPackageDetails()?.payment_status === 'Paid' ? 'bg-success text-white' : 'bg-warning bg-opacity-10 text-warning border border-warning border-opacity-50'"
+                        style="color: #92400e !important;">
+                    {{ confirmedPackageDetails()?.payment_status }}
+                  </span>
+                </div>
+              </div>
+
+              <!-- Timestamp -->
+              <div class="d-flex align-items-start">
+                <i class="material-icons text-primary me-3 mt-1">schedule</i>
+                <div>
+                  <small class="text-muted text-uppercase d-block lh-1 mb-1" style="font-size: 0.75rem;">Timestamp Logged</small>
+                  <span class="fw-bold text-secondary text-nowrap">
+                    {{ confirmedPackageDetails()?.createdAt | date:'medium' }}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Passenger Manifest Section -->
+          <div class="mt-4" *ngIf="confirmedPackageDetails()?.travellers?.length > 0">
+            <h6 class="text-uppercase tracking-widest text-muted fw-bold small border-bottom pb-2 mb-3">
+              Manifest Verification Particulars
+            </h6>
+            
+            <div class="table-responsive border rounded-3">
+              <table class="table table-sm align-middle mb-0">
+                <thead class="table-light">
+                  <tr class="text-uppercase tracking-wider text-muted m-0" style="font-size: 0.72rem; font-weight: 700;">
+                    <th class="ps-3 py-2">Passenger Particulars</th>
+                    <th>Gender / Age</th>
+                    <th>Nationality</th>
+                    <th class="pe-3">Credential Reference</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let traveller of confirmedPackageDetails().travellers">
+                    <td class="ps-3 py-2">
+                      <div class="fw-bold text-dark mb-0">{{ traveller.name }}</div>
+                      <small class="text-muted text-break d-block" style="font-size: 0.8rem;">{{ traveller.email }}</small>
+                    </td>
+                    <td>
+                      <span class="text-dark fw-semibold">{{ traveller.gender }}</span> 
+                      <span class="text-muted"> / {{ traveller.age }} Yrs</span>
+                    </td>
+                    <td class="text-secondary" style="font-size: 0.9rem;">{{ traveller.nationality }}</td>
+                    <td class="pe-3 text-nowrap">
+                      <span class="badge bg-light text-dark border me-1 py-1" style="font-size: 0.75rem;">
+                        {{ traveller.id_proof?.id_type }}
+                      </span>
+                      <code class="text-secondary small fw-bold">{{ traveller.id_proof?.id_type === 'Aadhaar' ? '[Aadhaar Redacted]' : traveller.id_proof?.id_number }}</code>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Financial Summary Bottom Accent Bar -->
+        <div class="card-footer p-4 border-0 d-flex justify-content-between align-items-center" 
+             style="background-color: #f8fafc; border-top: 1px solid #e2e8f0 !important;">
+          <div class="d-flex align-items-center">
+            <i class="material-icons text-secondary me-2">account_balance_wallet</i>
+            <span class="text-secondary fw-semibold">Total Assessed Value (Inclusive of Taxes)</span>
+          </div>
+          <h3 class="h2 fw-bold text-primary mb-0" style="font-weight: 800 !important; color: #1e3a8a !important;">
+            ₹{{ confirmedPackageDetails()?.total_price }}
+          </h3>
+        </div>
+
+      </div>
+
+      <div class="text-center mt-4">
+        <button class="btn btn-outline-dark px-4 py-2 rounded-pill fw-bold d-inline-flex align-items-center gap-2 transition-all hover-translate shadow-sm"
+                (click)="goHome()">
+          <i class="material-icons">home</i>
+          Return to Booking Page
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>

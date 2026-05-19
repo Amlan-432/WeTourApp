@@ -1,38 +1,34 @@
-<div class="container py-5 fade-in" >
+<div class="container py-5 fade-in">
   <!-- Header Section -->
   <div class="row justify-content-center mb-5">
     <div class="col-md-6 text-center">
       <h2 class="dancing-script display-4 mb-2" style="color: #4a3f35;">Your Curated Results</h2>
-      <p class="text-muted italic">
-        Handpicked journeys matching your preferences
-      </p>
+      <p class="text-muted italic">Handpicked journeys matching your preferences</p>
     </div>
   </div>
 
   <!-- Results Grid -->
   <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-    <div *ngFor="let pkg of filteredPackages()" class="col">
-      <!-- Card with 12px rounding -->
+    <div *ngFor="let pkg of searchedPackage()" class="col">
       <div class="card h-100 border-0 bg-white shadow-sm transition-all hover-up overflow-hidden rounded-card">
         
-        <!-- Destination Image -->
+        <!-- Destination Image Container -->
         <div class="card-img-container" style="height: 220px; overflow: hidden; position: relative;">
           <img [src]="pkg.imageUrl || 'assets/placeholder-travel.jpg'" 
                class="card-img-top w-100 h-100" 
                style="object-fit: cover;" 
-               [alt]="pkg.name">
-          <span class="badge position-absolute top-0 end-0 m-3 py-2 px-3 badge-rounded" 
-                style="background: rgba(216, 125, 0, 0.9); color: white;">
-            {{ pkg.nights }}N / {{ pkg.days }}D
-          </span>
+               [alt]="pkg.destination">
         </div>
 
+        <!-- Card Body -->
         <div class="card-body p-4">
-          <h5 class="fw-bold mb-2" style="font-family: 'Noto Serif'; color: #4a3f35;">{{ pkg.name }}</h5>
+          <h5 class="fw-bold mb-2" style="font-family: 'Noto Serif'; color: #4a3f35;">{{ pkg.destination }}</h5>
           <p class="text-muted small mb-2">
-            <i class="material-icons fs-6 align-middle">calendar_today</i> Starts: {{ pkg.startDate }}
+            <i class="material-icons fs-6 align-middle">calendar_today</i> Starts: {{ pkg.start_date | date:'mediumDate' }}
           </p>
-          <p class="text-muted small line-clamp-2 mb-4">{{ pkg.activities }}</p>
+          <p class="text-muted small line-clamp-2 mb-4">
+            {{ pkg.activities || 'Explore the beautiful sights and experiences of ' + pkg.destination }}
+          </p>
           
           <div class="d-flex justify-content-between align-items-center border-top pt-3">
             <span class="fw-bold fs-5" style="color: #d87d00;">₹{{ pkg.price }}</span>
@@ -47,7 +43,7 @@
     </div>
 
     <!-- Empty State -->
-    <div class="col-12 text-center py-5" *ngIf="filteredPackages().length === 0">
+    <div class="col-12 text-center py-5" *ngIf="searchedPackage().length === 0">
       <i class="material-icons display-1 text-muted mb-3 opacity-25">explore_off</i>
       <h4 class="fw-bold" style="color: #4a3f35;">No Voyages Found</h4>
       <p class="text-muted">We couldn't find any results matching your search criteria.</p>
@@ -58,58 +54,137 @@
   </div>
 
   <!-- Details Modal -->
-  <div class="modal fade show d-block" *ngIf="selectedPackage()" 
-       style="background: rgba(74, 63, 53, 0.4); backdrop-filter: blur(8px); z-index: 2001;">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-      <div class="modal-content border-0 shadow-lg overflow-hidden rounded-modal">
-        <div class="row g-0">
-          
-          <!-- Modal Sidebar: Image -->
-          <div class="col-md-5 d-none d-md-block">
-            <img [src]="selectedPackage()?.imageUrl || 'assets/placeholder-travel.jpg'" 
-                 class="w-100 h-100" 
-                 style="object-fit: cover; min-height: 500px;" 
-                 [alt]="selectedPackage()?.name">
-          </div>
-          
-          <!-- Modal Content -->
-          <div class="col-md-7 bg-white p-4 p-md-5 position-relative" style="z-index: 10000;">
-            <button type="button" class="btn-close position-absolute top-0 end-0 m-3" 
-                    (click)="selectedPackage.set(null)"></button>
-            
-            <h2 class="dancing-script fs-1 mb-2" style="color: #4a3f35;">{{ selectedPackage()?.name }}</h2>
-            
-            <div class="d-flex gap-2 mb-4">
-               <span class="badge py-2 px-3 badge-pill-price">
-                 ₹{{ selectedPackage()?.price }}
-               </span>
-               <span class="badge py-2 px-3 bg-light text-muted rounded-pill">
-                 {{ selectedPackage()?.days }}D / {{ selectedPackage()?.nights }}N
-               </span>
-            </div>
-
-            <div class="mb-4">
-              <h6 class="text-uppercase fw-bold small tracking-widest text-muted border-bottom pb-2">The Experience</h6>
-              <p class="lh-lg" style="font-size: 0.95rem; color: #555;">{{ selectedPackage()?.activities }}</p>
-            </div>
-
-            <div class="row mb-4 gy-2">
-              <div class="col-6 small">
-                <i class="material-icons text-muted me-2 align-middle">hotel</i>
-                {{ selectedPackage()?.includedHotels }}
-              </div>
-              <div class="col-6 small">
-                <i class="material-icons text-muted me-2 align-middle">flight</i>
-                {{ selectedPackage()?.includedFlights }}
-              </div>
-            </div>
-
-            <button class="btn btn-voyage-book w-100 py-3" (click)="goToPayment(selectedPackage()!.packageID)">
-              BOOK THIS VOYAGE
-            </button>
-          </div>
+<div class="modal fade show d-block" *ngIf="selectedPackage()?._id" 
+     style="background: rgba(74, 63, 53, 0.4); backdrop-filter: blur(8px); z-index: 2001;">
+  <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+    <div class="modal-content border-0 shadow-lg overflow-hidden rounded-modal">
+      <div class="row g-0">
+        
+        <!-- Modal Sidebar: Image -->
+        <div class="col-md-5 d-none d-md-block">
+          <img [src]="selectedPackage()?.imageUrl || 'assets/placeholder-travel.jpg'" 
+               class="w-100 h-100" 
+               style="object-fit: cover; min-height: 100%;" 
+               [alt]="selectedPackage()?.destination">
         </div>
+        
+        <!-- Modal Content Body -->
+        <div class="col-md-7 bg-white p-4 p-md-5 position-relative" style="max-height: 90vh; overflow-y: auto;">
+          <button type="button" class="btn-close position-absolute top-0 end-0 m-3" 
+                  (click)="closeModal()"></button>
+          
+          <h2 class="dancing-script fs-1 mb-2" style="color: #4a3f35;">{{ selectedPackage()?.destination }}</h2>
+          
+          <div class="d-flex gap-2 mb-4">
+             <span class="badge py-2 px-3 bg-dark text-white rounded-pill">
+               ₹{{ selectedPackage()?.price }}
+             </span>
+             <span class="badge py-2 px-3 bg-light text-muted rounded-pill">
+               Starts: {{ selectedPackage()?.start_date | date:'shortDate' }}
+             </span>
+          </div>
+
+          <!-- Features section -->
+          <div class="row mb-4 gy-2 border-bottom pb-3">
+            <div class="col-6 small" *ngIf="selectedPackage()?.accommodation?.hotel_name">
+              <i class="material-icons text-muted me-2 align-middle" style="font-size: 1.2rem;">hotel</i>
+              {{ selectedPackage()?.accommodation?.hotel_name }}
+            </div>
+            <div class="col-6 small" *ngIf="selectedPackage()?.travel?.mode">
+              <i class="material-icons text-muted me-2 align-middle" style="font-size: 1.2rem;">flight</i>
+              {{ selectedPackage()?.travel?.mode }} from {{ selectedPackage()?.travel?.departure_from }}
+            </div>
+          </div>
+
+          <!-- Dynamic Travellers List View -->
+          <div class="mb-4" *ngIf="travellersList().length > 0">
+            <h6 class="text-uppercase fw-bold small tracking-widest text-muted mb-2">Added Travellers ({{ travellersList().length }})</h6>
+            <div class="d-flex flex-wrap gap-2 mb-3">
+              <div *ngFor="let t of travellersList(); let i = index" class="badge bg-light text-dark border p-2 d-flex align-items-center gap-2 rounded-3">
+                <i class="material-icons text-muted" style="font-size: 1rem;">person</i>
+                <span><strong>{{ t.name }}</strong> ({{ t.gender }})</span>
+                <button type="button" class="btn-close" style="font-size: 0.65rem;" (click)="removeTraveller(i)"></button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Add Traveller Form Segment -->
+          <div class="card bg-light border-0 p-3 mb-4 rounded-3">
+            <h6 class="fw-bold small mb-3 text-uppercase tracking-widest" style="color: #4a3f35;"> Add Traveller Details</h6>
+            
+            <div class="row g-2">
+              <!-- Name -->
+              <div class="col-12">
+                <div class="input-group input-group-sm">
+                  <span class="input-group-text bg-white border-end-0"><i class="material-icons text-muted" style="font-size: 1.1rem;">person</i></span>
+                  <input type="text" class="form-control border-start-0 ps-1" placeholder="Full Name" [(ngModel)]="formName">
+                </div>
+              </div>
+
+              <!-- Email -->
+              <div class="col-7">
+                <div class="input-group input-group-sm">
+                  <span class="input-group-text bg-white border-end-0"><i class="material-icons text-muted" style="font-size: 1.1rem;">email</i></span>
+                  <input type="email" class="form-control border-start-0 ps-1" placeholder="Email Address" [(ngModel)]="formEmail">
+                </div>
+              </div>
+
+              <!-- Gender -->
+              <div class="col-5">
+                <div class="input-group input-group-sm">
+                  <span class="input-group-text bg-white border-end-0"><i class="material-icons text-muted" style="font-size: 1.1rem;">wc</i></span>
+                  <select class="form-select border-start-0 ps-1" [(ngModel)]="formGender">
+                    <option value="" disabled selected>Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- ID Type Selection -->
+              <div class="col-5">
+                <div class="input-group input-group-sm">
+                  <span class="input-group-text bg-white border-end-0"><i class="material-icons text-muted" style="font-size: 1.1rem;">assignment_ind</i></span>
+                  <select class="form-select border-start-0 ps-1" [(ngModel)]="formIdType">
+                    <option value="Passport">Passport</option>
+                    <option value="Aadhaar">Aadhaar Card</option>
+                    <option value="VoterID">Voter ID</option>
+                    <option value="DrivingLicense">Driving License</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- ID Number -->
+              <div class="col-7">
+                <div class="input-group input-group-sm">
+                  <span class="input-group-text bg-white border-end-0"><i class="material-icons text-muted" style="font-size: 1.1rem;">badge</i></span>
+                  <input type="text" class="form-control border-start-0 ps-1" placeholder="ID Document Number" [(ngModel)]="formIdNumber">
+                </div>
+              </div>
+
+              <!-- Dynamic Append Button -->
+              <div class="col-12 mt-2">
+                <button type="button" class="btn btn-outline-dark btn-sm w-100 d-flex align-items-center justify-content-center gap-1 fw-bold" (click)="addTraveller()">
+                  <i class="material-icons" style="font-size: 1.1rem;">person_add</i> Add Traveller to Array
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Main Booking Action Trigger -->
+          <button class="btn btn-dark w-100 py-3 rounded-pill fw-bold" 
+                  [disabled]="travellersList().length === 0"
+                  (click)="goToPayment(selectedPackage()?._id)">
+            BOOK THIS VOYAGE ({{ travellersList().length }} SEATS)
+          </button>
+          <small class="text-muted text-center d-block mt-2" *ngIf="travellersList().length === 0">
+            * Please add at least one traveller above to unlock booking.
+          </small>
+        </div>
+
       </div>
     </div>
   </div>
+</div>
 </div>
