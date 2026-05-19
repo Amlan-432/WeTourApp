@@ -1,1 +1,166 @@
-<p>my-tours works!</p>
+<div class="container py-5">
+  <!-- Dashboard Header Area -->
+  <div class="d-flex justify-content-between align-items-center mb-5 pb-3 border-bottom">
+    <div>
+      <h2 class="fw-bold text-dark tracking-tight mb-1">My Formulated Tour Packages</h2>
+      <p class="text-muted mb-0">Manage, view, and audit your active itinerary profiles</p>
+    </div>
+    <span class="badge bg-primary rounded-pill px-3 py-2 fw-semibold shadow-sm">
+      Total Available: {{ allPackages().length }}
+    </span>
+  </div>
+
+  <!-- Empty State Handler Fallback -->
+  <div class="text-center py-5 my-5" *ngIf="allPackages().length === 0">
+    <i class="material-icons text-muted opacity-50 display-1 mb-3">layers_clear</i>
+    <h4 class="text-secondary fw-bold">No Tour Packages Located</h4>
+    <p class="text-muted">You have not constructed or synchronized any package data parameters yet.</p>
+  </div>
+
+  <!-- Dynamic Tour Cards Grid Layout Matrix -->
+  <div class="row g-4" *ngIf="allPackages().length > 0">
+    <div class="col-lg-6 col-xl-4" *ngFor="let tour of allPackages()">
+      
+      <div class="card h-100 border-0 shadow rounded-3 overflow-hidden transition-all hover-shadow">
+        
+        <!-- Thumbnail Graphic Segment Block -->
+        <div class="position-relative bg-light" style="height: 200px;">
+          <img [src]="tour.image_url || 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80'" 
+               class="w-100 h-100 object-cover" 
+               [alt]="tour.destination">
+          
+          <!-- State Label Accent Badge -->
+          <span class="position-absolute top-0 end-0 m-3 badge px-3 py-1.5 rounded-pill shadow-sm fw-bold uppercase tracking-wider"
+                [ngClass]="{
+                  'bg-success': tour.status === 'Active',
+                  'bg-warning text-dark': tour.status === 'Draft',
+                  'bg-secondary': tour.status === 'Archived'
+                }">
+            {{ tour.status }}
+          </span>
+
+          <!-- Price Overlay Bottom Left Shield Tag -->
+          <div class="position-absolute bottom-0 start-0 m-3 px-3 py-1.5 bg-dark bg-opacity-75 backdrop-blur text-white rounded-3 fw-bold fs-5 shadow-sm">
+            ₹{{ tour.price | number }}
+          </div>
+        </div>
+
+        <!-- Main Core Details Content Block Body -->
+        <div class="card-body p-4">
+          
+          <!-- Destination Title Parameter -->
+          <div class="d-flex align-items-start gap-2 mb-3">
+            <i class="material-icons text-danger flex-shrink-0 mt-0.5">place</i>
+            <h4 class="card-title fw-bold text-dark mb-0 capitalize text-truncate">
+              {{ tour.destination }}
+            </h4>
+          </div>
+
+          <!-- Date Context Timeline Tracker Window Badge row -->
+          <div class="d-flex align-items-center gap-2 bg-light rounded-3 p-2 mb-4 border border-light">
+            <i class="material-icons text-secondary fs-5">date_range</i>
+            <span class="small fw-semibold text-secondary">
+              {{ tour.start_date | date:'mediumDate' }} &mdash; {{ tour.end_date | date:'mediumDate' }}
+            </span>
+          </div>
+
+          <!-- Component Details Section Matrix Grid -->
+          <div class="row g-3 mb-4">
+            
+            <!-- Accommodation Segment Block Details -->
+            <div class="col-6">
+              <div class="d-flex flex-column h-100 p-2 bg-white rounded border border-light-subtle shadow-sm">
+                <span class="text-uppercase tracking-wider text-muted fw-bold mb-1" style="font-size: 0.65rem;">Accommodation</span>
+                <span class="fw-bold text-dark text-truncate small mb-0">{{ tour.accommodation?.hotel_name }}</span>
+                <div class="d-flex align-items-center text-warning mt-auto" style="font-size: 0.75rem;">
+                  <i class="material-icons fs-6 me-0.5">star</i>
+                  <span class="fw-bold text-secondary">{{ tour.accommodation?.star_rating }} / 5</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Travel Routing Strategy Block -->
+            <div class="col-6">
+              <div class="d-flex flex-column h-100 p-2 bg-white rounded border border-light-subtle shadow-sm">
+                <span class="text-uppercase tracking-wider text-muted fw-bold mb-1" style="font-size: 0.65rem;">Transit Mode</span>
+                
+                <div class="d-flex align-items-center gap-1.5 text-dark fw-bold small">
+                  <!-- Conditional Transit Mode Material Icon Matching -->
+                  <i class="material-icons text-primary fs-5" *ngIf="tour.travel?.mode === 'Flight'">flight_takeoff</i>
+                  <i class="material-icons text-primary fs-5" *ngIf="tour.travel?.mode === 'Train'">train</i>
+                  <i class="material-icons text-primary fs-5" *ngIf="tour.travel?.mode === 'Bus'">directions_bus</i>
+                  <i class="material-icons text-primary fs-5" *ngIf="tour.travel?.mode === 'Cruise'">directions_boat</i>
+                  <span>{{ tour.travel?.mode }}</span>
+                </div>
+                
+                <span class="text-muted text-truncate mt-auto" style="font-size: 0.72rem;">
+                  {{ tour.travel?.departure_from }} &rarr; {{ tour.travel?.arrival_at }}
+                </span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Collapsible / Supplementary Array Attribute Properties Block Details -->
+          <!-- Planned Experience Activities -->
+          <div class="mb-3" *ngIf="tour.activities">
+            <h6 class="text-uppercase tracking-widest text-muted fw-bold mb-1" style="font-size: 0.68rem;">Planned Experience</h6>
+            <p class="text-secondary small mb-0 line-clamp-2 fst-italic">
+              "{{ tour.activities }}"
+            </p>
+          </div>
+
+          <!-- Amenities Chip Node Layout Handler Array -->
+          <div class="mb-3" *ngIf="tour.accommodation?.amenities?.length > 0">
+            <h6 class="text-uppercase tracking-widest text-muted fw-bold mb-1.5" style="font-size: 0.68rem;">Hotel Amenities</h6>
+            <div class="d-flex flex-wrap gap-1">
+              <span class="badge bg-secondary bg-opacity-10 text-secondary text-capitalize border border-secondary border-opacity-10 px-2 py-1" 
+                    style="font-size: 0.68rem;" 
+                    *ngFor="let amenity of tour.accommodation.amenities">
+                {{ amenity }}
+              </span>
+            </div>
+          </div>
+
+          <!-- Guide Assigned Node Summary Metrics Checklist -->
+          <div class="pt-3 border-top d-flex align-items-center justify-content-between text-muted" style="font-size: 0.78rem;">
+            <div class="d-flex align-items-center gap-1">
+              <i class="material-icons fs-5 text-secondary">assignment_ind</i>
+              <span *ngIf="tour.guide?.name; else noGuide">
+                Guide: <strong class="text-dark">{{ tour.guide.name }}</strong>
+              </span>
+              <ng-template #noGuide>
+                <span>Guide: <span class="text-secondary fst-italic">Not Assigned</span></span>
+              </ng-template>
+            </div>
+
+            <div class="d-flex align-items-center gap-1">
+              <i class="material-icons fs-5 text-secondary">groups</i>
+              <span>Cap: <strong class="text-dark">{{ tour.max_capacity }}</strong></span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Footer Card Control Engagement Action Bar Row -->
+        <div class="card-footer bg-white border-top-0 p-3 pt-0">
+          <div class="row g-2">
+            <div class="col-6">
+              <button (click)="delete()" class="btn btn-sm btn-outline-secondary w-100 rounded-2 fw-semibold d-inline-flex align-items-center justify-content-center gap-1 py-2">
+                <i class="material-icons fs-6">delete</i> Delete
+              </button>
+            </div>
+            <div class="col-6">
+              <button (click)="update()" class="btn btn-sm btn-primary w-100 rounded-2 fw-bold d-inline-flex align-items-center justify-content-center gap-1 py-2"
+                      style="background-color: #1e3a8a; border-color: #1e3a8a;">
+                <i class="material-icons fs-6">edit</i> Update
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>

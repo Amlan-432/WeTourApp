@@ -1,24 +1,6 @@
-import { Injectable, signal } from '@angular/core';
-
-
-export class TravelPackage {
-  packageID: number = 0;
-  name: string = '';
-  includedHotels: string = '';
-  includedFlights: string = '';
-  activities: string = '';
-  price: number = 0;
-  startDate: string = '';    
-  arrivalDate: string = ''; 
-  days: number = 1;         
-  nights: number = 0;  
-  imageUrl: string = '';   
-   
-
-  constructor(init?: Partial<TravelPackage>) {
-    Object.assign(this, init);
-  }
-}
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { inject, Injectable, signal } from '@angular/core';
+import { BehaviorSubject, catchError, Observable, tap, throwError } from 'rxjs';
 
 
 @Injectable({
@@ -26,50 +8,187 @@ export class TravelPackage {
 })
 export class PackageService {
 
-  packages = signal<TravelPackage[]>([
-  {
-    packageID: 1,
-    name: "Romantic Paris Getaway",
-    includedHotels: "Hotel Le Meurice",
-    includedFlights: "Air France round trip",
-    activities: "Eiffel Tower tour, Seine River cruise, Louvre Museum visit",
-    price: 2500,
-    startDate: "2026-05-10",
-    arrivalDate: "2026-05-17",
-    days: 7,
-    nights: 6,
-    imageUrl: "https://example.com/images/paris.jpg"
-  },
-  {
-    packageID: 2,
-    name: "Adventure in Bali",
-    includedHotels: "Bali Beach Resort",
-    includedFlights: "Singapore Airlines round trip",
-    activities: "Surfing lessons, Ubud jungle trek, Temple visits",
-    price: 1800,
-    startDate: "2026-06-01",
-    arrivalDate: "2026-06-08",
-    days: 8,
-    nights: 7,
-    imageUrl: "https://example.com/images/bali.jpg"
-  }
-]);
-  isAdmin = signal(false);
+  private http = inject(HttpClient);
 
- addPackage(pkg: TravelPackage) {
-    // Ensure the new package has a unique ID based on the current list length
-    const newPkg = { ...pkg, packageID: this.packages().length + 1 }; 
-    this.packages.update(prev => [...prev, newPkg]);
-  }
+  // Setup Base URLs pointing to port 8000
+  private readonly API_URL_User: string = "http://localhost:8000/user";
+  private readonly API_URL_Traveller: string = "http://localhost:8000/traveller";
+  private readonly API_URL_Package: string = "http://localhost:8000/package"; 
 
-  updatePackage(updatedPkg: TravelPackage) {
-    this.packages.update(prev => 
-      prev.map(p => p.packageID === updatedPkg.packageID ? updatedPkg : p)
-    );
+  packages = new BehaviorSubject<any[]>([]); 
+  getAllPackage$ = new BehaviorSubject<any[]>([]);
+  isLoading = signal<boolean>(false);
+  hasErrors: boolean = false;
+  bookedPackageDetails$ = new BehaviorSubject<any | null>(null);
+
+
+
+  //user
+
+  searchPackage(dest:string,start_date:string):Observable<{statusCode:number,msg:string,data:any[],success:boolean}>{
+    this.isLoading.set(true);
+    const params = new HttpParams().set('destination',dest)
+                                    .set('start_date',start_date)
+    return this.http.get<{statusCode:number,msg:string,data:any[],success:boolean}>(`${this.API_URL_User}/search`,{params}).pipe(
+      tap(res=>{
+        if(res.success){
+          this.packages.next(res.data);
+        }
+        this.isLoading.set(false);
+      }),
+      catchError(err => {
+        this.hasErrors = true;
+        this.isLoading.set(false);
+        return throwError(() => err);
+      }));
   }
 
-  deletePackage(id: number) {
-    this.packages.update(prev => prev.filter(p => p.packageID !== id));
-  }
+
+
+//package
+
+addPackage(packageData: any): Observable<{ statusCode: number, msg: string, data: any, success: boolean }> {
+  this.isLoading.set(true);
+  debugger;
+
+  return this.http.post<{ statusCode: number, msg: string, data: any, success: boolean }>(
+    `${this.API_URL_Package}/`, 
+    packageData
+  ).pipe(
+    tap(res => {
+      debugger;
+      if (res.success) {
+        this.isLoading.set(false);
+      }
+    }),
+    catchError(err => {
+      debugger;
+      this.hasErrors = true;
+      this.isLoading.set(false);
+      return throwError(() => err);
+    })
+  );
+}
+
+
+getAllPackages(): Observable<{ statusCode: number, msg: string, data: any[], success: boolean }> {
+  this.isLoading.set(true);
+  debugger;
+  return this.http.get<{ statusCode: number, msg: string, data: any[], success: boolean }>(`${this.API_URL_Package}/`).pipe(
+    tap(res => {
+      debugger;
+      if (res.success) {
+        this.getAllPackage$.next(res.data);
+      }
+      this.isLoading.set(false);
+    }),
+    catchError(err => {
+      debugger;
+      this.hasErrors = true;
+      this.isLoading.set(false);
+      return throwError(() => err);
+    })
+  );
+}
+
+
+// updatePackage(id: string, updatedData: any): Observable<{ statusCode: number, msg: string, data: any[], success: boolean }> {
+//   this.isLoading.set(true);
+
+//   return this.http.patch<{ statusCode: number, msg: string, data: any, success: boolean }>(
+//     `${this.API_URL_Package}/update/${id}`, 
+//     updatedData
+//   ).pipe(
+//     tap(res => {
+//       if (res.success) {
+//         this.packages.update(prev => 
+//           prev.map(pkg => pkg._id === id ? res.data : pkg)
+//         );
+//       }
+//       this.isLoading.set(false);
+//     }),
+//     catchError(err => {
+//       this.hasErrors = true;
+//       this.isLoading.set(false);
+//       return throwError(() => err);
+//     })
+//   );
+// }
+
+
+
+// deletePackage(id: string): Observable<{ statusCode: number, msg: string, data: any, success: boolean }> {
+//   this.isLoading.set(true);
+
+//   return this.http.delete<{ statusCode: number, msg: string, data: any, success: boolean }>(
+//     `${this.API_URL_Package}/delete/${id}`
+//   ).pipe(
+//     tap(res => {
+//       if (res.success) {
+//         this.packages.update(prev => prev.filter(pkg => pkg._id !== id));
+//       }
+//       this.isLoading.set(false);
+//     }),
+//     catchError(err => {
+//       this.hasErrors = true;
+//       this.isLoading.set(false);
+//       return throwError(() => err);
+//     })
+//   );
+// }
+
+
+
+//traveller
+bookPackage( packageId: string, travellers: any[]): Observable<{ statusCode: number, msg: string, data: any, success: boolean }> {
+  this.isLoading.set(true);
+  debugger;
+  const payload = {
+    package_id: packageId,
+    travellers: travellers
+  };
+  return this.http.post<{ statusCode: number, msg: string, data: any, success: boolean }>(
+    `${this.API_URL_Traveller}/book`, 
+    payload
+  ).pipe(
+    tap(res => {
+      debugger;
+      if (res.success) {
+        this.bookedPackageDetails$.next(res.data.booking);
+      }
+      this.isLoading.set(false);
+    }),
+    catchError(err => {
+      debugger;
+      this.hasErrors = true;
+      this.isLoading.set(false);
+      return throwError(() => err);
+    })
+  );
+}
+
+
+cancelPackageBooking(bookingId: string): Observable<{ statusCode: number, msg: string, data: any, success: boolean }> {
+  this.isLoading.set(true);
+
+  const payload = { bookingId };
+
+  return this.http.put<{ statusCode: number, msg: string, data: any, success: boolean }>(
+    `${this.API_URL_Traveller}/cancel`, 
+    payload
+  ).pipe(
+    tap(res => {
+      if (res.success) {
+        this.searchPackage('', '').subscribe(); 
+      }
+      this.isLoading.set(false);
+    }),
+    catchError(err => {
+      this.hasErrors = true;
+      this.isLoading.set(false);
+      return throwError(() => err);
+    })
+  );
+}
   
 }

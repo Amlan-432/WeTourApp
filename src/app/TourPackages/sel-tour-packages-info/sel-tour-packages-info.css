@@ -1,0 +1,13 @@
+@media (min-width: 576px) {
+  .border-end-sm {
+    border-right: 1px solid #dee2e6 !important;
+  }
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+code {
+  font-family: monospace, monospace;
+}

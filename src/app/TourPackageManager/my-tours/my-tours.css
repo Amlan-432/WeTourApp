@@ -1,0 +1,25 @@
+.object-cover {
+  object-fit: cover;
+}
+
+.backdrop-blur {
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.hover-shadow {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.hover-shadow:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 1rem 3rem rgba(0,0,0,0.125) !important;
+}
+
+/* Restricts activity descriptions to a clean two-line layout boundaries maximum overflow */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;  
+  overflow: hidden;
+}
