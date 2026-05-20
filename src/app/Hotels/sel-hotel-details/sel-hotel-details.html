@@ -1,14 +1,21 @@
 <link rel="stylesheet"
   href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
 
-<div class="container mt-5 mb-5" *ngIf="hotel() as h">
+  @if(travelService.is_loading()){
+<div class="d-flex justify-content-center p-5">
+    <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden"></span>
+    </div>
+</div>
+}@else{
+  <div class="container mt-5 mb-5" *ngIf="hotel() as h">
   <div class="row g-5">
 
     <div class="col-lg-7">
       <div class="gallery-container">
-        <img [src]="h.Images?.[0] || h.ImageUrl" class="main-img rounded-4 shadow-sm" alt="Hotel">
+        <img [src]="h.imageUrl?.[0] || h.imageUrl" class="main-img rounded-4 shadow-sm" alt="Hotel">
         <div class="row g-2 mt-2">
-          <div class="col-6" *ngFor="let img of h.Images?.slice(1, 3)">
+          <div class="col-6" *ngFor="let img of h.images?.slice(1, 3)">
             <img [src]="img" class="sub-img rounded-4 shadow-sm" alt="Detail">
           </div>
         </div>
@@ -20,7 +27,7 @@
           What this place offers
         </h4>
         <div class="row g-3">
-          <div class="col-6 col-md-4" *ngFor="let amenity of h.Amenities">
+          <div class="col-6 col-md-4" *ngFor="let amenity of h.amenities">
             <div class="d-flex align-items-center text-secondary">
               <span class="material-symbols-rounded text-success me-2 fs-5">check_circle</span>
               <span>{{amenity}}</span>
@@ -87,18 +94,18 @@
 
     <div class="col-lg-5">
       <div class="booking-card p-4 rounded-4 shadow-lg border-0 sticky-top" style="top: 100px;">
-        <h1 class="fw-bold h2">{{h.Name}}</h1>
+        <h1 class="fw-bold h2">{{h.name}}</h1>
         <div class="d-flex align-items-center mb-4 text-muted">
           <span class="material-symbols-rounded fs-5 text-danger me-1">location_on</span>
-          <span>{{h.Location}}</span>
+          <span>{{h.location}}</span>
         </div>
 
         <div class="d-flex gap-2 mb-4">
           <span class="badge-custom bg-success-light text-success">
-            <span class="material-symbols-rounded fs-6">star</span> {{h.Rating}}
+            <span class="material-symbols-rounded fs-6">star</span> {{h.rating}}
           </span>
           <span class="badge-custom bg-info-light text-info">
-            <span class="material-symbols-rounded fs-6">bed</span> {{h.RoomsAvailable || 'Available'}}
+            <span class="material-symbols-rounded fs-6">bed</span> {{(h.roomsAvailable?.standard || 0 )+(h.roomsAvailable?.deluxe || 0) || 'Available'}}
           </span>
         </div>
 
@@ -106,19 +113,31 @@
 
         <h6 class="fw-bold text-uppercase small text-muted mb-3">Choose Your Room Type</h6>
         <div class="list-group mb-4">
-          <div *ngFor="let room of h.Rooms" (click)="updatePrice(room.price)"
-            class="room-option d-flex justify-content-between align-items-center mb-2 p-3"
-            [class.active-selection]="selectedPrice() === room.price">
-            <div class="d-flex align-items-center">
-              <div class="custom-radio me-3" [class.checked]="selectedPrice() === room.price"></div>
-              <div>
-                <div class="fw-bold">{{room.type}}</div>
-                <small class="text-muted">Instant Confirmation</small>
-              </div>
-            </div>
-            <span class="fw-bold text-dark">₹{{room.price}}</span>
-          </div>
+         <div (click)="updatePrice('standard',h.pricePerNight.standard)"
+          class="room-option d-flex justify-content-between align-items-center mb-2 p-3"
+            [class.active-selection]="selectedPrice() === h.pricePerNight.standard">
+          <div class="d-flex align-items-center">
+          <div class="custom-radio me-3" [class.checked]="selectedPrice() === h.pricePerNight.standard"></div>
+          <div>
+            <div class="fw-bold">Standard Room</div>
+          <small class="text-muted">{{h.roomsAvailable.standard}} available</small>
         </div>
+      </div>
+      <span class="fw-bold text-dark">₹{{h.pricePerNight.standard}}</span>
+  </div>
+  <div (click)="updatePrice('deluxe',h.pricePerNight.deluxe)"
+          class="room-option d-flex justify-content-between align-items-center mb-2 p-3"
+            [class.active-selection]="selectedPrice() === h.pricePerNight.deluxe">
+          <div class="d-flex align-items-center">
+          <div class="custom-radio me-3" [class.checked]="selectedPrice() === h.pricePerNight.deluxe"></div>
+          <div>
+            <div class="fw-bold">Deluxe Room</div>
+          <small class="text-muted">{{h.roomsAvailable.deluxe}} available</small>
+        </div>
+      </div>
+      <span class="fw-bold text-dark">₹{{h.pricePerNight.deluxe}}</span>
+  </div>
+  
 
         <div class="price-summary p-3 rounded-4 mb-4">
           <div class="d-flex justify-content-between mb-2">
@@ -148,3 +167,5 @@
 
   </div>
 </div>
+</div>
+}

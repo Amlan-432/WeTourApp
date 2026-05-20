@@ -1,30 +1,25 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Hotelservice } from '../../services/HotelService/hotelservice';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-hotelrooms',
-  imports: [CommonModule,ReactiveFormsModule],
-  templateUrl: './hotelrooms.html',
-  styleUrl: './hotelrooms.css',
+  selector: 'app-add-new-hotel',
+  imports: [CommonModule, ReactiveFormsModule],
+  templateUrl: './add-new-hotel.html',
+  styleUrl: './add-new-hotel.css',
 })
-export class Hotelrooms {
-      private fb = inject(FormBuilder);
-      public hotelService = inject(Hotelservice);
-      private  subscription = new Subscription();
+export class AddNewHotel {
 
-      hotels  = signal<any[]>([]);
+    public hotelService  = inject(Hotelservice);
+    private fb = inject(FormBuilder);
+    private subscription = new Subscription();
 
+    hotels = signal<any[]>([])
 
-
-      ngOnInit(){
-        this.loadEverything()
-      }
-
-    
-        hotelForm:FormGroup = this.fb.group({
+   
+     hotelForm:FormGroup = this.fb.group({
           name:['',Validators.required],
           location:['',Validators.required],
          roomsAvailable: this.fb.group({
@@ -41,21 +36,7 @@ export class Hotelrooms {
          amenities:[''],
         });
       
-
-      loadEverything():void{
-        this.subscription.add(
-          this.hotelService.getAllHotelsManager().subscribe({
-            next:(res)=>{
-              if(res.success && res.data){
-                this.hotels.set(res.data)
-              }
-            },
-            error:(err)=>console.log("Error", err)
-          })
-        )
-      }
-
-      submit():void{
+       submit():void{
         if(this.hotelForm.invalid){
           this.hotelForm.markAllAsTouched();
           return;
@@ -75,7 +56,7 @@ export class Hotelrooms {
               if(res.success){
                 console.log(res.data);
                 this.resetForm();
-                this.loadEverything();
+                
               }
             }
           })
@@ -94,5 +75,5 @@ export class Hotelrooms {
         this.subscription.unsubscribe();
       }
 
-      
-}
+        
+} 

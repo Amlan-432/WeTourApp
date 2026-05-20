@@ -16,7 +16,7 @@ export class HotelSearched {
 
   hotels = signal<any[]>([]);
   cdest:string='';
-  private travelService = inject(Hotelservice);
+  travelService = inject(Hotelservice);
   private searchSubscription= new Subscription();
   private authService = inject(Authservice);
 
@@ -28,17 +28,14 @@ export class HotelSearched {
      this.searchSubscription?.add(this.travelService.currentSearch$
       .pipe(
         switchMap((criteria) => {
-          const location = criteria?.destination || '';
-          const peoples=criteria?.people||'';
-          const checkin=criteria?.start||'';
-          const checkout=criteria?.end||'';
+          const location = this.cdest || criteria?.location || '';
           return this.travelService.getHotels(location);
         })
       )
       .subscribe({
-        next: (data) => {
-          this.hotels.set(data);
-          console.log('Hotels loaded:', data);
+        next: (res:any) => {
+          this.hotels.set(res.data);
+          console.log('Hotels loaded:',res.data);
         },
         error: (err) => {
           console.error('Error fetching hotels:', err);
@@ -54,9 +51,9 @@ export class HotelSearched {
         return this.travelService.getHotels(location);
       })
     ).subscribe({
-        next: (data) => {
-          this.hotels.set(data);
-          console.log('Hotels loaded:', data);
+        next: (res:any) => {
+          this.hotels.set(res.data);
+          console.log('Hotels loaded:', res.data);
         },
         error: (err) => {
           console.error('Error fetching hotels:', err);

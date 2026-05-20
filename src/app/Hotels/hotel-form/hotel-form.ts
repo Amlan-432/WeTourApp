@@ -16,7 +16,7 @@ export class HotelForm {
 
   // 1. Defined a proper type/interface for searchData if possible
   searchData = { 
-    destination: '', 
+    location: '', 
     people: 1, 
     start: '', 
     end: '' 
@@ -32,7 +32,7 @@ export class HotelForm {
     startDate.setHours(0, 0, 0, 0);
 
     // Validation checks
-    if (!this.searchData.destination.trim()) {
+    if (!this.searchData.location.trim()) {
       alert("Please enter a destination");
       return;
     }

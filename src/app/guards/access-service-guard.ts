@@ -4,7 +4,6 @@ import { Tokenservice } from '../services/tokenService/tokenservice';
 
 export const accessServiceGuard: CanActivateFn = (route, state) => {
 
-  console.log("hocche to");
   
   const tokenService=inject(Tokenservice);
   const token = localStorage.getItem('WeTourjwt_token');
@@ -12,7 +11,6 @@ export const accessServiceGuard: CanActivateFn = (route, state) => {
   
   if(token){
     const decodedtoken = tokenService.tokenDecode(token);
-    console.log(decodedtoken);
     
     if(decodedtoken.user.role==='TRAVELLER'){
       return true;

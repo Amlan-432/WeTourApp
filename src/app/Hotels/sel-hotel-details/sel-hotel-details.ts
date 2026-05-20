@@ -14,15 +14,19 @@ import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } fr
 
 export class SelHotelDetails {
 
+  
 
-  private travelService = inject(Hotelservice);
+  travelService = inject(Hotelservice);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private fb = inject(FormBuilder);
 
   hotel = signal<any | null>(null);
   selectedPrice = signal<number>(0);
+  roomType = signal<string>('standard');
   numUnits = signal<number>(1);
+  checkInDate = signal<Date | null>(null);
+  checkOutDate = signal<Date | null>(null);
   bookingForm!: FormGroup;
 
   totalPrice = computed(() => this.selectedPrice() * this.numUnits());
@@ -33,26 +37,42 @@ export class SelHotelDetails {
     passengers: this.fb.array([])
   });
 
-  const id = Number(this.route.snapshot.paramMap.get('id'));
+  const id = this.route.snapshot.paramMap.get('id');
+
+
 
   // 2. Now it is safe to subscribe and use generateInitialForms
   this.travelService.currentSearch$.subscribe(criteria => {
     const count = criteria?.people || criteria?.rooms || 1;
     this.numUnits.set(count);
-    this.generateInitialForms(count); 
+    this.generateInitialForms(count);
+    
+    if(criteria?.start){
+      this.checkInDate.set(new Date(criteria.start))
+    }
+    if(criteria?.end){
+      this.checkOutDate.set(new Date(criteria.end))
+    }
   });
 
   // 3. Fetch hotel data
-  this.travelService.getHotels('').pipe(
-    map(hotels => hotels.find(h => h.HotelID === id))
-  ).subscribe(foundHotel => {
-    if (foundHotel) {
-      this.hotel.set(foundHotel);
-      const initialPrice = foundHotel.Rooms?.[0]?.price || foundHotel.PricePerNight;
-      this.selectedPrice.set(initialPrice);
-    }
-  });
-}
+  if(id){
+    this.travelService.getHotelById(id).subscribe({
+      next:(res:any)=>{
+        const foundHotel = res.data;
+        if(foundHotel){
+          this.hotel.set(foundHotel);
+
+          this.roomType.set('standard');
+          const initialPrice = foundHotel.pricePerNight?.standard || 0;
+          this.selectedPrice.set(initialPrice);
+        }
+      },
+      error: (err)=> {console.log(`could not load hotel details ${err}`)}
+    })
+  }
+  }
+
 get passengers() {
     return this.bookingForm.get('passengers') as FormArray;
   }
@@ -81,20 +101,31 @@ get passengers() {
     this.passengers.removeAt(index);
   }
 
-  updatePrice(price: number) {
+  updatePrice(room:string, price: number) {
     this.selectedPrice.set(price);
+    this.roomType.set(room);
   }
 
   confirmBooking() {
-    const hotelData = this.hotel();
+   const hotelData = this.hotel();
    const guests = this.bookingForm.value.passengers; // This gets the array of names/phones
+   const checkInDate = this.checkInDate();
+   const checkOutDate = this.checkOutDate();
+   const roomTypes = this.roomType();
+   const hotelId =  hotelData?._id;
 
-  console.log("Booking Summary:", {
-    hotel: hotelData?.Name,
-    guests: guests,
-    total: this.totalPrice()
+
+  this.travelService.createBooking(hotelId,roomTypes,guests,this.totalPrice(),checkInDate,checkOutDate).subscribe({
+    next:(res)=>{
+      debugger;
+      if(res.success){
+         this.router.navigateByUrl('/landingDash/traveller/hotelsummary');
+      }
+    },
+    error:(err)=>{
+      console.log(err);
+    }
   });
-    this.router.navigateByUrl('/landingDash/hotelsummary');
   }
 
 }
