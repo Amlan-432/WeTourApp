@@ -1,390 +1,399 @@
-<div class="container py-5">
-  <div class="row justify-content-center">
-    <div class="col-xl-10">
-      
-      <!-- Card Container -->
-      <div class="card border-0 shadow-lg rounded-3 overflow-hidden">
-        
-        <!-- Form Header Block -->
-        <div class="card-header p-4 text-white d-flex align-items-center justify-content-between" 
-             style="background: linear-gradient(135deg, #1e3a8a, #2563eb);">
-          <div class="d-flex align-items-center gap-3">
-            <i class="material-icons fs-1">add_location_alt</i>
-            <div>
-              <h3 class="fw-bold mb-0">Create New Tour Package</h3>
-              <p class="mb-0 opacity-75 small">Populate the schema criteria fields to publish a package</p>
-            </div>
-          </div>
-          <button class="btn btn-outline-light btn-sm rounded-pill px-3" type="button" (click)="goBack()">
-            Cancel
-          </button>
-        </div>
-
-        <!-- Form Elements Element -->
-        <form [formGroup]="packageForm" (ngSubmit)="onSubmit()" class="card-body p-4 bg-light">
-          
-          <!-- Cross-Field Group Date Error Alert Banner -->
-          <div class="alert alert-danger d-flex align-items-center mb-4 border-0 shadow-sm" 
-               *ngIf="packageForm.errors?.['invalidDates'] && (packageForm.get('start_date')?.touched || packageForm.get('end_date')?.touched)">
-            <i class="material-icons me-2">error_outline</i>
-            <div><strong>Date Range Error:</strong> End date must be strictly after the designated start date.</div>
-          </div>
-
-          <!-- SECTION 1: Core Logistics Core Metrics -->
-          <h5 class="text-primary fw-bold mb-3 border-bottom pb-2 d-flex align-items-center gap-2">
-            <i class="material-icons">assignment</i> Core Parameters
-          </h5>
-          
-          <div class="row g-3 mb-4">
-            <!-- Destination Input -->
-            <div class="col-md-6">
-              <label class="form-label fw-semibold small text-secondary">Destination *</label>
-              <div class="input-group has-validation">
-                <span class="input-group-text bg-white text-muted border-end-0">
-                  <i class="material-icons fs-5">place</i>
-                </span>
-                <input type="text" 
-                       formControlName="destination" 
-                       class="form-control border-start-0" 
-                       placeholder="e.g., Kyoto, Japan"
-                       [ngClass]="{'is-invalid': packageForm.get('destination')?.invalid && packageForm.get('destination')?.touched, 'is-valid': packageForm.get('destination')?.valid && packageForm.get('destination')?.touched}">
-                <div class="invalid-feedback">
-                  <span *ngIf="packageForm.get('destination')?.errors?.['required']">Destination target name is required.</span>
-                  <span *ngIf="packageForm.get('destination')?.errors?.['minlength']">Must contain at least 2 alphanumeric characters.</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Total Base Price Input -->
-            <div class="col-md-3">
-              <label class="form-label fw-semibold small text-secondary">Base Price (INR) *</label>
-              <div class="input-group has-validation">
-                <span class="input-group-text bg-white text-muted border-end-0">
-                  <i class="material-icons fs-5">payments</i>
-                </span>
-                <input type="number" 
-                       formControlName="price" 
-                       class="form-control border-start-0" 
-                       placeholder="0"
-                       [ngClass]="{'is-invalid': packageForm.get('price')?.invalid && packageForm.get('price')?.touched, 'is-valid': packageForm.get('price')?.valid && packageForm.get('price')?.touched}">
-                <div class="invalid-feedback">
-                  <span *ngIf="packageForm.get('price')?.errors?.['required']">Price schema field is required.</span>
-                  <span *ngif="packageForm.get('price')?.errors?.['min']">Price cannot evaluate to a negative value.</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Max Capacity Configuration -->
-            <div class="col-md-3">
-              <label class="form-label fw-semibold small text-secondary">Max Capacity *</label>
-              <div class="input-group has-validation">
-                <span class="input-group-text bg-white text-muted border-end-0">
-                  <i class="material-icons fs-5">groups</i>
-                </span>
-                <input type="number" 
-                       formControlName="max_capacity" 
-                       class="form-control border-start-0"
-                       [ngClass]="{'is-invalid': packageForm.get('max_capacity')?.invalid && packageForm.get('max_capacity')?.touched, 'is-valid': packageForm.get('max_capacity')?.valid && packageForm.get('max_capacity')?.touched}">
-                <div class="invalid-feedback">
-                  <span *ngIf="packageForm.get('max_capacity')?.errors?.['required']">Capacity limit allocation is required.</span>
-                  <span *ngIf="packageForm.get('max_capacity')?.errors?.['min']">Must accommodate at least 1 person.</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Start Date Picker Input -->
-            <div class="col-md-4">
-              <label class="form-label fw-semibold small text-secondary">Start Date *</label>
-              <div class="input-group has-validation">
-                <span class="input-group-text bg-white text-muted border-end-0">
-                  <i class="material-icons fs-5">calendar_today</i>
-                </span>
-                <input type="date" 
-                       formControlName="start_date" 
-                       class="form-control border-start-0"
-                       [ngClass]="{'is-invalid': (packageForm.get('start_date')?.invalid || packageForm.errors?.['invalidDates']) && packageForm.get('start_date')?.touched, 'is-valid': packageForm.get('start_date')?.valid && !packageForm.errors?.['invalidDates'] && packageForm.get('start_date')?.touched}">
-                <div class="invalid-feedback">
-                  <span *ngIf="packageForm.get('start_date')?.errors?.['required']">Start timestamp allocation target required.</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- End Date Picker Input -->
-            <div class="col-md-4">
-              <label class="form-label fw-semibold small text-secondary">End Date *</label>
-              <div class="input-group has-validation">
-                <span class="input-group-text bg-white text-muted border-end-0">
-                  <i class="material-icons fs-5">event</i>
-                </span>
-                <input type="date" 
-                       formControlName="end_date" 
-                       class="form-control border-start-0"
-                       [ngClass]="{'is-invalid': (packageForm.get('end_date')?.invalid || packageForm.errors?.['invalidDates']) && packageForm.get('end_date')?.touched, 'is-valid': packageForm.get('end_date')?.valid && !packageForm.errors?.['invalidDates'] && packageForm.get('end_date')?.touched}">
-                <div class="invalid-feedback">
-                  <span *ngIf="packageForm.get('end_date')?.errors?.['required']">Termination context window date is required.</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Status Enum Select -->
-            <div class="col-md-4">
-              <label class="form-label fw-semibold small text-secondary">Status Verification State *</label>
-              <div class="input-group">
-                <span class="input-group-text bg-white text-muted border-end-0">
-                  <i class="material-icons fs-5">rule</i>
-                </span>
-                <select formControlName="status" class="form-select border-start-0">
-                  <option *ngFor="let opt of statusOptions" [value]="opt">{{ opt }}</option>
-                </select>
-              </div>
-            </div>
-          </div>
-
-
-          <!-- SECTION 2: Accommodation Nesting Tracking Sub-group -->
-          <h5 class="text-primary fw-bold mb-3 border-bottom pb-2 d-flex align-items-center gap-2" formGroupName="accommodation">
-            <i class="material-icons">hotel</i> Accommodation Architecture
-          </h5>
-          
-          <div class="row g-3 mb-4" formGroupName="accommodation">
-            <!-- Hotel Name Input -->
-            <div class="col-md-5">
-              <label class="form-label fw-semibold small text-secondary">Hotel Name *</label>
-              <div class="input-group has-validation">
-                <span class="input-group-text bg-white text-muted border-end-0">
-                  <i class="material-icons fs-5">apartment</i>
-                </span>
-                <input type="text" 
-                       formControlName="hotel_name" 
-                       class="form-control border-start-0" 
-                       placeholder="Grand Resort Mansion"
-                       [ngClass]="{'is-invalid': packageForm.get('accommodation.hotel_name')?.invalid && packageForm.get('accommodation.hotel_name')?.touched, 'is-valid': packageForm.get('accommodation.hotel_name')?.valid && packageForm.get('accommodation.hotel_name')?.touched}">
-                <div class="invalid-feedback">
-                  Hotel name matrix registration string parameter required.
-                </div>
-              </div>
-            </div>
-
-            <!-- Star Rating Select Options -->
-            <div class="col-md-3">
-              <label class="form-label fw-semibold small text-secondary">Star Rating (1-5) *</label>
-              <div class="input-group has-validation">
-                <span class="input-group-text bg-white text-muted border-end-0">
-                  <i class="material-icons fs-5 text-warning">star</i>
-                </span>
-                <input type="number" 
-                       formControlName="star_rating" 
-                       class="form-control border-start-0" 
-                       min="1" max="5"
-                       [ngClass]="{'is-invalid': packageForm.get('accommodation.star_rating')?.invalid && packageForm.get('accommodation.star_rating')?.touched, 'is-valid': packageForm.get('accommodation.star_rating')?.valid && packageForm.get('accommodation.star_rating')?.touched}">
-                <div class="invalid-feedback">
-                  Must scale integer parameters cleanly strictly bound from 1 to 5.
-                </div>
-              </div>
-            </div>
-
-            <!-- Room Configuration Layout Type -->
-            <div class="col-md-4">
-              <label class="form-label fw-semibold small text-secondary">Room Type Allocation</label>
-              <div class="input-group">
-                <span class="input-group-text bg-white text-muted border-end-0">
-                  <i class="material-icons fs-5">bed</i>
-                </span>
-                <input type="text" formControlName="room_type" class="form-control border-start-0" placeholder="Deluxe Ocean Suite View">
-              </div>
-            </div>
-
-            <!-- Amenities Parser Entry Array Field -->
-            <div class="col-12">
-              <label class="form-label fw-semibold small text-secondary">Amenities Provided (Comma-Separated Array)</label>
-              <div class="input-group">
-                <span class="input-group-text bg-white text-muted border-end-0">
-                  <i class="material-icons fs-5">pool</i>
-                </span>
-                <input type="text" formControlName="amenities" class="form-control border-start-0" placeholder="Free Wi-Fi, Swimming Pool, Complementary Breakfast, Spa">
-              </div>
-              <div class="form-text text-muted small">Separate each custom perk item using an explicit comma formatting character array string parser structure mapping.</div>
-            </div>
-          </div>
-
-
-          <!-- SECTION 3: Transit Routing Travel Node Parametrization -->
-          <h5 class="text-primary fw-bold mb-3 border-bottom pb-2 d-flex align-items-center gap-2" formGroupName="travel">
-            <i class="material-icons">flight_takeoff</i> Transit Strategy Parameters
-          </h5>
-          
-          <div class="row g-3 mb-4" formGroupName="travel">
-            <!-- Mode Enum Select -->
-            <div class="col-md-3">
-              <label class="form-label fw-semibold small text-secondary">Travel Mode *</label>
-              <div class="input-group">
-                <span class="input-group-text bg-white text-muted border-end-0">
-                  <i class="material-icons fs-5">commute</i>
-                </span>
-                <select formControlName="mode" class="form-select border-start-0">
-                  <option *ngFor="let m of travelModes" [value]="m">{{ m }}</option>
-                </select>
-              </div>
-            </div>
-
-            <!-- Departure Port Hub -->
-            <div class="col-md-4">
-              <label class="form-label fw-semibold small text-secondary">Departure Hub Origin *</label>
-              <div class="input-group has-validation">
-                <span class="input-group-text bg-white text-muted border-end-0">
-                  <i class="material-icons fs-5">flight_land</i>
-                </span>
-                <input type="text" 
-                       formControlName="departure_from" 
-                       class="form-control border-start-0" 
-                       placeholder="Origin Hub Station / Port"
-                       [ngClass]="{'is-invalid': packageForm.get('travel.departure_from')?.invalid && packageForm.get('travel.departure_from')?.touched, 'is-valid': packageForm.get('travel.departure_from')?.valid && packageForm.get('travel.departure_from')?.touched}">
-                <div class="invalid-feedback">
-                  Departure origin reference key is mandatory.
-                </div>
-              </div>
-            </div>
-
-            <!-- Arrival Destination Point Port Terminal -->
-            <div class="col-md-5">
-              <label class="form-label fw-semibold small text-secondary">Arrival Station Terminal *</label>
-              <div class="input-group has-validation">
-                <span class="input-group-text bg-white text-muted border-end-0">
-                  <i class="material-icons fs-5">landing</i>
-                </span>
-                <input type="text" 
-                       formControlName="arrival_at" 
-                       class="form-control border-start-0" 
-                       placeholder="Arrival Location Port"
-                       [ngClass]="{'is-invalid': packageForm.get('travel.arrival_at')?.invalid && packageForm.get('travel.arrival_at')?.touched, 'is-valid': packageForm.get('travel.arrival_at')?.valid && packageForm.get('travel.arrival_at')?.touched}">
-                <div class="invalid-feedback">
-                  Destination port vector coordinate is mandatory.
-                </div>
-              </div>
-            </div>
-
-            <!-- Carrier Management Context Details -->
-            <div class="col-md-8">
-              <label class="form-label fw-semibold small text-secondary">Carrier Provider / Flight Air Operations Line</label>
-              <div class="input-group">
-                <span class="input-group-text bg-white text-muted border-end-0">
-                  <i class="material-icons fs-5">corporate_fare</i>
-                </span>
-                <input type="text" formControlName="carrier" class="form-control border-start-0" placeholder="e.g., Singapore Airlines, Eurostar Rail">
-              </div>
-            </div>
-
-            <!-- Round Trip Logic Switch Toggle checkbox -->
-            <div class="col-md-4 d-flex align-items-center mt-4 pt-2">
-              <div class="form-check form-switch card border p-2 px-5 bg-white shadow-sm w-100 mb-0">
-                <input class="form-check-input" type="checkbox" formControlName="is_round_trip" id="roundTripSwitch">
-                <label class="form-check-label fw-semibold text-secondary small" for="roundTripSwitch">Round Trip Included</label>
-              </div>
-            </div>
-          </div>
-
-
-          <!-- SECTION 4: Guide Metadata Support Node Parameters -->
-          <h5 class="text-primary fw-bold mb-3 border-bottom pb-2 d-flex align-items-center gap-2" formGroupName="guide">
-            <i class="material-icons">face</i> Assigned Excursion Guide Profile
-          </h5>
-          
-          <div class="row g-3 mb-4" formGroupName="guide">
-            <!-- Guide Full name context entry -->
-            <div class="col-md-5">
-              <label class="form-label fw-semibold small text-secondary">Guide Full Name</label>
-              <div class="input-group">
-                <span class="input-group-text bg-white text-muted border-end-0">
-                  <i class="material-icons fs-5">badge</i>
-                </span>
-                <input type="text" formControlName="name" class="form-control border-start-0" placeholder="e.g., Johnathan Smith">
-              </div>
-            </div>
-
-            <!-- Spoken Languages Comma String Input -->
-            <div class="col-md-7">
-              <label class="form-label fw-semibold small text-secondary">Languages Spoken (Comma-Separated Array)</label>
-              <div class="input-group">
-                <span class="input-group-text bg-white text-muted border-end-0">
-                  <i class="material-icons fs-5">translate</i>
-                </span>
-                <input type="text" formControlName="languages" class="form-control border-start-0" placeholder="English, Japanese, Spanish">
-              </div>
-            </div>
-
-            <!-- Is Included Status Toggle Switch -->
-            <div class="col-md-6">
-              <div class="form-check form-switch card border p-2 px-5 bg-white shadow-sm mb-0">
-                <input class="form-check-input" type="checkbox" formControlName="is_included" id="guideIncludedSwitch">
-                <label class="form-check-label fw-semibold text-secondary small" for="guideIncludedSwitch">Guide Service Fees Covered in Base Fare Price</label>
-              </div>
-            </div>
-
-            <!-- Current Assessment Rating Evaluator Score Input -->
-            <div class="col-md-6">
-              <div class="input-group">
-                <span class="input-group-text bg-white text-muted border-end-0 small fw-semibold text-secondary" style="font-size: 0.8rem;">Initial Rating Base Set</span>
-                <span class="input-group-text bg-white text-warning border-end-0 border-start-0">
-                  <i class="material-icons fs-5">star_half</i>
-                </span>
-                <input type="number" formControlName="guide_rating" class="form-control border-start-0" min="0" max="5" step="0.1" placeholder="0.0">
-              </div>
-            </div>
-          </div>
-
-
-          <!-- SECTION 5: Media Context Visuals & Itinerary Properties -->
-          <h5 class="text-primary fw-bold mb-3 border-bottom pb-2 d-flex align-items-center gap-2">
-            <i class="material-icons">collections</i> Assets & Descriptive Itineraries
-          </h5>
-          
-          <div class="row g-3 mb-4">
-            <!-- Image Asset Pointer Link Url Address text input row -->
-            <div class="col-12">
-              <label class="form-label fw-semibold small text-secondary">Banner Asset Image URL Pointer</label>
-              <div class="input-group">
-                <span class="input-group-text bg-white text-muted border-end-0">
-                  <i class="material-icons fs-5">link</i>
-                </span>
-                <input type="url" formControlName="image_url" class="form-control border-start-0" placeholder="https://cdn.domain-repository.com/assets/images/destination.jpg">
-              </div>
-            </div>
-
-            <!-- Activities Text Content Description Field -->
-            <div class="col-12">
-              <label class="form-label fw-semibold small text-secondary">Summary of Daily Planned Activities & Excursions</label>
-              <div class="input-group">
-                <span class="input-group-text bg-white text-muted border-end-0 align-items-start pt-2">
-                  <i class="material-icons fs-5">description</i>
-                </span>
-                <textarea formControlName="activities" 
-                          rows="3" 
-                          class="form-control border-start-0" 
-                          placeholder="Provide a descriptive overview of the scheduled events, sights, tours, and itinerary landmarks included within this vacation package block..."></textarea>
-              </div>
-            </div>
-          </div>
-
-
-          <!-- FORM CTAS SUBMIT CONTAINER ACTION BUTTON BLOCK BAR -->
-          <div class="card-footer bg-white border-top border-light p-4 d-flex justify-content-end gap-3 rounded-bottom-3 shadow-sm">
-            <button class="btn btn-light border px-4 py-2 text-secondary fw-semibold rounded-pill d-inline-flex align-items-center gap-2" 
-                    type="button" 
-                    (click)="goBack()">
-              <i class="material-icons fs-5">arrow_back</i> Return
-            </button>
-            <button class="btn btn-primary px-5 py-2 fw-bold text-white rounded-pill shadow d-inline-flex align-items-center gap-2" 
-                    type="submit"
-                    [disabled]="packageForm.invalid && packageForm.touched"
-                    style="background-color: #1e3a8a; border-color: #1e3a8a;">
-              <i class="material-icons fs-5">cloud_upload</i> Deploy & Save Package
-            </button>
-          </div>
-
-        </form>
-
-      </div>
-      
-    </div>
+@if(packService.isLoading()){
+<div class="d-flex justify-content-center p-5">
+  <div class="spinner-border text-primary" role="status">
+    <span class="visually-hidden"></span>
   </div>
 </div>
+}@else {
+
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-xl-10">
+        
+        <!-- Card Container -->
+        <div class="card border-0 shadow-lg rounded-3 overflow-hidden">
+          
+          <!-- Form Header Block -->
+          <div class="card-header p-4 text-white d-flex align-items-center justify-content-between" 
+               style="background: linear-gradient(135deg, #1e3a8a, #2563eb);">
+            <div class="d-flex align-items-center gap-3">
+              <i class="material-icons fs-1">add_location_alt</i>
+              <div>
+                <h3 class="fw-bold mb-0">Create New Tour Package</h3>
+                <p class="mb-0 opacity-75 small">Populate the schema criteria fields to publish a package</p>
+              </div>
+            </div>
+            <button class="btn btn-outline-light btn-sm rounded-pill px-3" type="button" (click)="goBack()">
+              Cancel
+            </button>
+          </div>
+  
+          <!-- Form Elements Element -->
+          <form [formGroup]="packageForm" (ngSubmit)="onSubmit()" class="card-body p-4 bg-light">
+            
+            <!-- Cross-Field Group Date Error Alert Banner -->
+            <div class="alert alert-danger d-flex align-items-center mb-4 border-0 shadow-sm" 
+                 *ngIf="packageForm.errors?.['invalidDates'] && (packageForm.get('start_date')?.touched || packageForm.get('end_date')?.touched)">
+              <i class="material-icons me-2">error_outline</i>
+              <div><strong>Date Range Error:</strong> End date must be strictly after the designated start date.</div>
+            </div>
+  
+            <!-- SECTION 1: Core Logistics Core Metrics -->
+            <h5 class="text-primary fw-bold mb-3 border-bottom pb-2 d-flex align-items-center gap-2">
+              <i class="material-icons">assignment</i> Core Parameters
+            </h5>
+            
+            <div class="row g-3 mb-4">
+              <!-- Destination Input -->
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small text-secondary">Destination *</label>
+                <div class="input-group has-validation">
+                  <span class="input-group-text bg-white text-muted border-end-0">
+                    <i class="material-icons fs-5">place</i>
+                  </span>
+                  <input type="text" 
+                         formControlName="destination" 
+                         class="form-control border-start-0" 
+                         placeholder="e.g., Kyoto, Japan"
+                         [ngClass]="{'is-invalid': packageForm.get('destination')?.invalid && packageForm.get('destination')?.touched, 'is-valid': packageForm.get('destination')?.valid && packageForm.get('destination')?.touched}">
+                  <div class="invalid-feedback">
+                    <span *ngIf="packageForm.get('destination')?.errors?.['required']">Destination target name is required.</span>
+                    <span *ngIf="packageForm.get('destination')?.errors?.['minlength']">Must contain at least 2 alphanumeric characters.</span>
+                  </div>
+                </div>
+              </div>
+  
+              <!-- Total Base Price Input -->
+              <div class="col-md-3">
+                <label class="form-label fw-semibold small text-secondary">Base Price (INR) *</label>
+                <div class="input-group has-validation">
+                  <span class="input-group-text bg-white text-muted border-end-0">
+                    <i class="material-icons fs-5">payments</i>
+                  </span>
+                  <input type="number" 
+                         formControlName="price" 
+                         class="form-control border-start-0" 
+                         placeholder="0"
+                         [ngClass]="{'is-invalid': packageForm.get('price')?.invalid && packageForm.get('price')?.touched, 'is-valid': packageForm.get('price')?.valid && packageForm.get('price')?.touched}">
+                  <div class="invalid-feedback">
+                    <span *ngIf="packageForm.get('price')?.errors?.['required']">Price schema field is required.</span>
+                    <span *ngif="packageForm.get('price')?.errors?.['min']">Price cannot evaluate to a negative value.</span>
+                  </div>
+                </div>
+              </div>
+  
+              <!-- Max Capacity Configuration -->
+              <div class="col-md-3">
+                <label class="form-label fw-semibold small text-secondary">Max Capacity *</label>
+                <div class="input-group has-validation">
+                  <span class="input-group-text bg-white text-muted border-end-0">
+                    <i class="material-icons fs-5">groups</i>
+                  </span>
+                  <input type="number" 
+                         formControlName="max_capacity" 
+                         class="form-control border-start-0"
+                         [ngClass]="{'is-invalid': packageForm.get('max_capacity')?.invalid && packageForm.get('max_capacity')?.touched, 'is-valid': packageForm.get('max_capacity')?.valid && packageForm.get('max_capacity')?.touched}">
+                  <div class="invalid-feedback">
+                    <span *ngIf="packageForm.get('max_capacity')?.errors?.['required']">Capacity limit allocation is required.</span>
+                    <span *ngIf="packageForm.get('max_capacity')?.errors?.['min']">Must accommodate at least 1 person.</span>
+                  </div>
+                </div>
+              </div>
+  
+              <!-- Start Date Picker Input -->
+              <div class="col-md-4">
+                <label class="form-label fw-semibold small text-secondary">Start Date *</label>
+                <div class="input-group has-validation">
+                  <span class="input-group-text bg-white text-muted border-end-0">
+                    <i class="material-icons fs-5">calendar_today</i>
+                  </span>
+                  <input type="date" 
+                         formControlName="start_date" 
+                         class="form-control border-start-0"
+                         [ngClass]="{'is-invalid': (packageForm.get('start_date')?.invalid || packageForm.errors?.['invalidDates']) && packageForm.get('start_date')?.touched, 'is-valid': packageForm.get('start_date')?.valid && !packageForm.errors?.['invalidDates'] && packageForm.get('start_date')?.touched}">
+                  <div class="invalid-feedback">
+                    <span *ngIf="packageForm.get('start_date')?.errors?.['required']">Start timestamp allocation target required.</span>
+                  </div>
+                </div>
+              </div>
+  
+              <!-- End Date Picker Input -->
+              <div class="col-md-4">
+                <label class="form-label fw-semibold small text-secondary">End Date *</label>
+                <div class="input-group has-validation">
+                  <span class="input-group-text bg-white text-muted border-end-0">
+                    <i class="material-icons fs-5">event</i>
+                  </span>
+                  <input type="date" 
+                         formControlName="end_date" 
+                         class="form-control border-start-0"
+                         [ngClass]="{'is-invalid': (packageForm.get('end_date')?.invalid || packageForm.errors?.['invalidDates']) && packageForm.get('end_date')?.touched, 'is-valid': packageForm.get('end_date')?.valid && !packageForm.errors?.['invalidDates'] && packageForm.get('end_date')?.touched}">
+                  <div class="invalid-feedback">
+                    <span *ngIf="packageForm.get('end_date')?.errors?.['required']">Termination context window date is required.</span>
+                  </div>
+                </div>
+              </div>
+  
+              <!-- Status Enum Select -->
+              <div class="col-md-4">
+                <label class="form-label fw-semibold small text-secondary">Status Verification State *</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-white text-muted border-end-0">
+                    <i class="material-icons fs-5">rule</i>
+                  </span>
+                  <select formControlName="status" class="form-select border-start-0">
+                    <option *ngFor="let opt of statusOptions" [value]="opt">{{ opt }}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+  
+  
+            <!-- SECTION 2: Accommodation Nesting Tracking Sub-group -->
+            <h5 class="text-primary fw-bold mb-3 border-bottom pb-2 d-flex align-items-center gap-2" formGroupName="accommodation">
+              <i class="material-icons">hotel</i> Accommodation Architecture
+            </h5>
+            
+            <div class="row g-3 mb-4" formGroupName="accommodation">
+              <!-- Hotel Name Input -->
+              <div class="col-md-5">
+                <label class="form-label fw-semibold small text-secondary">Hotel Name *</label>
+                <div class="input-group has-validation">
+                  <span class="input-group-text bg-white text-muted border-end-0">
+                    <i class="material-icons fs-5">apartment</i>
+                  </span>
+                  <input type="text" 
+                         formControlName="hotel_name" 
+                         class="form-control border-start-0" 
+                         placeholder="Grand Resort Mansion"
+                         [ngClass]="{'is-invalid': packageForm.get('accommodation.hotel_name')?.invalid && packageForm.get('accommodation.hotel_name')?.touched, 'is-valid': packageForm.get('accommodation.hotel_name')?.valid && packageForm.get('accommodation.hotel_name')?.touched}">
+                  <div class="invalid-feedback">
+                    Hotel name matrix registration string parameter required.
+                  </div>
+                </div>
+              </div>
+  
+              <!-- Star Rating Select Options -->
+              <div class="col-md-3">
+                <label class="form-label fw-semibold small text-secondary">Star Rating (1-5) *</label>
+                <div class="input-group has-validation">
+                  <span class="input-group-text bg-white text-muted border-end-0">
+                    <i class="material-icons fs-5 text-warning">star</i>
+                  </span>
+                  <input type="number" 
+                         formControlName="star_rating" 
+                         class="form-control border-start-0" 
+                         min="1" max="5"
+                         [ngClass]="{'is-invalid': packageForm.get('accommodation.star_rating')?.invalid && packageForm.get('accommodation.star_rating')?.touched, 'is-valid': packageForm.get('accommodation.star_rating')?.valid && packageForm.get('accommodation.star_rating')?.touched}">
+                  <div class="invalid-feedback">
+                    Must scale integer parameters cleanly strictly bound from 1 to 5.
+                  </div>
+                </div>
+              </div>
+  
+              <!-- Room Configuration Layout Type -->
+              <div class="col-md-4">
+                <label class="form-label fw-semibold small text-secondary">Room Type Allocation</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-white text-muted border-end-0">
+                    <i class="material-icons fs-5">bed</i>
+                  </span>
+                  <input type="text" formControlName="room_type" class="form-control border-start-0" placeholder="Deluxe Ocean Suite View">
+                </div>
+              </div>
+  
+              <!-- Amenities Parser Entry Array Field -->
+              <div class="col-12">
+                <label class="form-label fw-semibold small text-secondary">Amenities Provided (Comma-Separated Array)</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-white text-muted border-end-0">
+                    <i class="material-icons fs-5">pool</i>
+                  </span>
+                  <input type="text" formControlName="amenities" class="form-control border-start-0" placeholder="Free Wi-Fi, Swimming Pool, Complementary Breakfast, Spa">
+                </div>
+                <div class="form-text text-muted small">Separate each custom perk item using an explicit comma formatting character array string parser structure mapping.</div>
+              </div>
+            </div>
+  
+  
+            <!-- SECTION 3: Transit Routing Travel Node Parametrization -->
+            <h5 class="text-primary fw-bold mb-3 border-bottom pb-2 d-flex align-items-center gap-2" formGroupName="travel">
+              <i class="material-icons">flight_takeoff</i> Transit Strategy Parameters
+            </h5>
+            
+            <div class="row g-3 mb-4" formGroupName="travel">
+              <!-- Mode Enum Select -->
+              <div class="col-md-3">
+                <label class="form-label fw-semibold small text-secondary">Travel Mode *</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-white text-muted border-end-0">
+                    <i class="material-icons fs-5">commute</i>
+                  </span>
+                  <select formControlName="mode" class="form-select border-start-0">
+                    <option *ngFor="let m of travelModes" [value]="m">{{ m }}</option>
+                  </select>
+                </div>
+              </div>
+  
+              <!-- Departure Port Hub -->
+              <div class="col-md-4">
+                <label class="form-label fw-semibold small text-secondary">Departure Hub Origin *</label>
+                <div class="input-group has-validation">
+                  <span class="input-group-text bg-white text-muted border-end-0">
+                    <i class="material-icons fs-5">flight_land</i>
+                  </span>
+                  <input type="text" 
+                         formControlName="departure_from" 
+                         class="form-control border-start-0" 
+                         placeholder="Origin Hub Station / Port"
+                         [ngClass]="{'is-invalid': packageForm.get('travel.departure_from')?.invalid && packageForm.get('travel.departure_from')?.touched, 'is-valid': packageForm.get('travel.departure_from')?.valid && packageForm.get('travel.departure_from')?.touched}">
+                  <div class="invalid-feedback">
+                    Departure origin reference key is mandatory.
+                  </div>
+                </div>
+              </div>
+  
+              <!-- Arrival Destination Point Port Terminal -->
+              <div class="col-md-5">
+                <label class="form-label fw-semibold small text-secondary">Arrival Station Terminal *</label>
+                <div class="input-group has-validation">
+                  <span class="input-group-text bg-white text-muted border-end-0">
+                    <i class="material-icons fs-5">landing</i>
+                  </span>
+                  <input type="text" 
+                         formControlName="arrival_at" 
+                         class="form-control border-start-0" 
+                         placeholder="Arrival Location Port"
+                         [ngClass]="{'is-invalid': packageForm.get('travel.arrival_at')?.invalid && packageForm.get('travel.arrival_at')?.touched, 'is-valid': packageForm.get('travel.arrival_at')?.valid && packageForm.get('travel.arrival_at')?.touched}">
+                  <div class="invalid-feedback">
+                    Destination port vector coordinate is mandatory.
+                  </div>
+                </div>
+              </div>
+  
+              <!-- Carrier Management Context Details -->
+              <div class="col-md-8">
+                <label class="form-label fw-semibold small text-secondary">Carrier Provider / Flight Air Operations Line</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-white text-muted border-end-0">
+                    <i class="material-icons fs-5">corporate_fare</i>
+                  </span>
+                  <input type="text" formControlName="carrier" class="form-control border-start-0" placeholder="e.g., Singapore Airlines, Eurostar Rail">
+                </div>
+              </div>
+  
+              <!-- Round Trip Logic Switch Toggle checkbox -->
+              <div class="col-md-4 d-flex align-items-center mt-4 pt-2">
+                <div class="form-check form-switch card border p-2 px-5 bg-white shadow-sm w-100 mb-0">
+                  <input class="form-check-input" type="checkbox" formControlName="is_round_trip" id="roundTripSwitch">
+                  <label class="form-check-label fw-semibold text-secondary small" for="roundTripSwitch">Round Trip Included</label>
+                </div>
+              </div>
+            </div>
+  
+  
+            <!-- SECTION 4: Guide Metadata Support Node Parameters -->
+            <h5 class="text-primary fw-bold mb-3 border-bottom pb-2 d-flex align-items-center gap-2" formGroupName="guide">
+              <i class="material-icons">face</i> Assigned Excursion Guide Profile
+            </h5>
+            
+            <div class="row g-3 mb-4" formGroupName="guide">
+              <!-- Guide Full name context entry -->
+              <div class="col-md-5">
+                <label class="form-label fw-semibold small text-secondary">Guide Full Name</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-white text-muted border-end-0">
+                    <i class="material-icons fs-5">badge</i>
+                  </span>
+                  <input type="text" formControlName="name" class="form-control border-start-0" placeholder="e.g., Johnathan Smith">
+                </div>
+              </div>
+  
+              <!-- Spoken Languages Comma String Input -->
+              <div class="col-md-7">
+                <label class="form-label fw-semibold small text-secondary">Languages Spoken (Comma-Separated Array)</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-white text-muted border-end-0">
+                    <i class="material-icons fs-5">translate</i>
+                  </span>
+                  <input type="text" formControlName="languages" class="form-control border-start-0" placeholder="English, Japanese, Spanish">
+                </div>
+              </div>
+  
+              <!-- Is Included Status Toggle Switch -->
+              <div class="col-md-6">
+                <div class="form-check form-switch card border p-2 px-5 bg-white shadow-sm mb-0">
+                  <input class="form-check-input" type="checkbox" formControlName="is_included" id="guideIncludedSwitch">
+                  <label class="form-check-label fw-semibold text-secondary small" for="guideIncludedSwitch">Guide Service Fees Covered in Base Fare Price</label>
+                </div>
+              </div>
+  
+              <!-- Current Assessment Rating Evaluator Score Input -->
+              <div class="col-md-6">
+                <div class="input-group">
+                  <span class="input-group-text bg-white text-muted border-end-0 small fw-semibold text-secondary" style="font-size: 0.8rem;">Initial Rating Base Set</span>
+                  <span class="input-group-text bg-white text-warning border-end-0 border-start-0">
+                    <i class="material-icons fs-5">star_half</i>
+                  </span>
+                  <input type="number" formControlName="guide_rating" class="form-control border-start-0" min="0" max="5" step="0.1" placeholder="0.0">
+                </div>
+              </div>
+            </div>
+  
+  
+            <!-- SECTION 5: Media Context Visuals & Itinerary Properties -->
+            <h5 class="text-primary fw-bold mb-3 border-bottom pb-2 d-flex align-items-center gap-2">
+              <i class="material-icons">collections</i> Assets & Descriptive Itineraries
+            </h5>
+            
+            <div class="row g-3 mb-4">
+              <!-- Image Asset Pointer Link Url Address text input row -->
+              <div class="col-12">
+                <label class="form-label fw-semibold small text-secondary">Banner Asset Image URL Pointer</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-white text-muted border-end-0">
+                    <i class="material-icons fs-5">link</i>
+                  </span>
+                  <input type="url" formControlName="image_url" class="form-control border-start-0" placeholder="https://cdn.domain-repository.com/assets/images/destination.jpg">
+                </div>
+              </div>
+  
+              <!-- Activities Text Content Description Field -->
+              <div class="col-12">
+                <label class="form-label fw-semibold small text-secondary">Summary of Daily Planned Activities & Excursions</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-white text-muted border-end-0 align-items-start pt-2">
+                    <i class="material-icons fs-5">description</i>
+                  </span>
+                  <textarea formControlName="activities" 
+                            rows="3" 
+                            class="form-control border-start-0" 
+                            placeholder="Provide a descriptive overview of the scheduled events, sights, tours, and itinerary landmarks included within this vacation package block..."></textarea>
+                </div>
+              </div>
+            </div>
+  
+  
+            <!-- FORM CTAS SUBMIT CONTAINER ACTION BUTTON BLOCK BAR -->
+            <div class="card-footer bg-white border-top border-light p-4 d-flex justify-content-end gap-3 rounded-bottom-3 shadow-sm">
+              <button class="btn btn-light border px-4 py-2 text-secondary fw-semibold rounded-pill d-inline-flex align-items-center gap-2" 
+                      type="button" 
+                      (click)="goBack()">
+                <i class="material-icons fs-5">arrow_back</i> Return
+              </button>
+              <button class="btn btn-primary px-5 py-2 fw-bold text-white rounded-pill shadow d-inline-flex align-items-center gap-2" 
+                      type="submit"
+                      [disabled]="packageForm.invalid && packageForm.touched"
+                      style="background-color: #1e3a8a; border-color: #1e3a8a;">
+                <i class="material-icons fs-5">cloud_upload</i> Deploy & Save Package
+              </button>
+            </div>
+  
+          </form>
+  
+        </div>
+        
+      </div>
+    </div>
+  </div>
+}

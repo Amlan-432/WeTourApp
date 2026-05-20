@@ -96,7 +96,7 @@
 .detail-box h6 { font-size: 0.85rem; margin: 0; font-weight: 700; color: #333; }
 
 /* Progress Bar */
-.progress { background-color: #eee; border-radius: 10px; }
+.progress { background-color: #85f86e; border-radius: 10px; }
 .progress-bar { transition: width 1s ease-in-out; }
 
 .btn-primary { background-color: #7b61ff; border: none; border-radius: 12px; }

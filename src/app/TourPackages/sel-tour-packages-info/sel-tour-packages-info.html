@@ -1,4 +1,12 @@
-<div class="container py-5">
+@if(PackService.isLoading()){
+<div class="d-flex justify-content-center p-5">
+  <div class="spinner-border text-primary" role="status">
+    <span class="visually-hidden"></span>
+  </div>
+</div>
+}@else{
+
+  <div class="container py-5">
   <div class="row justify-content-center">
     <div class="col-md-9 col-lg-8">
       
@@ -202,3 +210,5 @@
     </div>
   </div>
 </div>
+
+}

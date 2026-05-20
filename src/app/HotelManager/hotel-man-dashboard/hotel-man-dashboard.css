@@ -34,14 +34,24 @@
 }
 
 /* Branding Section */
-.logo-box {
-  background: var(--bg-main);
-  padding: 8px;
-  border-radius: 12px;
+
+.logo-container {
+  background-color: #fdf8f3; /* Very light cream background */
+  width: 45px;
+  height: 45px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 20px;
+  border-radius: 12px; /* Rounded square look */
+  transition: all 0.3s ease;
+}
+
+.brand-logo {
+  height: 90px;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 8px rgba(74, 63, 53, 0.12));
+  transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .brand-cursive {

@@ -14,6 +14,7 @@ export class AdminService {
   allUsers$=this.allUsers.asObservable();
 
   allFlightsIns$=new BehaviorSubject<any[]>([]);
+  allTourPackage$=new BehaviorSubject<any[]>([]);
   isLoading=signal<boolean>(false);
   hasErrors:boolean=false;
 
@@ -61,5 +62,27 @@ export class AdminService {
       })
     )
   }
+
+
+  getAllPackages(): Observable<{ statusCode: number, msg: string, data: any[], success: boolean }> {
+  this.isLoading.set(true);
+  debugger;
+  return this.http.get<{ statusCode: number, msg: string, data: any[], success: boolean }>(`${this.API_URL}/TourPackage`).pipe(
+    tap(res => {
+      debugger;
+      if (res.success) {
+        this.allTourPackage$.next(res.data);
+      }
+      this.isLoading.set(false);
+    }),
+    catchError(err => {
+      debugger;
+      this.hasErrors = true;
+      this.isLoading.set(false);
+      return throwError(() => err);
+    })
+  );
+}
+
   
 }

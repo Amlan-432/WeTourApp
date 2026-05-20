@@ -19,7 +19,7 @@ export class CreatePackage {
 
   // Enums pulled explicitly from your Mongoose Schema limits
   travelModes = ['Flight', 'Train', 'Bus', 'Cruise'];
-  statusOptions = ['Active', 'Draft', 'Archived'];
+  statusOptions = ['Active', 'Selling Fast', 'Sold Out'];
 
   ngOnInit(): void {
     this.initForm();

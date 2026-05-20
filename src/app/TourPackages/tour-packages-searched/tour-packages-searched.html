@@ -1,4 +1,12 @@
-<div class="container py-5 fade-in">
+@if(packageService.isLoading()){
+<div class="d-flex justify-content-center p-5">
+  <div class="spinner-border text-primary" role="status">
+    <span class="visually-hidden"></span>
+  </div>
+</div>
+}@else {
+
+  <div class="container py-5 fade-in">
   <!-- Header Section -->
   <div class="row justify-content-center mb-5">
     <div class="col-md-6 text-center">
@@ -14,7 +22,7 @@
         
         <!-- Destination Image Container -->
         <div class="card-img-container" style="height: 220px; overflow: hidden; position: relative;">
-          <img [src]="pkg.imageUrl || 'assets/placeholder-travel.jpg'" 
+          <img [src]="pkg.image_url || 'assets/placeholder-travel.jpg'" 
                class="card-img-top w-100 h-100" 
                style="object-fit: cover;" 
                [alt]="pkg.destination">
@@ -62,7 +70,7 @@
         
         <!-- Modal Sidebar: Image -->
         <div class="col-md-5 d-none d-md-block">
-          <img [src]="selectedPackage()?.imageUrl || 'assets/placeholder-travel.jpg'" 
+          <img [src]="selectedPackage()?.image_url || 'assets/placeholder-travel.jpg'" 
                class="w-100 h-100" 
                style="object-fit: cover; min-height: 100%;" 
                [alt]="selectedPackage()?.destination">
@@ -150,7 +158,7 @@
                     <option value="Passport">Passport</option>
                     <option value="Aadhaar">Aadhaar Card</option>
                     <option value="VoterID">Voter ID</option>
-                    <option value="DrivingLicense">Driving License</option>
+                    <option value="Driver License">Driving License</option>
                   </select>
                 </div>
               </div>
@@ -188,3 +196,4 @@
   </div>
 </div>
 </div>
+}

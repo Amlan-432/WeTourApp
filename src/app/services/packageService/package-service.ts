@@ -29,7 +29,7 @@ export class PackageService {
     this.isLoading.set(true);
     const params = new HttpParams().set('destination',dest)
                                     .set('start_date',start_date)
-    return this.http.get<{statusCode:number,msg:string,data:any[],success:boolean}>(`${this.API_URL_User}/search`,{params}).pipe(
+    return this.http.get<{statusCode:number,msg:string,data:any[],success:boolean}>(`${this.API_URL_User}/searchPackage`,{params}).pipe(
       tap(res=>{
         if(res.success){
           this.packages.next(res.data);

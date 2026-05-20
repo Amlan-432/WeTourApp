@@ -1,4 +1,12 @@
-<div class="container py-5">
+@if(packService.isLoading()){
+<div class="d-flex justify-content-center p-5">
+  <div class="spinner-border text-primary" role="status">
+    <span class="visually-hidden"></span>
+  </div>
+</div>
+}@else{
+
+  <div class="container py-5">
   <!-- Dashboard Header Area -->
   <div class="d-flex justify-content-between align-items-center mb-5 pb-3 border-bottom">
     <div>
@@ -164,3 +172,5 @@
     </div>
   </div>
 </div>
+}
+
