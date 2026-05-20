@@ -1,0 +1,168 @@
+.summary-container {
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 0 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.success-banner {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.checkmark-circle {
+  width: 60px;
+  height: 60px;
+  background-color: #2e7d32;
+  color: white;
+  font-size: 32px;
+  line-height: 60px;
+  border-radius: 50%;
+  margin: 0 auto 15px;
+}
+
+.voucher-card {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  border: 1px solid #e0e0e0;
+  overflow: hidden;
+}
+
+.voucher-header {
+  padding: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fafafa;
+}
+
+.meta-label {
+  display: block;
+  font-size: 11px;
+  text-transform: uppercase;
+  color: #757575;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+
+.mono-text {
+  font-family: 'Courier New', Courier, monospace;
+  margin: 0;
+  color: #212121;
+}
+
+.status-badge {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.status-warn {
+  background-color: #fff3e0;
+  color: #e65100;
+}
+
+.status-success {
+  background-color: #e8f5e9;
+  color: #1b5e20;
+}
+
+.divider {
+  border: 0;
+  border-top: 1px dashed #e0e0e0;
+  margin: 0;
+}
+
+.voucher-body-grid {
+  padding: 24px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.bold-value {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+  color: #37474f;
+}
+
+.capitalize {
+  text-transform: capitalize;
+}
+
+.passenger-section {
+  padding: 24px;
+  background: #fdfdfd;
+}
+
+.section-title {
+  margin: 0 0 15px 0;
+  font-size: 14px;
+  color: #455a64;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.guest-card-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.guest-mini-card {
+  display: flex;
+  align-items: center;
+  background: #f5f7f8;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #eceff1;
+}
+
+.guest-avatar {
+  width: 32px;
+  height: 32px;
+  background: #cfd8dc;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 32px;
+  font-weight: 600;
+  color: #455a64;
+  margin-right: 12px;
+}
+
+.guest-name {
+  font-weight: 600;
+  margin: 0;
+  color: #263238;
+}
+
+.guest-meta {
+  font-size: 13px;
+  color: #546e7a;
+  margin: 2px 0 0 0;
+}
+
+.voucher-footer {
+  background: #263238;
+  padding: 20px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+}
+
+.footer-label {
+  font-size: 12px;
+  letter-spacing: 1px;
+  color: #b0bec5;
+}
+
+.total-price-display {
+  margin: 0;
+  font-size: 26px;
+  color: #00e676;
+}

@@ -1,1 +1,169 @@
-<p>hotel-guest-list works!</p>
+<!-- <p>hotel-guest-list works!</p>
+<div class="manager-container">
+
+  @if(hotelService.is_loading()) {
+    <div class="loading-box">
+      <div class="spinner"></div>
+      <p>Fetching reservation logs from server...</p>
+    </div>
+  } @else {
+
+    <div class="table-card" *ngIf="allBookings().length > 0; else emptyState">
+      <div class="table-responsive">
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Guest Name</th>
+              <th>Number of Guests</th>
+              <th>Email Contact</th>
+              <th>Phone Number</th>
+              <th>Property Booked</th>
+              <th>Room Category</th>
+              <th>Rooms</th>
+              <th>Check-In</th>
+              <th>Check-Out</th>
+              <th>Total Earnings</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let booking of allBookings(); let idx = index">
+              <td><strong>{{ idx + 1 }}</strong></td>
+              <td class="guest-name">{{ booking.travellers?.[0]?.name }}</td>
+              <td class="guest-name">{{ booking.travellers?.length || 0}}</td>
+              <td>{{ booking.travellers?.[0]?.email }}</td>
+              <td>{{ booking.travellers?.[0]?.phone }}</td>
+              <td>{{ booking.hotelId?.name }}</td>
+              <td><span class="room-pill">{{ booking.roomType }}</span></td>
+              <td>{{ booking.numRoomsBooked }} Rm</td>
+              <td>{{ booking.checkInDate | date:'mediumDate' }}</td>
+              <td>{{ booking.checkOutDate | date:'mediumDate' }}</td>
+              <td class="price-text">₹{{ booking.totalPrice }}</td>
+              <td>
+                <span>
+                  {{ booking.status | uppercase }}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <ng-template #emptyState>
+      <div class="empty-box">
+        <span></span>
+        <h3>No Guest History Found</h3>
+        <p>No transactions or accommodation bookings have been logged yet for your properties.</p>
+      </div>
+    </ng-template>
+
+  }
+</div> -->
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
+
+<div class="manager-container">
+
+  @if(hotelService.is_loading()) {
+    <div class="loading-box">
+      <div class="spinner"></div>
+      <p>Fetching reservation logs from server...</p>
+    </div>
+  } @else {
+
+    <div class="table-card" *ngIf="allBookings().length > 0; else emptyState">
+      
+      <div class="table-card-header">
+        <div class="header-title-wrapper">
+          <span class="material-symbols-rounded header-icon">menu_book</span>
+          <div>
+            <h3>Property Guest Ledger</h3>
+            <p>Real-time master registry tracking accommodation statuses, durations, and financial earnings variables.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Guest Name</th>
+              <th>Guests</th>
+              <th>Contact Details</th>
+              <th>Property Booked</th>
+              <th>Room Category</th>
+              <th>Inventory</th>
+              <th>Stay Duration</th>
+              <th>Total Earnings</th>
+              <th class="text-center">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let booking of allBookings(); let idx = index" [class.row-cancelled]="booking.status === 'cancelled'">
+              
+              <td><span class="index-badge">{{ idx + 1 }}</span></td>
+              
+              <td class="guest-name-cell">
+                <div class="primary-text">{{ booking.travellers?.[0]?.name || 'Primary Guest' }}</div>
+              </td>
+              
+              <td>
+                <span class="count-badge">
+                  <span class="material-symbols-rounded">group</span>
+                  {{ booking.travellers?.length || 0 }}
+                </span>
+              </td>
+              
+              <td>
+                <div class="primary-text contact-email">{{ booking.travellers?.[0]?.email }}</div>
+                <div class="secondary-text">📞 {{ booking.travellers?.[0]?.phone || 'No Phone' }}</div>
+              </td>
+              
+              <td>
+                <div class="primary-text text-dark">{{ booking.hotelId?.name }}</div>
+              </td>
+              
+              <td>
+                <span class="room-pill" [attr.data-type]="booking.roomType">
+                  {{ booking.roomType }}
+                </span>
+              </td>
+              
+              <td>
+                <div class="inventory-text">{{ booking.numRoomsBooked }} Rm</div>
+              </td>
+              
+              <td>
+                <div class="primary-text">{{ booking.checkInDate | date:'mediumDate' }}</div>
+                <div class="secondary-text info-arrow">to {{ booking.checkOutDate | date:'mediumDate' }}</div>
+              </td>
+              
+              <td class="price-text">₹{{ booking.totalPrice?.toLocaleString('en-IN') }}</td>
+              
+              <td class="text-center">
+                <span class="status-badge" [ngClass]="booking.status | lowercase">
+                  {{ booking.status | uppercase }}
+                </span>
+              </td>
+
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <ng-template #emptyState>
+      <div class="empty-box">
+        <div class="empty-icon-circle">
+          <span class="material-symbols-rounded">layers_clear</span>
+        </div>
+        <h3>No Guest History Found</h3>
+        <p>No active transactions or accommodation bookings have been logged yet for your properties.</p>
+      </div>
+    </ng-template>
+
+  }
+</div>

@@ -1,0 +1,301 @@
+/* ==========================================================================
+   1. LAYOUT RENDER STAGE ROOT SETUP
+   ========================================================================== */
+.manager-container {
+  width: 100%;
+  margin: 0 auto;
+  padding: 8px 4px 40px 4px;
+  box-sizing: border-box;
+}
+
+/* Base Card Shell Material Canvas Sheet */
+.table-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+  overflow: hidden; /* Contains headers natively */
+}
+
+/* Header Content block decoration banner */
+.table-card-header {
+  padding: 28px 32px;
+  background: #ffffff;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.header-title-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.header-icon {
+  font-size: 32px;
+  color: #6366f1;
+  background: #eef2ff;
+  padding: 10px;
+  border-radius: 12px;
+}
+
+.header-title-wrapper h3 {
+  margin: 0 0 4px 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.header-title-wrapper p {
+  margin: 0;
+  font-size: 14px;
+  color: #64748b;
+  line-height: 1.5;
+}
+
+/* ==========================================================================
+   2. REFINED RESPONSIVE DATA TABLE GRID MATRIX
+   ========================================================================== */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto; /* Protects smaller laptop viewports gracefully */
+}
+
+.custom-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 14px;
+}
+
+/* Table Head Tracks Setup */
+.custom-table th {
+  background: #f8fafc;
+  padding: 16px 20px;
+  color: #475569;
+  font-weight: 600;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid #e2e8f0;
+  white-space: nowrap;
+}
+
+/* Rows & Interactivity Setup */
+.custom-table td {
+  padding: 18px 20px;
+  border-bottom: 1px solid #f1f5f9;
+  vertical-align: middle;
+  color: #334155;
+}
+
+.custom-table tbody tr {
+  transition: background-color 0.15s ease;
+}
+
+.custom-table tbody tr:hover {
+  background-color: #f8fafc; /* Elegant row scanning highlight */
+}
+
+/* Text Element Weighting Sub-clipping layout stacks */
+.primary-text {
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.contact-email {
+  color: #0f172a;
+  font-weight: 500;
+}
+
+.secondary-text {
+  font-size: 12px;
+  color: #64748b;
+  margin-top: 3px;
+}
+
+.info-arrow {
+  color: #94a3b8;
+}
+
+.text-dark {
+  color: #0f172a;
+}
+
+/* ==========================================================================
+   3. INTERNAL MICRO BADGE ARCHITECTURE COMPONENTS
+   ========================================================================== */
+.index-badge {
+  font-size: 12px;
+  font-weight: 700;
+  color: #94a3b8;
+}
+
+.guest-name-cell {
+  font-size: 15px;
+}
+
+.count-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #f1f5f9;
+  color: #475569;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.count-badge .material-symbols-rounded {
+  font-size: 16px;
+  color: #64748b;
+}
+
+.inventory-text {
+  font-weight: 600;
+  color: #334155;
+}
+
+.price-text {
+  font-weight: 700;
+  color: #0f172a;
+  font-size: 15px;
+}
+
+/* Elegant Room Category Variant Capsules */
+.room-pill {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: capitalize;
+  background: #f1f5f9;
+  color: #475569;
+  border: 1px solid #e2e8f0;
+}
+
+/* Custom colors based on room categories if needed */
+.room-pill[data-type="deluxe"] {
+  background: #f0fdfa;
+  color: #0d9488;
+  border-color: #ccfbf1;
+}
+
+/* ==========================================================================
+   4. DYNAMIC SYSTEM STATUS BADGE GLOW VARIATION CAPSULES
+   ========================================================================== */
+.status-badge {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 30px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-align: center;
+  min-width: 90px;
+}
+
+.status-badge.pending {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.status-badge.confirmed {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.status-badge.cancelled {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+/* Defensively Greying out row structures matching cancelled status keys */
+.row-cancelled {
+  background-color: #fafafa;
+}
+
+.row-cancelled td {
+  color: #94a3b8 !important;
+}
+
+.row-cancelled .price-text {
+  color: #94a3b8 !important;
+  text-decoration: line-through; /* Visual cancellation marker for accountants */
+}
+
+.row-cancelled .room-pill {
+  background: #f1f5f9;
+  color: #94a3b8;
+  border-color: #e2e8f0;
+}
+
+/* ==========================================================================
+   5. UTILITY MISC STATUS NODES (LOADING, EMPTY STATES)
+   ========================================================================== */
+.text-center {
+  text-align: center;
+}
+
+/* Loading Box Overhauls */
+.loading-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  color: #64748b;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #e2e8f0;
+  border-top-color: #6366f1;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-bottom: 16px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Empty State Canvas Box Refactor */
+.empty-box {
+  text-align: center;
+  padding: 80px 40px;
+  background: #ffffff;
+  border: 1px dashed #cbd5e1;
+  border-radius: 16px;
+}
+
+.empty-icon-circle {
+  width: 64px;
+  height: 64px;
+  background: #f1f5f9;
+  color: #94a3b8;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.empty-icon-circle .material-symbols-rounded {
+  font-size: 32px;
+}
+
+.empty-box h3 {
+  margin: 0 0 8px 0;
+  color: #1e293b;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.empty-box p {
+  margin: 0;
+  color: #64748b;
+  font-size: 14px;
+}

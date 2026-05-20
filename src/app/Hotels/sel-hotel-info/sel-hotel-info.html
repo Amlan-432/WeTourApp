@@ -1,0 +1,91 @@
+@if(hotelService.is_loading()){
+<div class="d-flex justify-content-center p-5">
+    <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden"></span>
+    </div>
+</div>
+}@else{
+    <div class="summary-container">
+  <div class="success-banner" *ngIf="confirmedBooking()">
+    <div class="checkmark-circle">✓</div>
+    <h2>Reservation Confirmed!</h2>
+    <p>Thank you for choosing WeTour. Your booking details are listed below.</p>
+  </div>
+
+  <div class="voucher-card" *ngIf="confirmedBooking">
+    
+    <div class="voucher-header">
+      <div>
+        <span class="meta-label">RESERVATION ID</span>
+        <h3 class="mono-text">{{ confirmedBooking()._id }}</h3>
+      </div>
+      <div>
+        <span >
+          {{ confirmedBooking().status | uppercase }}
+        </span>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="voucher-body-grid">
+      <div class="info-block">
+        <span class="meta-label">PROPERTY ID</span>
+        <p class="bold-value text-muted">{{ confirmedBooking().hotelId }}</p>
+      </div>
+
+      <div class="info-block">
+        <span class="meta-label">ROOM CATEGORY</span>
+        <p class="bold-value capitalize">{{ confirmedBooking().roomType }}</p>
+      </div>
+
+      <div class="info-block">
+        <span class="meta-label">CHECK-IN DATE</span>
+        <p class="bold-value">{{ confirmedBooking().checkInDate | date:'mediumDate' }}</p>
+      </div>
+
+      <div class="info-block">
+        <span class="meta-label">CHECK-OUT DATE</span>
+        <p class="bold-value">{{ confirmedBooking().checkOutDate | date:'mediumDate' }}</p>
+      </div>
+
+      <div class="info-block">
+        <span class="meta-label">ROOMS ALLOCATED</span>
+        <p class="bold-value">{{ confirmedBooking().numRoomsBooked || 1 }} Room(s)</p>
+      </div>
+
+      <div class="info-block">
+        <span class="meta-label">TRANSACTION TIMESTAMP</span>
+        <p class="small-value">{{ confirmedBooking().createdAt | date:'medium' }}</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="passenger-section">
+      <h4 class="section-title">Registered Guest Profiles</h4>
+      
+      <div class="guest-card-wrapper">
+        <div class="guest-mini-card" *ngFor="let guest of confirmedBooking().travellers; let idx = index">
+          <div class="guest-avatar">{{ idx + 1 }}</div>
+          <div class="guest-details">
+            <p class="guest-name">{{ guest.name }}</p>
+            <p class="guest-meta">✉ {{ guest.email }} | 📞 {{ guest.phone }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="voucher-footer">
+      <span class="footer-label">TOTAL ACCOUNT CHARGE</span>
+      <h2 class="total-price-display">₹{{ confirmedBooking().totalPrice }}</h2>
+    </div>
+
+  </div>
+
+  <div class="empty-summary-card" *ngIf="!confirmedBooking">
+    <h3>No Transaction Found</h3>
+    <p>We couldn't locate an active booking process. Please check your dashboard itinerary history.</p>
+  </div>
+</div>
+}

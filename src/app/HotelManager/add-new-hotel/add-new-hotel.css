@@ -1,0 +1,240 @@
+/* ==========================================================================
+   1. NATIVE SCROLLABLE PAGE FRAMEWORK
+   ========================================================================== */
+.page-wrapper {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 16px 24px 40px 24px;
+  box-sizing: border-box;
+}
+
+/* Form Container Floating Canvas Sheet */
+.form-container-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 36px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+}
+
+/* Form Header Title Section */
+.form-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.header-icon-box {
+  width: 48px;
+  height: 48px;
+  background: #e0f2fe;
+  color: #0369a1;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-icon-box .material-symbols-rounded {
+  font-size: 28px;
+}
+
+.form-header h3 {
+  margin: 0 0 4px 0;
+  font-size: 22px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.form-header p {
+  margin: 0;
+  font-size: 14px;
+  color: #64748b;
+}
+
+/* ==========================================================================
+   2. SECTION LAYOUT STRUCTURE
+   ========================================================================== */
+.form-section {
+  margin-bottom: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.section-title {
+  margin: 0 0 4px 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: #334155;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.section-title .material-symbols-rounded {
+  font-size: 18px;
+  color: #64748b;
+}
+
+/* ==========================================================================
+   3. RESPONSIVE INTUITIVE INPUT GRID FORM LINES
+   ========================================================================== */
+.form-row-grid {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+}
+
+.form-row-grid.dual-column > div,
+.form-row-grid.dual-column > .nested-block {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Aligns error inputs to match layout flow perfectly */
+.match-button-height {
+  align-items: flex-start;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group.expand {
+  flex: 1;
+}
+
+.form-group label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #475569;
+}
+
+.label-hint {
+  font-weight: 400;
+  color: #94a3b8;
+  font-size: 12px;
+}
+
+/* Input Fields Functional Decorators */
+.control-input {
+  padding: 10px 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #0f172a;
+  outline: none;
+  background-color: #ffffff;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.control-input:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+}
+
+/* ==========================================================================
+   4. INVENTORY NESTED BLOCKS CONFIGURATION
+   ========================================================================== */
+.highlight-section-bg {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.nested-block {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.nested-block h5 {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 700;
+  color: #475569;
+}
+
+.inner-flex-row {
+  display: flex;
+  gap: 12px;
+}
+
+.control-input-sm {
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 14px;
+  outline: none;
+  background: #ffffff;
+  transition: border-color 0.15s;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.control-input-sm:focus {
+  border-color: #6366f1;
+}
+
+/* ==========================================================================
+   5. FIELD MESSAGES & ACTION FOOTER
+   ========================================================================== */
+.error-msg {
+  color: #ef4444;
+  font-size: 12px;
+  font-weight: 500;
+  margin-top: 2px;
+}
+
+.form-actions-footer {
+  margin-top: 12px;
+  padding-top: 24px;
+  border-top: 1px solid #f1f5f9;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-save {
+  padding: 12px 32px;
+  background: #6366f1;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.2);
+  transition: background-color 0.15s, transform 0.1s;
+}
+
+.btn-save .material-symbols-rounded {
+  font-size: 20px;
+}
+
+.btn-save:hover:not(:disabled) {
+  background: #4f46e5;
+}
+
+.btn-save:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.btn-save:disabled {
+  background: #cbd5e1;
+  color: #94a3b8;
+  cursor: not-allowed;
+  box-shadow: none;
+}
