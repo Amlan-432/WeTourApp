@@ -1,1 +1,122 @@
-<p>hotelrooms works!</p>
+<div class="rooms-container">
+  
+  <div class="catalog-side">
+    <h3>Registered Properties Inventory</h3>
+    
+    @if(hotelService.is_loading() && hotels().length === 0) {
+      <div class="d-flex justify-content-center p-5">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden"></span>
+            </div>
+    </div>
+    } @else {
+      <div class="hotel-cards-list">
+        <div class="property-card" *ngFor="let hotel of hotels()">
+          <img [src]="hotel.imagesUrl || hotel.imageUrl" alt="Hotel Cover" class="thumb-img">
+          
+          <div class="card-details">
+            <h4>{{ hotel.name }} <span class="rating-badge">⭐ {{ hotel.rating }}</span></h4>
+            <p class="loc"> {{ hotel.location }}</p>
+            
+            <div class="counts">
+              <span>Standard: <b>{{ hotel.roomsAvailable?.standard || 0 }} Rms</b> (₹{{ hotel.pricePerNight?.standard || 0 }}/n)</span><br>
+              <span>Deluxe: <b>{{ hotel.roomsAvailable?.deluxe || 0 }} Rms</b> (₹{{ hotel.pricePerNight?.deluxe || 0 }}/n)</span>
+            </div>
+
+            <div class="amenities-tags" *ngIf="hotel.amenities?.length > 0">
+              <span class="amenity-badge" *ngFor="let item of hotel.amenities">{{ item }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+ <!-- <div class="form-side">
+    <div class="form-card">
+      <h3>🏨 Add New Property</h3>
+      
+      <form [formGroup]="hotelForm" (ngSubmit)="submit()">
+        
+        <div class="form-group">
+          <label>Hotel Name</label>
+          <input type="text" formControlName="name" class="control-input" placeholder="e.g. Blue Lagoon Resort">
+          <small class="error-msg" *ngIf="hotelForm.get('name')?.touched && hotelForm.get('name')?.invalid">
+            Hotel name is required.
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label>Location Area</label>
+          <input type="text" formControlName="location" class="control-input" placeholder="e.g. Goa, India">
+          <small class="error-msg" *ngIf="hotelForm.get('location')?.touched && hotelForm.get('location')?.invalid">
+            Location field is required.
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label>Main Cover Image URL</label>
+          <input type="text" formControlName="imageUrl" class="control-input" placeholder="https://domain.com/photo.jpg">
+          <small class="error-msg" *ngIf="hotelForm.get('imagesUrl')?.touched && hotelForm.get('imagesUrl')?.invalid">
+            A primary cover image link is required.
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label>Star Rating (1 - 5)</label>
+          <input type="number" formControlName="rating" class="control-input" min="1" max="5">
+        </div>
+
+        <div class="form-group">
+          <label>Gallery Images (Comma-separated links)</label>
+          <input type="text" formControlName="images" class="control-input" placeholder="img1.jpg, img2.jpg, img3.jpg">
+        </div>
+
+        <div class="form-group">
+          <label>Amenities Offered (Comma-separated text)</label>
+          <input type="text" formControlName="amenities" class="control-input" placeholder="Free Wi-Fi, Pool, Room Service">
+        </div>
+
+        <div class="sub-form-section" formGroupName="roomsAvailable">
+          <h5>Total Rooms Inventory Allocations</h5>
+          <div class="row-flex">
+            <div>
+              <label>Standard Rooms</label>
+              <input type="number" formControlName="standard" class="control-input-sm">
+              <small class="error-msg" *ngIf="hotelForm.get('roomsAvailable.standard')?.touched && hotelForm.get('roomsAvailable.standard')?.invalid">
+                Minimum count is 1.
+              </small>
+            </div>
+            <div>
+              <label>Deluxe Rooms</label>
+              <input type="number" formControlName="deluxe" class="control-input-sm">
+              <small class="error-msg" *ngIf="hotelForm.get('roomsAvailable.deluxe')?.touched && hotelForm.get('roomsAvailable.deluxe')?.invalid">
+                Minimum count is 1.
+              </small>
+            </div>
+          </div>
+        </div>
+
+        <div class="sub-form-section" formGroupName="pricePerNight">
+          <h5>Base Price Plans Per Night (₹)</h5>
+          <div class="row-flex">
+            <div>
+              <label>Standard Rate</label>
+              <input type="number" formControlName="standard" class="control-input-sm">
+            </div>
+            <div>
+              <label>Deluxe Rate</label>
+              <input type="number" formControlName="deluxe" class="control-input-sm">
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-save" [disabled]="hotelForm.invalid">
+          Submit
+        </button>
+
+      </form>
+    </div>
+  </div> -->
+ 
+
+</div>

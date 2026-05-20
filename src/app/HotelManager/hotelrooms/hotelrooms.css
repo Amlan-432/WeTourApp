@@ -1,0 +1,284 @@
+/* ==========================================================================
+   1. MAIN CONTAINER LAYOUT
+   ========================================================================== */
+.rooms-container {
+  display: flex;
+  gap: 24px;
+  padding: 24px;
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background-color: #f8fafc;
+  min-height: 85vh;
+  box-sizing: border-box;
+}
+
+/* ==========================================================================
+   2. LEFT SIDE: HOTEL INVENTORY CATALOG
+   ========================================================================== */
+.catalog-side {
+  flex: 1;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  max-height: 82vh;
+  overflow-y: auto;
+}
+
+.catalog-side h3 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #1e293b;
+  font-size: 20px;
+  border-bottom: 2px solid #f1f5f9;
+  padding-bottom: 12px;
+  font-weight: 700;
+}
+
+.hotel-cards-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Property Card Styling */
+.property-card {
+  display: flex;
+  gap: 16px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 16px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+}
+
+.property-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
+  border-color: #cbd5e1;
+}
+
+/* Card Media & Details */
+.thumb-img {
+  width: 140px;
+  height: 105px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #f1f5f9;
+  background-color: #f1f5f9;
+}
+
+.card-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card-details h4 {
+  margin: 0 0 6px 0;
+  color: #0f172a;
+  font-size: 18px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.rating-badge {
+  background: #fef08a;
+  color: #854d0e;
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+.loc {
+  margin: 0 0 12px 0;
+  color: #64748b;
+  font-size: 14px;
+}
+
+/* Numeric Sub-blocks */
+.counts {
+  font-size: 13px;
+  color: #334155;
+  background: #f8fafc;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #f1f5f9;
+  line-height: 1.6;
+}
+
+.counts b {
+  color: #0f172a;
+}
+
+/* Custom Badges */
+.amenities-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.amenity-badge {
+  background: #e0f2fe;
+  color: #0369a1;
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+/* ==========================================================================
+   3. RIGHT SIDE: FORM MANAGEMENT PANEL
+   ========================================================================== */
+.form-side {
+  width: 460px;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  max-height: 82vh;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.form-side h3 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #1e293b;
+  font-size: 20px;
+  border-bottom: 2px solid #f1f5f9;
+  padding-bottom: 12px;
+  font-weight: 700;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #475569;
+}
+
+/* Standard Input Box Focus Controls */
+.control-input {
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  background-color: #ffffff;
+}
+
+.control-input:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+
+/* Inline Grid Layout Wrapper */
+.row-flex {
+  display: flex;
+  gap: 12px;
+}
+
+.row-flex > div {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.row-flex label {
+  font-size: 12px;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.control-input-sm {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.control-input-sm:focus {
+  border-color: #6366f1;
+}
+
+/* Nested Container Styling blocks */
+.sub-form-section {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sub-form-section h5 {
+  margin: 0;
+  color: #334155;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Error Message Banners */
+.error-msg {
+  color: #ef4444;
+  font-size: 12px;
+  font-weight: 500;
+  margin-top: 2px;
+}
+
+/* Action Execution Button controls */
+.btn-save {
+  margin-top: 10px;
+  width: 100%;
+  padding: 12px;
+  background: #6366f1;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s, opacity 0.2s;
+  box-shadow: 0 2px 4px rgba(99, 102, 241, 0.15);
+}
+
+.btn-save:hover:not(:disabled) {
+  background: #4f46e5;
+}
+
+.btn-save:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.btn-save:disabled {
+  background: #cbd5e1;
+  color: #94a3b8;
+  cursor: not-allowed;
+  box-shadow: none;
+}
