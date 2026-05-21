@@ -1,0 +1,334 @@
+:host {
+    --bg-surface: #ffffff;
+    --bg-canvas: #f8fafc;
+    --text-main: #0f172a;
+    --text-muted: #64748b;
+    --border-color: #e2e8f0;
+    --primary-color: #4f46e5;
+    --primary-light: #eef2ff;
+    
+    /* Status Colors */
+    --status-confirmed-bg: #ecfdf5;
+    --status-confirmed-text: #065f46;
+    --status-cancelled-bg: #fef2f2;
+    --status-cancelled-text: #991b1b;
+    --status-pending-bg: #fffbeb;
+    --status-pending-text: #92400e;
+    
+    --payment-paid-bg: #e0f2fe;
+    --payment-paid-text: #0369a1;
+    --payment-unpaid-bg: #f1f5f9;
+    --payment-unpaid-text: #475569;
+    --payment-refunded-bg: #f3e8ff;
+    --payment-refunded-text: #6b21a8;
+  }
+
+  .manager-container {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    padding: 2rem;
+    background-color: var(--bg-canvas);
+    min-height: 100vh;
+    color: var(--text-main);
+  }
+
+  .ledger-card {
+    background: var(--bg-surface);
+    border-radius: 16px;
+    box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.06), 0 2px 6px -1px rgba(15, 23, 42, 0.04);
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+  }
+
+  /* Header Panel Styling */
+  .ledger-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.75rem 2rem;
+    border-bottom: 1px solid var(--border-color);
+    background: linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
+  }
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+  }
+
+  .icon-square {
+    background: var(--primary-light);
+    color: var(--primary-color);
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .icon-square .material-symbols-rounded {
+    font-size: 26px;
+  }
+
+  .header-left h2 {
+    margin: 0 0 0.25rem 0;
+    font-size: 1.35rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .header-left p {
+    margin: 0;
+    font-size: 0.87rem;
+    color: var(--text-muted);
+  }
+
+  .counter-badge {
+    background: var(--primary-light);
+    color: var(--primary-color);
+    padding: 0.5rem 1rem;
+    border-radius: 99px;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  /* Table Custom Layout Architecture */
+  .table-wrapper {
+    overflow-x: auto;
+  }
+
+  .modern-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 0.92rem;
+  }
+
+  .modern-table th {
+    background: #f8fafc;
+    padding: 1rem 1.5rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .modern-table td {
+    padding: 1.1rem 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    vertical-align: middle;
+  }
+
+  .modern-table tbody tr {
+    transition: background-color 0.2s ease;
+  }
+
+  .modern-table tbody tr:hover {
+    background-color: #f8fafc;
+  }
+
+  /* Index Data Styling */
+  .index-num {
+    font-weight: 700;
+    color: #94a3b8;
+    font-size: 0.85rem;
+  }
+
+  /* Guest Profile Layout */
+  .guest-profile {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+  }
+
+  .avatar-initial {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #e2e8f0;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  .profile-info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .guest-name {
+    font-weight: 600;
+    color: var(--text-main);
+  }
+
+  .guest-id {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+
+  /* Contact Stack Layout */
+  .contact-stack, .date-stack, .package-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .phone-link {
+    font-weight: 500;
+    color: var(--text-main);
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .tiny-icon {
+    font-size: 14px !important;
+    color: var(--text-muted);
+  }
+
+  .email-sub, .pkg-meta, .sub-time {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+
+  .pkg-title {
+    font-weight: 500;
+    color: var(--text-main);
+  }
+
+  .pkg-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .main-date {
+    font-weight: 500;
+  }
+
+  /* Pricing Presentation Badge */
+  .price-badge {
+    font-weight: 700;
+    color: var(--text-main);
+    font-size: 1.05rem;
+  }
+
+  /* Smart Status & Payment Component Matrix */
+  .status-cell-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .badge-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: capitalize;
+    min-width: 100px;
+    justify-content: center;
+  }
+
+  .status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+  }
+
+  /* Dyn-Colors Driven by data attributes */
+  .badge-status[data-status="confirmed"] { background: var(--status-confirmed-bg); color: var(--status-confirmed-text); }
+  .badge-status[data-status="confirmed"] .status-dot { background: var(--status-confirmed-text); }
+
+  .badge-status[data-status="cancelled"] { background: var(--status-cancelled-bg); color: var(--status-cancelled-text); }
+  .badge-status[data-status="cancelled"] .status-dot { background: var(--status-cancelled-text); }
+
+  .badge-status[data-status="pending"] { background: var(--status-pending-bg); color: var(--status-pending-text); }
+  .badge-status[data-status="pending"] .status-dot { background: var(--status-pending-text); }
+
+  .badge-payment {
+    font-size: 0.72rem;
+    font-weight: 500;
+    padding: 0.1rem 0.4rem;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+
+  .badge-payment[data-payment="unpaid"] { background: var(--payment-unpaid-bg); color: var(--payment-unpaid-text); }
+  .badge-payment[data-payment="paid"] { background: var(--payment-paid-bg); color: var(--payment-paid-text); }
+  .badge-payment[data-payment="refunded"] { background: var(--payment-refunded-bg); color: var(--payment-refunded-text); }
+
+  /* Dim Row System for Cancelled Entries */
+  .row-cancelled td {
+    opacity: 0.65;
+  }
+  .row-cancelled .price-badge {
+    text-decoration: line-through;
+    color: var(--text-muted);
+  }
+
+  /* Loader Box styling */
+  .loading-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+    color: var(--text-muted);
+  }
+
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--border-color);
+    border-top-color: var(--primary-color);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin-bottom: 1rem;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Empty State Illustration view styling */
+  .empty-state-card {
+    text-align: center;
+    background: var(--bg-surface);
+    padding: 4rem 2rem;
+    border-radius: 16px;
+    border: 1px dashed var(--border-color);
+    max-width: 500px;
+    margin: 4rem auto;
+  }
+
+  .empty-illustration {
+    color: #cbd5e1;
+    margin-bottom: 1.25rem;
+  }
+
+  .empty-illustration .material-symbols-rounded {
+    font-size: 56px;
+  }
+
+  .empty-state-card h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.2rem;
+  }
+
+  .empty-state-card p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  .text-center { text-align: center; }

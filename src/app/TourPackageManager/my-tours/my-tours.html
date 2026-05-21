@@ -154,12 +154,13 @@
         <div class="card-footer bg-white border-top-0 p-3 pt-0">
           <div class="row g-2">
             <div class="col-6">
-              <button (click)="delete()" class="btn btn-sm btn-outline-secondary w-100 rounded-2 fw-semibold d-inline-flex align-items-center justify-content-center gap-1 py-2">
+              <button (click)="delete(tour._id)" 
+                      class="btn btn-sm btn-outline-secondary w-100 rounded-2 fw-semibold d-inline-flex align-items-center justify-content-center gap-1 py-2">
                 <i class="material-icons fs-6">delete</i> Delete
               </button>
             </div>
             <div class="col-6">
-              <button (click)="update()" class="btn btn-sm btn-primary w-100 rounded-2 fw-bold d-inline-flex align-items-center justify-content-center gap-1 py-2"
+              <button (click)="update(tour)" class="btn btn-sm btn-primary w-100 rounded-2 fw-bold d-inline-flex align-items-center justify-content-center gap-1 py-2"
                       style="background-color: #1e3a8a; border-color: #1e3a8a;">
                 <i class="material-icons fs-6">edit</i> Update
               </button>
@@ -172,5 +173,63 @@
     </div>
   </div>
 </div>
-}
 
+
+<!-- MODAL UPDATE PROFILE SYSTEM LAYER -->
+<div class="modal-overlay" *ngIf="isModelOpen">
+  <div class="modal-box shadow-lg border-0 rounded-3">
+    
+    <div class="modal-header bg-light py-3 px-4 d-flex align-items-center justify-content-between border-bottom">
+      <h5 class="fw-bold text-dark mb-0 d-inline-flex align-items-center gap-2">
+        <i class="material-icons text-primary">edit_note</i>
+        Modify Profile: {{ selectedDestination }}
+      </h5>
+      <button type="button" class="btn-close border-0 bg-transparent fs-4 text-muted" (click)="closeModel()">&times;</button>
+    </div>
+
+    <div class="modal-body p-4">
+      
+      <!-- Package Price Form Group Node -->
+      <div class="mb-3">
+        <label class="form-label small fw-bold text-secondary text-uppercase tracking-wider">Package Cost (₹)</label>
+        <div class="input-group">
+          <span class="input-group-text bg-white text-muted">₹</span>
+          <input type="number" class="form-control fw-bold" [(ngModel)]="modelPrice">
+        </div>
+      </div>
+
+      <!-- Occupancy Vector Limit Form Group Node -->
+      <div class="mb-3">
+        <label class="form-label small fw-bold text-secondary text-uppercase tracking-wider">Maximum Allotted Capacity</label>
+        <div class="input-group">
+          <span class="input-group-text bg-white text-muted"><i class="material-icons fs-5">groups</i></span>
+          <input type="number" class="form-control" [(ngModel)]="modelMaxCapacity">
+        </div>
+      </div>
+
+      <!-- Itinerary Lifecycle Deployment State Selection -->
+      <div class="mb-2">
+        <label class="form-label small fw-bold text-secondary text-uppercase tracking-wider">Deployment Life Status</label>
+        <select class="form-select" [(ngModel)]="modelStatus">
+          <option value="Active">Active</option>
+          <option value="Draft">Draft</option>
+          <option value="Archived">Archived</option>
+        </select>
+      </div>
+
+    </div>
+
+    <div class="modal-footer bg-light p-3 border-top d-flex justify-content-end gap-2">
+      <button type="button" class="btn btn-sm btn-outline-secondary px-3 fw-semibold rounded-2" (click)="closeModel()">
+        Cancel
+      </button>
+      <button type="button" class="btn btn-sm btn-primary px-4 fw-bold rounded-2 shadow-sm" 
+              style="background-color: #1e3a8a; border-color: #1e3a8a;" 
+              (click)="submitUpdate()">
+        Save Modifications
+      </button>
+    </div>
+
+  </div>
+</div>
+}
