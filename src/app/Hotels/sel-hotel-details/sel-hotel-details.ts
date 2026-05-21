@@ -14,8 +14,6 @@ import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } fr
 
 export class SelHotelDetails {
 
-  
-
   travelService = inject(Hotelservice);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
@@ -28,20 +26,18 @@ export class SelHotelDetails {
   checkInDate = signal<Date | null>(null);
   checkOutDate = signal<Date | null>(null);
   bookingForm!: FormGroup;
+  reviews=signal<any[]>([]);
 
   totalPrice = computed(() => this.selectedPrice() * this.numUnits());
 
   ngOnInit() {
-  // 1. ALWAYS initialize the form structure first!
+
   this.bookingForm = this.fb.group({
     passengers: this.fb.array([])
   });
 
   const id = this.route.snapshot.paramMap.get('id');
 
-
-
-  // 2. Now it is safe to subscribe and use generateInitialForms
   this.travelService.currentSearch$.subscribe(criteria => {
     const count = criteria?.people || criteria?.rooms || 1;
     this.numUnits.set(count);
@@ -55,7 +51,6 @@ export class SelHotelDetails {
     }
   });
 
-  // 3. Fetch hotel data
   if(id){
     this.travelService.getHotelById(id).subscribe({
       next:(res:any)=>{
@@ -71,13 +66,14 @@ export class SelHotelDetails {
       error: (err)=> {console.log(`could not load hotel details ${err}`)}
     })
   }
+
+  this.getReviews();
   }
 
 get passengers() {
     return this.bookingForm.get('passengers') as FormArray;
   }
 
-  // Create a single passenger group
   createPassengerGroup(): FormGroup {
     return this.fb.group({
       name: ['', Validators.required],
@@ -106,9 +102,33 @@ get passengers() {
     this.roomType.set(room);
   }
 
+  getReviews(){
+    const id = this.route.snapshot.paramMap.get('id')??"";
+    this.travelService.getReviews(id).subscribe({
+      next:res=>{
+        this.reviews.set(res.data);
+      },
+      error:err=>{console.log(err);
+      }
+    })
+
+  }
+
+  getAverageRating(): number {
+  if (!this.reviews() || this.reviews().length === 0) {
+    return 0;
+  }
+
+  const total = this.reviews().reduce((sum, review) => {
+    return sum + parseFloat(review.overallRating?.$numberDecimal || '0');
+  }, 0);
+
+  return total / this.reviews().length;
+}
+
   confirmBooking() {
    const hotelData = this.hotel();
-   const guests = this.bookingForm.value.passengers; // This gets the array of names/phones
+   const guests = this.bookingForm.value.passengers; 
    const checkInDate = this.checkInDate();
    const checkOutDate = this.checkOutDate();
    const roomTypes = this.roomType();
@@ -117,7 +137,6 @@ get passengers() {
 
   this.travelService.createBooking(hotelId,roomTypes,guests,this.totalPrice(),checkInDate,checkOutDate).subscribe({
     next:(res)=>{
-      debugger;
       if(res.success){
          this.router.navigateByUrl('/landingDash/traveller/hotelsummary');
       }

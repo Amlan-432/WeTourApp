@@ -80,6 +80,13 @@
       <span class="footer-label">TOTAL ACCOUNT CHARGE</span>
       <h2 class="total-price-display">₹{{ confirmedBooking().totalPrice }}</h2>
     </div>
+    <div class="text-center mt-4">
+        <button class="btn btn-outline-dark px-4 py-2 rounded-pill fw-bold d-inline-flex align-items-center gap-2 transition-all hover-translate shadow-sm"
+                (click)="goHome()">
+          <i class="material-icons">home</i>
+          Return to Booking Page
+        </button>
+      </div>
 
   </div>
 

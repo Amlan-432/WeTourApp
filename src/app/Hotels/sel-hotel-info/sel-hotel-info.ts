@@ -2,6 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { Hotelservice } from '../../services/HotelService/hotelservice';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sel-hotel-info',
@@ -12,6 +13,7 @@ import { FormsModule } from '@angular/forms';
 export class SelHotelInfo {
   hotelService = inject(Hotelservice);
   confirmedBooking = signal<any>({});
+  router = inject(Router);
   
 
 
@@ -27,5 +29,12 @@ export class SelHotelInfo {
         console.log(err);
       }
     })
+  }
+
+   goHome(){
+    const re = confirm('redirecting to booking page');
+    if(re){
+    this.router.navigateByUrl('/landingDash/traveller');
+    }
   }
 }

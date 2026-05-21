@@ -142,7 +142,6 @@ getAllPackages(): Observable<{ statusCode: number, msg: string, data: any[], suc
 //traveller
 bookPackage( packageId: string, travellers: any[]): Observable<{ statusCode: number, msg: string, data: any, success: boolean }> {
   this.isLoading.set(true);
-  debugger;
   const payload = {
     package_id: packageId,
     travellers: travellers
@@ -152,14 +151,12 @@ bookPackage( packageId: string, travellers: any[]): Observable<{ statusCode: num
     payload
   ).pipe(
     tap(res => {
-      debugger;
       if (res.success) {
         this.bookedPackageDetails$.next(res.data.booking);
       }
       this.isLoading.set(false);
     }),
     catchError(err => {
-      debugger;
       this.hasErrors = true;
       this.isLoading.set(false);
       return throwError(() => err);

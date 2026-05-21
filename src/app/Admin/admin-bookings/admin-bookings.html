@@ -9,11 +9,11 @@
         <span class="input-group-text bg-white border-end-0">
           <span class="material-icons-round">search</span>
         </span>
-        <input type="text" class="form-control border-start-0" placeholder="Search by ID or Name" 
-               [(ngModel)]="searchTerm" (input)="applyFilters()">
+        <input type="text" class="form-control border-start-0" placeholder="Search by ID or Name"
+          [(ngModel)]="searchTerm">
       </div>
-      
-      <select class="form-select filter-dropdown" [(ngModel)]="selectedType" (change)="applyFilters()">
+
+      <select class="form-select filter-dropdown" [(ngModel)]="selectedType">
         <option value="All">All Categories</option>
         <option value="Flight">Flights</option>
         <option value="Hotel">Hotels</option>
@@ -38,26 +38,31 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let booking of filteredBookings">
-            <td class="fw-bold text-primary">{{ booking.id }}</td>
-            <td>{{ booking.user }}</td>
+          <tr *ngFor="let booking of filteredBookings()">
+            <td class="fw-bold text-primary">{{ booking._id }}</td>
+            <td>{{ booking.user_id.name??booking.userId.name }}</td>
             <td>
-              <span class="type-pill" [ngClass]="booking.type.toLowerCase()">
-                <span class="material-icons-round me-1">{{ 
-                  booking.type === 'Flight' ? 'flight' : 
-                  booking.type === 'Hotel' ? 'apartment' : 'terrain' 
-                }}</span>
-                {{ booking.type }}
+              <span class="type-pill"
+                [ngClass]="(booking?.hotelId ? 'hotel' : booking?.package_id ? 'package' : 'flight')">
+
+                <span class="material-icons-round me-1">{{
+                  booking?.hotelId ? 'apartment' :
+                  booking?.package_id ? 'terrain' : 'flight'
+                  }}</span>
+
+                {{
+                booking?.hotelId ? 'Hotel' :
+                booking?.package_id ? 'Package' : 'Flight'
+                }}
               </span>
             </td>
-            <td class="text-muted small">{{ booking.item }}</td>
+            <td class="text-muted small">{{ booking.hotelId.name??booking.package_id.destination??booking.instance_id?.template_id?.flight_number??'h'}}</td>
             <td>{{ booking.date | date:'mediumDate' }}</td>
             <td class="fw-bold">${{ booking.amount }}</td>
             <td>
               <div class="dropdown">
-                <button class="status-badge btn btn-sm dropdown-toggle" 
-                        [ngClass]="booking.status.toLowerCase()" 
-                        type="button" data-bs-toggle="dropdown">
+                <button class="status-badge btn btn-sm dropdown-toggle" [ngClass]="booking.status.toLowerCase()"
+                  type="button" data-bs-toggle="dropdown">
                   {{ booking.status }}
                 </button>
                 <ul class="dropdown-menu">

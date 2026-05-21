@@ -15,6 +15,8 @@ export class AdminService {
 
   allFlightsIns$=new BehaviorSubject<any[]>([]);
   allTourPackage$=new BehaviorSubject<any[]>([]);
+  allHotels$=new BehaviorSubject<any[]>([]);
+  allBookings$=new BehaviorSubject<{}>({});
   isLoading=signal<boolean>(false);
   hasErrors:boolean=false;
 
@@ -77,6 +79,41 @@ export class AdminService {
     }),
     catchError(err => {
       debugger;
+      this.hasErrors = true;
+      this.isLoading.set(false);
+      return throwError(() => err);
+    })
+  );
+}
+
+getAllHotels():Observable<{ statusCode: number, msg: string, data: any[], success: boolean }>{
+  this.isLoading.set(true);
+  return this.http.get<{ statusCode: number, msg: string, data: any[], success: boolean }>(`${this.API_URL}/hotel`).pipe(
+    tap(res=>{
+      if(res.success){
+        this.allHotels$.next(res.data);
+      }
+      this.isLoading.set(false);
+    }),
+    catchError(err => {
+      debugger;
+      this.hasErrors = true;
+      this.isLoading.set(false);
+      return throwError(() => err);
+    })
+  );
+}
+
+getAllBookings():Observable<{ statusCode: number, msg: string, data:{allBookings:{}}, success: boolean }>{
+  this.isLoading.set(true);
+    return this.http.get<{ statusCode: number, msg: string, data: {allBookings:{}}, success: boolean }>(`${this.API_URL}/all`).pipe(
+      tap(res=>{
+        if(res.success){
+          this.allBookings$.next(res.data.allBookings);
+        }
+        this.isLoading.set(false);
+      }),
+      catchError(err => {
       this.hasErrors = true;
       this.isLoading.set(false);
       return throwError(() => err);

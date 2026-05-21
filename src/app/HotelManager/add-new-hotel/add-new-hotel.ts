@@ -26,7 +26,6 @@ export class AddNewHotel {
           standard:['',[Validators.min(1),Validators.required]],
           deluxe:['',[Validators.min(1),Validators.required]],
          }),
-         rating:[5,Validators.required],
          pricePerNight:this.fb.group({
           standard:[0,[Validators.required, Validators.min(0)]],
           deluxe:[0,[Validators.required, Validators.min(0)]],
@@ -60,7 +59,7 @@ export class AddNewHotel {
               }
             }
           })
-        )
+        );
       }
 
       resetForm():void{

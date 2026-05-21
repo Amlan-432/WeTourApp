@@ -8,8 +8,8 @@ import { HttpClient, HttpParams, HttpStatusCode } from '@angular/common/http';
 
 export interface SearchCriteria {
   location: string;
-  people?: number; // Added this
-  rooms?: number;  // Added this
+  people?: number;
+  rooms?: number; 
   start?: string;
   end?: string;
 }
@@ -20,9 +20,6 @@ export interface SearchCriteria {
 
 export class Hotelservice {
 
-  private router = inject(Router);
-  private authservice = inject(Authservice);
-  private loggedInUser!:any;
   private http = inject(HttpClient);
   is_loading = signal<boolean>(false);
   has_error = signal<boolean>(false);
@@ -82,22 +79,25 @@ getHotelById(id:string):Observable<{statusCode:number,msg:string,data:any[], suc
 
   createBooking(hotelId:string, roomType:string, travellers:any[], totalPrice:number, checkInDate:Date | null, checkOutDate:Date | null): Observable<{statusCode:number, msg:string,data:any[], success:boolean}> {
     this.is_loading.set(true);
-    debugger;
         return this.http.post<{statusCode:number, msg:string,data:any[], success:boolean}>(`${this.API_URL}/traveller/hotel`,{hotelId, roomType, travellers, totalPrice, checkInDate, checkOutDate}).pipe(
           tap(res=>{
-            debugger;
             if(res.success){
               this.bookingDetails.next(res.data);
             }
             this.is_loading.set(false);
           }),
           catchError(err =>{
-            debugger;
             this.has_error.set(true);
             this.is_loading.set(false);
             return throwError(()=>err)
           })
         )
+   }
+
+
+   getReviews(hotelId:string): Observable<{statusCode:number, msg:string,data:any[], success:boolean}>{
+    const params = new HttpParams().set('itemId',hotelId)
+    return this.http.get<{statusCode:number, msg:string,data:any[], success:boolean}>(`${this.API_URL}/user/reviews`,{params});
    }
 
   
@@ -141,7 +141,7 @@ getHotelById(id:string):Observable<{statusCode:number,msg:string,data:any[], suc
    }
 
    getGuestList():Observable<{statusCode:number, msg:string, data:any[], success:true}>{
-    return this.http.get<{statusCode:number, msg:string, data:any[], success:true}>(`${this.API_URL}/hotelManager/guest`).pipe(
+    return this.http.get<{statusCode:number, msg:string, data:any[], success:true}>(`${this.API_URL}/hotelManager/guestList`).pipe(
       tap(res=>{
         if(res.success){
           this.is_loading.set(false)

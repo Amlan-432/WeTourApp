@@ -8,20 +8,20 @@
       <div class="search-container shadow-sm">
         <span class="material-icons-round">search</span>
         <input type="text" class="form-control" placeholder="Search by hotel, owner, or location..." 
-               [(ngModel)]="searchQuery" (input)='onSearch()'>
+               [(ngModel)]="searchQuery">
       </div>
     </div>
   </div>
 
   <div class="row g-4">
-    <div class="col-xl-4 col-lg-6" *ngFor="let hotel of filteredHotels">
+    <div class="col-xl-4 col-lg-6" *ngFor="let hotel of filteredHotels()">
       <div class="hotel-card shadow-sm border-0 h-100">
         <div class="card-image-wrapper">
-          <img [src]="hotel.image" class="card-img-top" [alt]="hotel.name">
+          <img [src]="hotel.imageUrl" class="card-img-top" [alt]="hotel.name">
           <span class="status-pill" [ngClass]="{'bg-success': hotel.status === 'Active', 'bg-warning text-dark': hotel.status !== 'Active'}">
-            {{ hotel.status }}
+            {{ hotel.status||'Active' }}
           </span>
-          <div class="price-tag">${{ hotel.price }}<span>/night</span></div>
+          <div class="price-tag">${{ hotel.pricePerNight?.standard }}<span>/night starts</span></div>
         </div>
         
         <div class="card-body p-4">
@@ -29,7 +29,7 @@
             <h5 class="hotel-name mb-0">{{ hotel.name }}</h5>
             <div class="rating-badge">
               <span class="material-icons-round">star</span>
-              {{ hotel.rating }}
+              {{ hotel.rating ||"4.2"}}
             </div>
           </div>
 
@@ -37,7 +37,7 @@
             <span class="material-icons-round text-primary">person</span>
             <div class="info-content">
               <label>Owner</label>
-              <p>{{ hotel.owner }}</p>
+              <p>{{ hotel.user_id?.name }}</p>
             </div>
           </div>
 
@@ -45,19 +45,18 @@
             <span class="material-icons-round text-danger">location_on</span>
             <div class="info-content">
               <label>Address</label>
-              <p>{{ hotel.address }}</p>
+              <p>{{ hotel.location }}</p>
             </div>
           </div>
 
           <hr class="my-4 opacity-10">
 
           <div class="d-flex justify-content-between align-items-center">
-            <span class="hotel-id small">{{ hotel.id }}</span>
             <div class="action-buttons">
-              <button class="btn btn-outline-primary btn-sm me-2" (click)="editHotel(hotel)">
+              <button class="btn btn-outline-primary btn-sm me-2" (click)="editHotel(hotel._id)">
                 <span class="material-icons-round">edit</span>
               </button>
-              <button class="btn btn-outline-danger btn-sm" (click)="deleteHotel(hotel.id)">
+              <button class="btn btn-outline-danger btn-sm" (click)="deleteHotel(hotel._id)">
                 <span class="material-icons-round">delete_outline</span>
               </button>
             </div>
