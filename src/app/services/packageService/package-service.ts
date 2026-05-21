@@ -17,6 +17,7 @@ export class PackageService {
 
   packages = new BehaviorSubject<any[]>([]); 
   getAllPackage$ = new BehaviorSubject<any[]>([]);
+  guestList$ = new BehaviorSubject<any[]>([]);
   isLoading = signal<boolean>(false);
   hasErrors: boolean = false;
   bookedPackageDetails$ = new BehaviorSubject<any | null>(null);
@@ -49,20 +50,17 @@ export class PackageService {
 
 addPackage(packageData: any): Observable<{ statusCode: number, msg: string, data: any, success: boolean }> {
   this.isLoading.set(true);
-  debugger;
 
   return this.http.post<{ statusCode: number, msg: string, data: any, success: boolean }>(
     `${this.API_URL_Package}/`, 
     packageData
   ).pipe(
     tap(res => {
-      debugger;
       if (res.success) {
         this.isLoading.set(false);
       }
     }),
     catchError(err => {
-      debugger;
       this.hasErrors = true;
       this.isLoading.set(false);
       return throwError(() => err);
@@ -73,17 +71,14 @@ addPackage(packageData: any): Observable<{ statusCode: number, msg: string, data
 
 getAllPackages(): Observable<{ statusCode: number, msg: string, data: any[], success: boolean }> {
   this.isLoading.set(true);
-  debugger;
   return this.http.get<{ statusCode: number, msg: string, data: any[], success: boolean }>(`${this.API_URL_Package}/`).pipe(
     tap(res => {
-      debugger;
       if (res.success) {
         this.getAllPackage$.next(res.data);
       }
       this.isLoading.set(false);
     }),
     catchError(err => {
-      debugger;
       this.hasErrors = true;
       this.isLoading.set(false);
       return throwError(() => err);
@@ -92,57 +87,77 @@ getAllPackages(): Observable<{ statusCode: number, msg: string, data: any[], suc
 }
 
 
-// updatePackage(id: string, updatedData: any): Observable<{ statusCode: number, msg: string, data: any[], success: boolean }> {
-//   this.isLoading.set(true);
+updatePackage(id: string, updatedData: any): Observable<{ statusCode: number, msg: string, data: any[], success: boolean }> {
+  this.isLoading.set(true);
 
-//   return this.http.patch<{ statusCode: number, msg: string, data: any, success: boolean }>(
-//     `${this.API_URL_Package}/update/${id}`, 
-//     updatedData
-//   ).pipe(
-//     tap(res => {
-//       if (res.success) {
-//         this.packages.update(prev => 
-//           prev.map(pkg => pkg._id === id ? res.data : pkg)
-//         );
-//       }
-//       this.isLoading.set(false);
-//     }),
-//     catchError(err => {
-//       this.hasErrors = true;
-//       this.isLoading.set(false);
-//       return throwError(() => err);
-//     })
-//   );
-// }
+
+  return this.http.patch<{ statusCode: number, msg: string, data: any, success: boolean }>(
+    `${this.API_URL_Package}/update/${id}`, 
+    updatedData
+  ).pipe(
+    tap(res => {
+      if (res.success) {
+        this.isLoading.set(false);
+      }
+    }),
+    catchError(err => {
+      this.hasErrors = true;
+      this.isLoading.set(false);
+      return throwError(() => err);
+    })
+  );
+}
 
 
 
-// deletePackage(id: string): Observable<{ statusCode: number, msg: string, data: any, success: boolean }> {
-//   this.isLoading.set(true);
 
-//   return this.http.delete<{ statusCode: number, msg: string, data: any, success: boolean }>(
-//     `${this.API_URL_Package}/delete/${id}`
-//   ).pipe(
-//     tap(res => {
-//       if (res.success) {
-//         this.packages.update(prev => prev.filter(pkg => pkg._id !== id));
-//       }
-//       this.isLoading.set(false);
-//     }),
-//     catchError(err => {
-//       this.hasErrors = true;
-//       this.isLoading.set(false);
-//       return throwError(() => err);
-//     })
-//   );
-// }
+deletePackage(id: string): Observable<{ statusCode: number, msg: string, data: any, success: boolean }> {
+  this.isLoading.set(true);
+
+  return this.http.delete<{ statusCode: number, msg: string, data: any, success: boolean }>(
+    `${this.API_URL_Package}/delete/${id}`
+  ).pipe(
+    tap(res => {
+      if (res.success) {
+        this.isLoading.set(false);
+      }
+    }),
+    catchError(err => {
+      this.hasErrors = true;
+      this.isLoading.set(false);
+      return throwError(() => err);
+    })
+  );
+}
+
+
+bookingGuestList(): Observable<{ statusCode: number, msg: string, data: any[], success: boolean }> {
+    this.isLoading.set(true);
+   
+    return this.http.get<{ statusCode: number, msg: string, data: any[], success: boolean }>(
+      `${this.API_URL_Package}/getGuest`
+    ).pipe(
+      tap(res => {
+        
+        if (res.success) {
+          this.guestList$.next(res.data); 
+        }
+        this.isLoading.set(false);
+      }),
+      catchError(err => {
+        
+        this.hasErrors = true;
+        this.isLoading.set(false);
+        return throwError(() => err);
+      })
+    );
+  }
 
 
 
 //traveller
 bookPackage( packageId: string, travellers: any[]): Observable<{ statusCode: number, msg: string, data: any, success: boolean }> {
   this.isLoading.set(true);
-  debugger;
   const payload = {
     package_id: packageId,
     travellers: travellers
@@ -152,14 +167,12 @@ bookPackage( packageId: string, travellers: any[]): Observable<{ statusCode: num
     payload
   ).pipe(
     tap(res => {
-      debugger;
       if (res.success) {
         this.bookedPackageDetails$.next(res.data.booking);
       }
       this.isLoading.set(false);
     }),
     catchError(err => {
-      debugger;
       this.hasErrors = true;
       this.isLoading.set(false);
       return throwError(() => err);

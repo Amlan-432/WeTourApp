@@ -1,0 +1,135 @@
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
+
+<div class="manager-container">
+ 
+  @if(packService.isLoading()) {
+    <div class="loading-box">
+      <div class="spinner"></div>
+      <p>Fetching reservation logs...</p>
+    </div>
+  } @else {
+ 
+    @if(allBookings().length > 0) {
+      <div class="ledger-card">
+        
+        <!-- Header Panel -->
+        <div class="ledger-header">
+          <div class="header-left">
+            <div class="icon-square">
+              <span class="material-symbols-rounded">menu_book</span>
+            </div>
+            <div>
+              <h2>Property Guest Ledger</h2>
+              <p>Real-time master registry tracking accommodation statuses, durations, and financial metrics.</p>
+            </div>
+          </div>
+          <div class="header-right">
+            <span class="counter-badge">{{ allBookings().length }} Total Bookings</span>
+          </div>
+        </div>
+   
+        <!-- Responsive Table Container -->
+        <div class="table-wrapper">
+          <table class="modern-table">
+            <thead>
+              <tr>
+                <th style="width: 60px;">#</th>
+                <th>Guest Profile</th>
+                <th>Contact info</th>
+                <th>Package Details</th>
+                <th>Activity Date</th>
+                <th>Total Earnings</th>
+                <th class="text-center">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (booking of allBookings(); track booking._id || $index) {
+                <tr [class.row-cancelled]="(booking.booking_status | lowercase) === 'cancelled'">
+                  
+                  <!-- Index Badge -->
+                  <td>
+                    <span class="index-num">{{ ($index + 1) | number:'2.0' }}</span>
+                  </td>
+                  
+                  <!-- Guest Name Profile -->
+                  <td>
+                    <div class="guest-profile">
+                      <div class="avatar-initial">
+                        {{ (booking.user_id?.name || 'P')[0] | uppercase }}
+                      </div>
+                      <div class="profile-info">
+                        <span class="guest-name">{{ booking.user_id?.name || 'Primary Guest' }}</span>
+                        <span class="guest-id">ID: {{ booking._id.slice(-6) | uppercase }}</span>
+                      </div>
+                    </div>
+                  </td>
+                  
+                  <!-- Contact info -->
+                  <td>
+                    <div class="contact-stack">
+                      <span class="phone-link">
+                        <span class="material-symbols-rounded tiny-icon">call</span>
+                        {{ booking.user_id?.phone || 'No Phone' }}
+                      </span>
+                      <span class="email-sub">{{ booking.user_id?.email || 'no-email@registry.com' }}</span>
+                    </div>
+                  </td>
+                  
+                  <!-- Package Context -->
+                  <td>
+                    <div class="package-info">
+                      <span class="pkg-title">{{ booking.packageName || booking.title || 'Standard Premium Stay' }}</span>
+                      <span class="pkg-meta">
+                        <span class="material-symbols-rounded tiny-icon">group</span>
+                        {{ booking.travellers?.length || 0 }} {{ (booking.travellers?.length === 1) ? 'Traveller' : 'Travellers' }}
+                      </span>
+                    </div>
+                  </td>
+                  
+                  <!-- Dates -->
+                  <td>
+                    <div class="date-stack">
+                      <span class="main-date">{{ booking.createdAt | date:'dd MMM yyyy' }}</span>
+                      <span class="sub-time">{{ booking.createdAt | date:'hh:mm a' }}</span>
+                    </div>
+                  </td>
+                  
+                  <!-- Financial Total -->
+                  <td>
+                    <div class="price-badge">
+                      ₹{{ (booking.total_price || 0).toLocaleString('en-IN') }}
+                    </div>
+                  </td>
+                  
+                  <!-- Multi-layer Badges -->
+                  <td>
+                    <div class="status-cell-wrapper">
+                      <span class="badge-status" [attr.data-status]="booking.booking_status | lowercase">
+                        <span class="status-dot"></span>
+                        {{ booking.booking_status || 'Pending' }}
+                      </span>
+                      <span class="badge-payment" [attr.data-payment]="booking.payment_status | lowercase">
+                        {{ booking.payment_status }}
+                      </span>
+                    </div>
+                  </td>
+     
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    } @else {
+      <!-- Elegant Empty State Layout -->
+      <div class="empty-state-card">
+        <div class="empty-illustration">
+          <span class="material-symbols-rounded">layers_clear</span>
+        </div>
+        <h3>No Guest History Found</h3>
+        <p>No active transactions or accommodation bookings have been logged yet for your properties.</p>
+      </div>
+    }
+ 
+  }
+</div>
