@@ -151,15 +151,8 @@ export class SelFlightDetails {
       const template_id = this.flight()?._id||"";
       const fdate = this.flightService.fdate();
       const total_price = this.totalPrice();
-
-      // const bookingData = {
-      //   flight: this.flight(),
-      //   passengers: finalPassengers,
-      //   totalAmount: this.totalPrice(),
-      //   user_Id,
-      //   template_id
-      // };
-      // console.log('Final Booking Data:', bookingData);
+      console.log(total_price);
+      
 
       this.flightService.bookFlight(user_Id,template_id,fdate,total_price,finalPassengers).subscribe({
         next:res=>{

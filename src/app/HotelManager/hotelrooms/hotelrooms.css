@@ -1,284 +1,236 @@
-/* ==========================================================================
-   1. MAIN CONTAINER LAYOUT
-   ========================================================================== */
-.rooms-container {
-  display: flex;
-  gap: 24px;
-  padding: 24px;
-  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  background-color: #f8fafc;
-  min-height: 85vh;
-  box-sizing: border-box;
+/* Color Palette Variables */
+:host {
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+  --danger: #ef4444;
+  --danger-hover: #fee2e2;
+  --success: #10b981;
+  --text-main: #1f2937;
+  --text-muted: #6b7280;
+  --bg-card: #ffffff;
+  --bg-app: #f9fafb;
+  --border-color: #e5e7eb;
+  --radius: 12px;
 }
 
-/* ==========================================================================
-   2. LEFT SIDE: HOTEL INVENTORY CATALOG
-   ========================================================================== */
-.catalog-side {
-  flex: 1;
-  background: #ffffff;
-  border-radius: 12px;
-  padding: 24px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-  max-height: 82vh;
-  overflow-y: auto;
+/* Structural & Header Layouts */
+.inventory-container {
+  padding: 2rem;
+  background-color: var(--bg-app);
+  min-height: 100vh;
+  font-family: system-ui, -apple-system, sans-serif;
+  color: var(--text-main);
+}
+.inventory-header {
+  margin-bottom: 2rem;
+}
+.inventory-header h2 { margin: 0; font-size: 1.75rem; font-weight: 700; }
+.subtitle { margin: 0.25rem 0 0; color: var(--text-muted); font-size: 0.95rem; }
+
+/* Dynamic Card Grid Layout */
+.hotel-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
 }
 
-.catalog-side h3 {
-  margin-top: 0;
-  margin-bottom: 20px;
-  color: #1e293b;
-  font-size: 20px;
-  border-bottom: 2px solid #f1f5f9;
-  padding-bottom: 12px;
-  font-weight: 700;
-}
-
-.hotel-cards-list {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-/* Property Card Styling */
+/* Beautiful Property Card Elements */
 .property-card {
-  display: flex;
-  gap: 16px;
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 10px;
-  padding: 16px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
-}
-
-.property-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
-  border-color: #cbd5e1;
-}
-
-/* Card Media & Details */
-.thumb-img {
-  width: 140px;
-  height: 105px;
-  object-fit: cover;
-  border-radius: 8px;
-  border: 1px solid #f1f5f9;
-  background-color: #f1f5f9;
-}
-
-.card-details {
-  flex: 1;
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.property-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
 
-.card-details h4 {
-  margin: 0 0 6px 0;
-  color: #0f172a;
-  font-size: 18px;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+.image-wrapper {
+  position: relative;
+  height: 200px;
+  background: #f3f4f6;
 }
-
+.thumb-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 .rating-badge {
-  background: #fef08a;
-  color: #854d0e;
-  font-size: 12px;
-  padding: 2px 8px;
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(4px);
+  padding: 4px 8px;
   border-radius: 20px;
   font-weight: 600;
+  font-size: 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
+.rating-badge .material-icons { font-size: 1rem; color: #eab308; }
 
-.loc {
-  margin: 0 0 12px 0;
-  color: #64748b;
-  font-size: 14px;
+.card-details {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 }
+.hotel-name { font-size: 1.2rem; font-weight: 600; margin: 0 0 0.5rem; }
+.loc { 
+  font-size: 0.875rem; 
+  color: var(--text-muted); 
+  display: flex; 
+  align-items: center; 
+  gap: 4px; 
+  margin: 0 0 1.25rem; 
+}
+.loc .material-icons { font-size: 1.1rem; }
 
-/* Numeric Sub-blocks */
-.counts {
-  font-size: 13px;
-  color: #334155;
+/* Structured Inventory Data Table */
+.inventory-specs {
   background: #f8fafc;
-  padding: 8px 12px;
-  border-radius: 6px;
-  border: 1px solid #f1f5f9;
-  line-height: 1.6;
+  border-radius: 8px;
+  padding: 0.75rem;
+  font-size: 0.875rem;
+  margin-bottom: 1rem;
 }
-
-.counts b {
-  color: #0f172a;
+.spec-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
 }
+.spec-row:not(:last-child) { border-bottom: 1px dashed var(--border-color); }
+.header-row { font-weight: 600; color: var(--text-muted); padding-top: 0; }
+.type-label { font-weight: 500; }
+.count-val { color: var(--text-main); font-weight: 600; }
+.price-val { font-weight: 700; color: var(--primary); }
 
-/* Custom Badges */
+/* Amenities Tags */
 .amenities-tags {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  margin-top: 10px;
+  margin-bottom: 1.25rem;
 }
-
 .amenity-badge {
-  background: #e0f2fe;
-  color: #0369a1;
-  font-size: 11px;
+  background: #eff6ff;
+  color: var(--primary);
+  font-size: 0.75rem;
+  font-weight: 500;
   padding: 3px 8px;
   border-radius: 4px;
+}
+
+/* Flexbox Action Buttons Setup */
+.card-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: auto;
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 0.875rem;
   font-weight: 500;
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  flex: 1;
 }
+.btn .material-icons { font-size: 1.15rem; }
+.btn-primary { background: var(--primary); color: white; }
+.btn-primary:hover { background: var(--primary-hover); }
+.btn-danger-outline { background: transparent; border-color: var(--border-color); color: var(--danger); }
+.btn-danger-outline:hover { background: var(--danger-hover); border-color: var(--danger); }
+.btn-secondary { background: #f3f4f6; color: var(--text-main); }
+.btn-secondary:hover { background: #e5e7eb; }
+.btn-success { background: var(--success); color: white; }
+.btn-success:hover { filter: brightness(0.9); }
 
-/* ==========================================================================
-   3. RIGHT SIDE: FORM MANAGEMENT PANEL
-   ========================================================================== */
-.form-side {
-  width: 460px;
-  background: #ffffff;
-  border-radius: 12px;
-  padding: 24px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-  max-height: 82vh;
-  overflow-y: auto;
-  box-sizing: border-box;
+/* Modern Modal Overlay Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
 }
-
-.form-side h3 {
-  margin-top: 0;
-  margin-bottom: 20px;
-  color: #1e293b;
-  font-size: 20px;
-  border-bottom: 2px solid #f1f5f9;
-  padding-bottom: 12px;
-  font-weight: 700;
-}
-
-form {
+.modal-box {
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  max-width: 480px;
+  width: 100%;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15);
   display: flex;
   flex-direction: column;
-  gap: 16px;
 }
-
-.form-group {
+.modal-header {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border-color);
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.modal-header h3 { margin: 0; font-size: 1.25rem; font-weight: 600; }
+.modal-subtitle { margin: 2px 0 0; color: var(--text-muted); font-size: 0.875rem; }
+.close-btn { background: transparent; border: none; color: var(--text-muted); cursor: pointer; }
+
+.modal-body { padding: 1.5rem; display: flex; flex-direction: column; gap: 1.5rem; }
+.form-section h4 { 
+  margin: 0 0 0.75rem; 
+  font-size: 0.95rem; 
+  color: var(--text-muted); 
+  text-transform: uppercase; 
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
   gap: 6px;
 }
+.form-section h4 .material-icons { font-size: 1.2rem; }
 
-.form-group label {
-  font-size: 13px;
-  font-weight: 600;
-  color: #475569;
-}
-
-/* Standard Input Box Focus Controls */
-.control-input {
-  padding: 10px 12px;
-  border: 1px solid #cbd5e1;
+.input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.input-group-item { display: flex; flex-direction: column; gap: 6px; }
+.input-group-item label { font-size: 0.85rem; font-weight: 500; color: var(--text-main); }
+.input-group-item input {
+  padding: 8px 12px;
+  border: 1px solid var(--border-color);
   border-radius: 6px;
-  font-size: 14px;
+  font-size: 0.95rem;
   outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
-  background-color: #ffffff;
+  transition: border-color 0.15s;
 }
+.input-group-item input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
 
-.control-input:focus {
-  border-color: #6366f1;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
-}
-
-/* Inline Grid Layout Wrapper */
-.row-flex {
+.modal-footer {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--border-color);
   display: flex;
-  gap: 12px;
+  justify-content: flex-end;
+  gap: 8px;
+  background: #f9fafb;
+  border-bottom-left-radius: var(--radius);
+  border-bottom-right-radius: var(--radius);
 }
 
-.row-flex > div {
-  flex: 1;
+.loading-wrapper {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.row-flex label {
-  font-size: 12px;
-  color: #64748b;
-  font-weight: 600;
-}
-
-.control-input-sm {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #cbd5e1;
-  border-radius: 4px;
-  box-sizing: border-box;
-  font-size: 14px;
-  outline: none;
-  transition: border-color 0.2s;
-}
-
-.control-input-sm:focus {
-  border-color: #6366f1;
-}
-
-/* Nested Container Styling blocks */
-.sub-form-section {
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  padding: 14px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.sub-form-section h5 {
-  margin: 0;
-  color: #334155;
-  font-size: 13px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-/* Error Message Banners */
-.error-msg {
-  color: #ef4444;
-  font-size: 12px;
-  font-weight: 500;
-  margin-top: 2px;
-}
-
-/* Action Execution Button controls */
-.btn-save {
-  margin-top: 10px;
-  width: 100%;
-  padding: 12px;
-  background: #6366f1;
-  color: #ffffff;
-  border: none;
-  border-radius: 6px;
-  font-size: 15px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s, transform 0.1s, opacity 0.2s;
-  box-shadow: 0 2px 4px rgba(99, 102, 241, 0.15);
-}
-
-.btn-save:hover:not(:disabled) {
-  background: #4f46e5;
-}
-
-.btn-save:active:not(:disabled) {
-  transform: scale(0.98);
-}
-
-.btn-save:disabled {
-  background: #cbd5e1;
-  color: #94a3b8;
-  cursor: not-allowed;
-  box-shadow: none;
+  justify-content: center;
+  align-items: center;
+  padding: 5rem;
 }

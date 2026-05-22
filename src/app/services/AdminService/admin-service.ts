@@ -39,8 +39,10 @@ export class AdminService {
 
   getAllFlightsIns():Observable<{statusCode:number,data:any[],message:string,success:boolean}>{
     this.isLoading.set(true);
+    debugger;
     return this.http.get<{statusCode:number,data:any[],message:string,success:boolean}>(`${this.API_URL}/flight`).pipe(
       tap(flights=>{
+        debugger;
         if(flights.success){
           this.allFlightsIns$.next(flights.data);
         }

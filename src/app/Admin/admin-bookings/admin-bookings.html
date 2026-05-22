@@ -39,26 +39,25 @@
         </thead>
         <tbody>
           <tr *ngFor="let booking of filteredBookings()">
-            <td class="fw-bold text-primary">{{ booking._id }}</td>
-            <td>{{ booking.user_id.name??booking.userId.name }}</td>
+            <td class="fw-bold text-primary">{{ booking.bookingId }}</td>
+            <td>{{ booking.username }}</td>
             <td>
               <span class="type-pill"
-                [ngClass]="(booking?.hotelId ? 'hotel' : booking?.package_id ? 'package' : 'flight')">
+                [ngClass]="(booking.type.toLowerCase())">
 
                 <span class="material-icons-round me-1">{{
-                  booking?.hotelId ? 'apartment' :
-                  booking?.package_id ? 'terrain' : 'flight'
+                  booking.type=='Hotel' ? 'apartment' :
+                  booking.type=='Package' ? 'terrain' : 'flight'
                   }}</span>
 
                 {{
-                booking?.hotelId ? 'Hotel' :
-                booking?.package_id ? 'Package' : 'Flight'
+                booking.type
                 }}
               </span>
             </td>
-            <td class="text-muted small">{{ booking.hotelId.name??booking.package_id.destination??booking.instance_id?.template_id?.flight_number??'h'}}</td>
-            <td>{{ booking.date | date:'mediumDate' }}</td>
-            <td class="fw-bold">${{ booking.amount }}</td>
+            <td class="text-muted small">{{ booking.title}}</td>
+            <td>{{ booking.date }}</td>
+            <td class="fw-bold">${{ booking.price }}</td>
             <td>
               <div class="dropdown">
                 <button class="status-badge btn btn-sm dropdown-toggle" [ngClass]="booking.status.toLowerCase()"
@@ -76,7 +75,7 @@
               <button class="btn btn-icon text-info" title="View Details">
                 <span class="material-icons-round">visibility</span>
               </button>
-              <button class="btn btn-icon text-danger" (click)="deleteBooking(booking.id)" title="Delete">
+              <button class="btn btn-icon text-danger" (click)="deleteBooking(booking.bookingId)" title="Delete">
                 <span class="material-icons-round">delete_outline</span>
               </button>
             </td>

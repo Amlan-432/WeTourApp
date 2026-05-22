@@ -1,4 +1,10 @@
-<div class="container py-5">
+ @if(packService.isLoading()) {
+    <div class="loading-box">
+      <div class="spinner"></div>
+      <p>Fetching reservation logs...</p>
+    </div>
+  } @else {
+    <div class="container py-5">
   <div class="row justify-content-center">
     <div class="col-xl-9">
       
@@ -296,4 +302,5 @@
       </div>
     </div>
   </div>
-}
+</div>
+  }

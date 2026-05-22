@@ -14,25 +14,25 @@ export class AdminFlights {
   allFlights = signal<any[]>([]);
 
   filteredFlights = [...this.allFlights()];
-  filterStatus = 'All';
+  
 
 
   ngOnInit(){
     this.adminService.getAllFlightsIns().subscribe();
     this.adminService.allFlightsIns$.subscribe({
       next:res=>{
-        this.allFlights.set(res);      
+        this.allFlights.set(res);  
+        this.applyFilter('All');    
       },
       error:err=>{console.log(err);
       }
     });
 
-    this.applyFilter(this.filterStatus);
+    
     
   }
 
-  applyFilter(status: string) {
-    this.filterStatus = status;
+  applyFilter(status: string='All') {
     this.filteredFlights = status === 'All' 
       ? [...this.allFlights()] 
       : this.allFlights().filter(f => f.status === status);

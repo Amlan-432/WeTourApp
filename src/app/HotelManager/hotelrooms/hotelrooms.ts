@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-hotelrooms',
-  imports: [CommonModule,ReactiveFormsModule],
+  imports: [CommonModule,ReactiveFormsModule,FormsModule],
   templateUrl: './hotelrooms.html',
   styleUrl: './hotelrooms.css',
 })
@@ -16,6 +16,14 @@ export class Hotelrooms {
       private  subscription = new Subscription();
 
       hotels  = signal<any[]>([]);
+      isModelOpen = false;
+      selectedHotelId = '';
+      selectedHotelName = '';
+ 
+      modelStandardRooms = 0;
+      modelDeluxeRooms = 0;
+      modelStandardPrice =0;
+      modelDeluxePrice = 0;
 
 
 
@@ -88,6 +96,60 @@ export class Hotelrooms {
             roomsAvailable: { standard: 0, deluxe: 0 },
             pricePerNight: { standard: 0, deluxe: 0 }
           });
+      }
+
+
+       theUpdateModelOpen(hotel:any){
+        this.selectedHotelId = hotel._id;
+        this.selectedHotelName = hotel.name;
+ 
+        this.modelStandardRooms = hotel.roomsAvailable?.standard || 0;
+        this.modelDeluxeRooms = hotel.roomsAvailable?.deluxe || 0;
+        this.modelStandardPrice = hotel.pricePerNight?.standard || 0;
+        this.modelDeluxePrice = hotel.pricePerNight?.deluxe || 0;
+ 
+        this.isModelOpen =true;
+      }
+ 
+      closeModel():void{
+        this.isModelOpen = false;
+        this.selectedHotelId = '';
+      }
+ 
+      submitTheUpdate():void{
+        this.subscription.add(
+          this.hotelService.updateHotels(
+            this.selectedHotelId,
+            this.modelStandardRooms,
+            this.modelDeluxeRooms,
+            this.modelStandardPrice,
+            this.modelDeluxePrice,
+          ).subscribe({
+              next: (res)=>{
+                if(res.success){
+                  this.closeModel();
+                  this.loadEverything();
+                }
+              },
+              error:(err) =>console.log('Update Failed', err)
+          })
+        )
+      }
+
+
+      deleteTheHotel(hotelId:string):void{
+          if(confirm('Are you really really sure you want to delete it? like really?')){
+            this.subscription.add(
+              this.hotelService.deleteHotel(hotelId).subscribe({
+                next:(res)=>{
+                  if(res.success){
+                    this.loadEverything();
+                  }
+                },
+                error:(err) => console.log('Deletion failed', err)
+              })
+            );
+          }
       }
 
       ngOnDestroy():void{

@@ -62,7 +62,7 @@
 
 .type-pill.flight { background: #e3f2fd; color: #1976d2; }
 .type-pill.hotel { background: #f3e5f5; color: #7b1fa2; }
-.type-pill.tour { background: #e8f5e9; color: #388e3c; }
+.type-pill.package { background: #e8f5e9; color: #388e3c; }
 
 /* Status Badges */
 .status-badge {

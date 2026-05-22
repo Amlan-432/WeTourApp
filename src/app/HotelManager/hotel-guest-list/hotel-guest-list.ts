@@ -38,6 +38,19 @@ export class HotelGuestList {
         )
       }
 
+      changebookingStatus(bookingId:string,updatedStatus:string){
+        this.hotelService.changeBookingStatus(bookingId,updatedStatus).subscribe({
+          next:res=>{
+            if(res){
+              this.getAllGuests();
+            }
+          },
+          error:err=>{console.log(err);
+          }
+        });
+        
+      }
+
       
       ngOnDestroy():void{
         this.subscription.unsubscribe();

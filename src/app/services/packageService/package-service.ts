@@ -52,7 +52,7 @@ addPackage(packageData: any): Observable<{ statusCode: number, msg: string, data
   this.isLoading.set(true);
 
   return this.http.post<{ statusCode: number, msg: string, data: any, success: boolean }>(
-    `${this.API_URL_Package}/`, 
+    `${this.API_URL_Package}/package`, 
     packageData
   ).pipe(
     tap(res => {
@@ -71,7 +71,7 @@ addPackage(packageData: any): Observable<{ statusCode: number, msg: string, data
 
 getAllPackages(): Observable<{ statusCode: number, msg: string, data: any[], success: boolean }> {
   this.isLoading.set(true);
-  return this.http.get<{ statusCode: number, msg: string, data: any[], success: boolean }>(`${this.API_URL_Package}/`).pipe(
+  return this.http.get<{ statusCode: number, msg: string, data: any[], success: boolean }>(`${this.API_URL_Package}/package`).pipe(
     tap(res => {
       if (res.success) {
         this.getAllPackage$.next(res.data);
@@ -90,10 +90,10 @@ getAllPackages(): Observable<{ statusCode: number, msg: string, data: any[], suc
 updatePackage(id: string, updatedData: any): Observable<{ statusCode: number, msg: string, data: any[], success: boolean }> {
   this.isLoading.set(true);
 
-
+const params = new HttpParams().set('id',id);
   return this.http.patch<{ statusCode: number, msg: string, data: any, success: boolean }>(
-    `${this.API_URL_Package}/update/${id}`, 
-    updatedData
+    `${this.API_URL_Package}/package`, 
+    updatedData,{params}
   ).pipe(
     tap(res => {
       if (res.success) {
@@ -113,9 +113,10 @@ updatePackage(id: string, updatedData: any): Observable<{ statusCode: number, ms
 
 deletePackage(id: string): Observable<{ statusCode: number, msg: string, data: any, success: boolean }> {
   this.isLoading.set(true);
+  const params = new HttpParams().set('id',id);
 
   return this.http.delete<{ statusCode: number, msg: string, data: any, success: boolean }>(
-    `${this.API_URL_Package}/delete/${id}`
+    `${this.API_URL_Package}/package`,{params}
   ).pipe(
     tap(res => {
       if (res.success) {
@@ -163,7 +164,7 @@ bookPackage( packageId: string, travellers: any[]): Observable<{ statusCode: num
     travellers: travellers
   };
   return this.http.post<{ statusCode: number, msg: string, data: any, success: boolean }>(
-    `${this.API_URL_Traveller}/book`, 
+    `${this.API_URL_Traveller}/package`, 
     payload
   ).pipe(
     tap(res => {
@@ -184,11 +185,11 @@ bookPackage( packageId: string, travellers: any[]): Observable<{ statusCode: num
 cancelPackageBooking(bookingId: string): Observable<{ statusCode: number, msg: string, data: any, success: boolean }> {
   this.isLoading.set(true);
 
-  const payload = { bookingId };
+  const params = new HttpParams().set('bookingId',bookingId);
 
-  return this.http.put<{ statusCode: number, msg: string, data: any, success: boolean }>(
-    `${this.API_URL_Traveller}/cancel`, 
-    payload
+  return this.http.patch<{ statusCode: number, msg: string, data: any, success: boolean }>(
+    `${this.API_URL_Traveller}/package`, 
+    {},{params}
   ).pipe(
     tap(res => {
       if (res.success) {

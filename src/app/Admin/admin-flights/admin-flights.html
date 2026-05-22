@@ -14,11 +14,11 @@
       </div>
       
       <div class="btn-group shadow-sm bg-white p-1 rounded-pill">
-        <button class="btn btn-pill" [class.active]="filterStatus === 'All'" (click)="applyFilter('All')">All</button>
-        <button class="btn btn-pill" [class.active]="filterStatus === 'Scheduled'" (click)="applyFilter('Scheduled')">Scheduled</button>
-        <button class="btn btn-pill" [class.active]="filterStatus === 'Cancelled'" (click)="applyFilter('Cancelled')">Cancelled</button>
-        <button class="btn btn-pill" [class.active]="filterStatus === 'Completed'" (click)="applyFilter('Completed')">Completed</button>
-        <button class="btn btn-pill" [class.active]="filterStatus === 'Delayed'" (click)="applyFilter('Delayed')">Delayed</button>
+        <button class="btn btn-pill"  (click)="applyFilter('All')">All</button>
+        <button class="btn btn-pill"  (click)="applyFilter('Scheduled')">Scheduled</button>
+        <button class="btn btn-pill"  (click)="applyFilter('Cancelled')">Cancelled</button>
+        <button class="btn btn-pill"  (click)="applyFilter('Completed')">Completed</button>
+        <button class="btn btn-pill"  (click)="applyFilter('Delayed')">Delayed</button>
       </div>
     </div>
   

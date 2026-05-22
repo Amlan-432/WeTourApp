@@ -133,9 +133,12 @@ get passengers() {
    const checkOutDate = this.checkOutDate();
    const roomTypes = this.roomType();
    const hotelId =  hotelData?._id;
+   const hotelUserId = hotelData?.user_id;
+   console.log(hotelUserId);
+   
 
 
-  this.travelService.createBooking(hotelId,roomTypes,guests,this.totalPrice(),checkInDate,checkOutDate).subscribe({
+  this.travelService.createBooking(hotelId,hotelUserId,roomTypes,guests,this.totalPrice(),checkInDate,checkOutDate).subscribe({
     next:(res)=>{
       if(res.success){
          this.router.navigateByUrl('/landingDash/traveller/hotelsummary');
