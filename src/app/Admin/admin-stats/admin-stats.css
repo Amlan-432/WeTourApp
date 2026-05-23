@@ -1,84 +1,232 @@
-:root {
-  --primary-purple: #7b61ff;
-  --bg-light: #f8f9fa;
+/* ==========================================================================
+   GLOBAL CONTAINER & BASE THEME
+   ========================================================================== */
+:host {
+  display: block;
+  background-color: #f8fafc;
+  min-height: 100vh;
+  padding: 2rem;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  box-sizing: border-box;
 }
 
 .dashboard-wrapper {
-  background-color: var(--bg-light);
-  min-height: 100vh;
-  font-family: 'Noto Serif', serif; /* Default font for readability */
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
-.welcome-text {
-  font-family: 'Dancing Script', cursive;
-  font-size: 2.8rem;
-  color: var(--primary-purple);
-  font-weight: 700;
-}
-
-.subtitle {
-  font-size: 1rem;
-  letter-spacing: 0.5px;
-}
-
-/* Stats Cards Styling */
-.stats-card {
-  border-radius: 15px;
-  padding: 25px;
-  border: none;
+/* ==========================================================================
+   DYNAMIC HEADER & CONTROL CENTER SELECTORS
+   ========================================================================== */
+.dashboard-header {
   display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 2.5rem;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.header-main h1 {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: #1e293b;
+  margin: 0 0 0.35rem 0;
+  letter-spacing: -0.02em;
+}
+
+.header-main p {
+  color: #64748b;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.header-filters {
+  display: flex;
+  gap: 1rem;
+}
+
+.select-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.select-group label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.select-group select {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  color: #334155;
+  border-radius: 12px;
+  padding: 0.65rem 2.5rem 0.65rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  outline: none;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.01);
+  appearance: none; /* Strip standard native operating system arrows */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2364748b'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.select-group select:hover {
+  border-color: #cbd5e1;
+  background-color: #fafafa;
+}
+
+.select-group select:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+
+/* ==========================================================================
+   HIGH-IMPACT RIBBON METRIC CARDS
+   ========================================================================== */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.kpi-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 1.5rem;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.02);
   position: relative;
   overflow: hidden;
-  background: white;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-  transition: transform 0.3s ease;
+  border-left: 5px solid transparent;
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s ease;
 }
 
-.stats-card:hover {
-  transform: translateY(-5px);
+.kpi-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.05);
 }
 
-.icon-bg {
-  font-size: 3rem;
-  opacity: 0.2;
-  position: absolute;
-  right: 15px;
-  bottom: 10px;
+/* Custom left accent borders matching specific system components */
+.card-blue { border-left-color: #2563eb; }
+.card-purple { border-left-color: #7c3aed; }
+.card-green { border-left-color: #10b981; }
+.card-orange { border-left-color: #f97316; }
+
+.kpi-content {
+  display: flex;
+  flex-direction: column;
 }
 
-.card-content h3 {
-  font-weight: 700;
-  margin-top: 5px;
-  color: #333;
-}
-
-.card-content p {
-  margin-bottom: 0;
-  text-transform: uppercase;
+.kpi-title {
   font-size: 0.75rem;
-  font-weight: bold;
-  color: #888;
+  font-weight: 700;
+  color: #94a3b8;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.5rem;
 }
 
-/* Color Accents */
-.card-blue { border-left: 5px solid #007bff; }
-.card-purple { border-left: 5px solid #7b61ff; }
-.card-green { border-left: 5px solid #28a745; }
-.card-orange { border-left: 5px solid #fd7e14; }
-
-/* Table Styling */
-.data-table-card {
-  border-radius: 15px;
+.kpi-value {
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: #1e293b;
+  margin: 0;
+  letter-spacing: -0.03em;
 }
 
-.table thead th {
-  border: none;
-  color: #7b61ff;
-  font-family: 'Noto Serif', serif;
+.kpi-icon {
+  font-size: 2.5rem;
+  color: #cbd5e1;
+  opacity: 0.75;
+  user-select: none;
 }
 
-.table td {
-  vertical-align: middle;
-  padding: 15px 10px;
+/* ==========================================================================
+   CHARTS & ANALYTICS LAYOUT GRID
+   ========================================================================== */
+.analytics-layout {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1.5rem;
+}
+
+.chart-container {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 1.75rem;
+  box-shadow: 0 4px 25px rgba(15, 23, 42, 0.02);
+  display: flex;
+  flex-direction: column;
+}
+
+.chart-header {
+  margin-bottom: 1.5rem;
+}
+
+.chart-header h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 0.25rem 0;
+}
+
+.chart-header .subtext {
+  font-size: 0.85rem;
+  color: #94a3b8;
+}
+
+/* Responsive frame container ensuring HTML5 fluid Canvas scaling */
+.canvas-holder {
+  position: relative;
+  width: 100%;
+  height: 340px;
+}
+
+/* ==========================================================================
+   RESPONSIVE BREAKPOINTS (MEDIA QUERIES)
+   ========================================================================== */
+@media (max-width: 1024px) {
+  .analytics-layout {
+    grid-template-columns: 1fr; /* Stack charts vertically on smaller tablets/screens */
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 640px) {
+  :host {
+    padding: 1rem;
+  }
+  
+  .dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .header-filters {
+    width: 100%;
+  }
+  
+  .select-group {
+    flex: 1;
+  }
+  
+  .select-group select {
+    width: 100%;
+  }
+  
+  .kpi-value {
+    font-size: 1.5rem;
+  }
 }

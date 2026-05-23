@@ -1,6 +1,7 @@
 import { HttpClient, HttpParams, httpResource } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { BehaviorSubject, catchError, Observable, tap, throwError } from 'rxjs';
+import { DashboardData } from '../../../Models/adminDashData';
 
 @Injectable({
   providedIn: 'root',
@@ -17,6 +18,7 @@ export class AdminService {
   allTourPackage$=new BehaviorSubject<any[]>([]);
   allHotels$=new BehaviorSubject<any[]>([]);
   allBookings$=new BehaviorSubject<{}>({});
+  allstats$=new BehaviorSubject<DashboardData|null>(null);
   isLoading=signal<boolean>(false);
   hasErrors:boolean=false;
 
@@ -116,6 +118,27 @@ getAllBookings():Observable<{ statusCode: number, msg: string, data:{allBookings
         this.isLoading.set(false);
       }),
       catchError(err => {
+      this.hasErrors = true;
+      this.isLoading.set(false);
+      return throwError(() => err);
+    })
+  );
+}
+
+getAllstats(year:string,month:string):Observable<{ statusCode: number, msg: string, data:DashboardData, success: boolean }>{
+  this.isLoading.set(true);
+  debugger;
+  const params = new HttpParams().set('year',year).set('month',month);
+  return this.http.get<{ statusCode: number, msg: string, data:DashboardData, success: boolean }>(`${this.API_URL}/dash`,{params}).pipe(
+    tap(res=>{
+      debugger;
+      if(res.success){
+        this.allstats$.next(res.data)
+      }
+      this.isLoading.set(false)
+    }),
+  catchError(err => {
+    debugger;
       this.hasErrors = true;
       this.isLoading.set(false);
       return throwError(() => err);
