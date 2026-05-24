@@ -3,18 +3,17 @@
 }
 
 .title-font {
-  font-family: 'Noto Serif', serif;
+  font-family: 'Dancing Script', cursive;
   font-weight: 700;
   color: #333;
 }
 
 .accent-font {
-  font-family: 'Dancing Script', cursive;
-  font-size: 1.2rem;
+  font-family: 'Noto Serif', serif;
+  font-size: 0.8rem;
   color: #7b61ff;
 }
 
-/* Search & Filters */
 .search-box {
   width: 300px;
 }
@@ -50,7 +49,6 @@
   vertical-align: middle;
 }
 
-/* Service Type Pills */
 .type-pill {
   display: inline-flex;
   align-items: center;

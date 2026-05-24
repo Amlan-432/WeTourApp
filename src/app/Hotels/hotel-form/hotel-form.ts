@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { Hotelservice } from '../../services/HotelService/hotelservice';
 import { Authservice } from '../../services/AuthService/authservice';
 import { ChatBox } from '../../chatAi/chat-box/chat-box';
+import { catchError, debounceTime, distinctUntilChanged, of, Subject, Subscription, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-hotel-form',
@@ -25,7 +26,39 @@ export class HotelForm {
   private hotelservice = inject(Hotelservice);
   private authservice=inject(Authservice);
 
-  
+    public loc = signal<any[]>([]);
+
+  private searchTerms = new Subject<string>();
+  private searchSubscription!: Subscription;
+
+  ngOnInit(){
+    this.searchSubscription = this.searchTerms.pipe(
+      debounceTime(300),       
+      distinctUntilChanged(),     
+      switchMap((term: string) => {
+        debugger;
+        if (!term.trim() || term.trim().length < 2) {
+          return of({ data: [] }); 
+        }
+
+        return this.hotelservice.getloc(term).pipe(
+          catchError((err) => {
+            console.error('API Error:', err);
+            return of({ data: [] }); 
+          })
+        );
+      })
+    ).subscribe({
+      next: (res: any) => {
+        debugger;
+        this.loc.set(res?.data || []);
+      }
+    });
+  }
+
+  public onSearchChange(value: string): void {
+    this.searchTerms.next(value);
+  }
 
   onSearch() {
     const startDate = new Date(this.searchData.start);
@@ -95,5 +128,11 @@ export class HotelForm {
     }
   }
 }
+
+  ngOnDestroy() {
+    if (this.searchSubscription) {
+      this.searchSubscription.unsubscribe();
+    }
+  }
 
 }

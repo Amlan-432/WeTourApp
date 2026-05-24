@@ -40,10 +40,9 @@ export class Hotelservice {
   }
 
 
-  getOrigin(code: string): Observable<{ statusCode: number, data: any[], msg: string, success: boolean }> {
-
-    return this.http.get<{ statusCode: number, data: any[], msg: string, success: boolean }>(`${this.API_URL}/traveller/searchOrigin/${code}`);
-
+   getloc(word:string):Observable<{statusCode:number,msg:string,data:any[],success:boolean}>{
+    debugger;
+    return this.http.get<{statusCode:number,msg:string,data:any[],success:boolean}>(`${this.API_URL}/user/hotelLoc/${word}`);
   }
 
 
@@ -103,11 +102,17 @@ export class Hotelservice {
     )
   }
 
+  cancelBooking(bookingId:string):Observable<{ statusCode: number, msg: string, data: any[], success: boolean }>{
+    const params = new HttpParams().set('id',bookingId);
+    return this.http.patch<{ statusCode: number, msg: string, data: any[], success: boolean }> (`${this.API_URL}/traveller/hotel`,{},{params})
+  }
+
 
   getReviews(hotelId: string): Observable<{ statusCode: number, msg: string, data: any[], success: boolean }> {
     const params = new HttpParams().set('itemId', hotelId)
     return this.http.get<{ statusCode: number, msg: string, data: any[], success: boolean }>(`${this.API_URL}/user/reviews`, { params });
   }
+
 
 
   //-------------------------For Hotel Manager---------------------------------------------

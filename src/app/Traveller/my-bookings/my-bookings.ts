@@ -2,6 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Userservice } from '../../services/UserService/userservice';
+import { Hotelservice } from '../../services/HotelService/hotelservice';
+import { PackageService } from '../../services/packageService/package-service';
 
 @Component({
   selector: 'app-my-bookings',
@@ -10,7 +12,9 @@ import { Userservice } from '../../services/UserService/userservice';
   styleUrl: './my-bookings.css',
 })
 export class MyBookings {
- userService = inject(Userservice);
+  userService = inject(Userservice);
+  hotelService = inject(Hotelservice);
+  packageService = inject(PackageService);
   allBookings = signal<any[]>([]);
   filterStatus = signal<string>('All');
   searchQuery = signal<string>('');
@@ -111,5 +115,35 @@ updateFilter(status: string) {
       }
     });
   }
+
+updateBookingStatusInState(id: string, newStatus: string) {
+  this.allBookings.update(currentBookings => 
+    currentBookings.map(booking => 
+      booking.bookingId === id ? { ...booking, status: newStatus } : booking
+    )
+  );
+}
+
+cancelBooking(id: string, type: string) {
+  if (type === 'Hotel') {
+    this.hotelService.cancelBooking(id).subscribe({
+      next: res => {
+        if (res.success) {
+          alert('Cancelled booking successfully');
+          this.updateBookingStatusInState(id, 'Cancelled'); 
+        }
+      }
+    });
+  } else if (type === 'Package') {
+    this.packageService.cancelPackageBooking(id).subscribe({
+      next: res => {
+        if (res.success) {
+          alert('Cancelled booking successfully');
+          this.updateBookingStatusInState(id, 'Cancelled');
+        }
+      }
+    });
+  }
+}
 
 }

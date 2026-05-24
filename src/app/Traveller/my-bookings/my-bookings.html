@@ -79,8 +79,11 @@
                   <span class="material-icons" style="font-size: 16px;">rate_review</span>
                   <span>Review</span>
                 </button>
-                <button class="btn btn-icon btn-sm text-light" title="View Details">
-                  <span class="material-icons">visibility</span>
+                <button (click)="cancelBooking(booking.bookingId, booking.type)" class="btn btn-icon btn-sm"
+                  [ngClass]="(booking.status.toLowerCase() === 'confirmed' || booking.status.toLowerCase() === 'pending') ? 'text-danger' : 'text-secondary opacity-50'"
+                  [disabled]="booking.status.toLowerCase() !== 'confirmed' && booking.status.toLowerCase() !== 'pending'"
+                  [title]="(booking.status.toLowerCase() === 'confirmed' || booking.status.toLowerCase() === 'pending') ? 'Cancel Booking' : 'Action not available'">
+                  <span class="material-icons">cancel</span>
                 </button>
               </div>
             </td>

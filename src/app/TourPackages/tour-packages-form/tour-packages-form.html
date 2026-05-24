@@ -1,50 +1,60 @@
 <div class="container d-flex align-items-center justify-content-center" style="min-height: 80vh;">
   <div class="w-100" style="max-width: 900px;">
-    
+
     <div class="text-center mb-5">
       <h1 class="dancing-script display-4" style="color: #4a3f35;">Begin Your Story</h1>
       <p class="text-muted italic">Find your perfect getaway</p>
     </div>
 
     <div class="row g-0 rounded-4 overflow-hidden shadow-sm border bg-white">
-      
+
       <div class="col-md-4 border-end">
-        <div class="p-3">
-          <label class="d-flex align-items-center text-muted small fw-bold mb-1">
-            <span class="material-icons fs-6 me-1">location_on</span> DESTINATION
-          </label>
-          <input type="text" [(ngModel)]="dest" 
-                 class="form-control border-0 p-0 fw-bold fs-5 shadow-none bg-transparent"
-                 placeholder="Where to?">
-        </div>
-      </div>
+  <div class="p-3">
+    <label class="d-flex align-items-center text-muted small fw-bold mb-1">
+      <span class="material-icons fs-6 me-1">location_on</span> DESTINATION
+    </label>
+    
+    <input type="text" 
+           [(ngModel)]="dest" 
+           (ngModelChange)="onSearchChange($event)"
+           list="destinationList"
+           class="form-control border-0 p-0 fw-bold fs-5 shadow-none bg-transparent"
+           placeholder="Where to?"
+           autocomplete="off">
+
+    <datalist id="destinationList">
+      @for (item of destinations(); track item.destination) {
+        <option [value]="item.destination"></option>
+      }
+    </datalist>
+  </div>
+</div>
 
       <div class="col-md-4 border-end">
         <div class="p-3">
           <label class="d-flex align-items-center text-muted small fw-bold mb-1">
             <span class="material-icons fs-6 me-1">calendar_month</span> START DATE
           </label>
-          <input type="date" [(ngModel)]="startDate" 
-                 class="form-control border-0 p-0 fw-bold fs-5 shadow-none bg-transparent">
+          <input type="date" [(ngModel)]="startDate"
+            class="form-control border-0 p-0 fw-bold fs-5 shadow-none bg-transparent">
         </div>
       </div>
 
       <div class="col-md-4">
         <div class="p-3">
           <label class="d-flex align-items-center text-muted small fw-bold mb-1">
-            <span class="material-icons fs-6 me-1">light_mode</span> DURATION 
+            <span class="material-icons fs-6 me-1">light_mode</span> DURATION
           </label>
-          <input type="number" 
-                 class="form-control border-0 p-0 fw-bold fs-5 shadow-none bg-transparent"
-                 placeholder="How many days?">
+          <input type="number" class="form-control border-0 p-0 fw-bold fs-5 shadow-none bg-transparent"
+            placeholder="How many days?">
         </div>
       </div>
     </div>
 
     <div class="mt-4 text-center">
-      <button (click)="onSearch()" 
-              class="btn px-5 py-3 shadow d-flex align-items-center justify-content-center mx-auto text-white rounded-pill text-uppercase tracking-widest fw-bold"
-              style="background-color: #4a3f35; font-size: 0.9rem;">
+      <button (click)="onSearch()"
+        class="btn px-5 py-3 shadow d-flex align-items-center justify-content-center mx-auto text-white rounded-pill text-uppercase tracking-widest fw-bold"
+        style="background-color: #4a3f35; font-size: 0.9rem;">
         Explore Available Packages
         <span class="material-icons ms-2">arrow_forward</span>
       </button>

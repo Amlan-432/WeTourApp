@@ -1,20 +1,27 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, inject, signal, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, signal, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
 import { AdminService } from '../../services/AdminService/admin-service';
 import { DashboardData } from '../../../Models/adminDashData';
 import { Subscription } from 'rxjs';
+
 Chart.register(...registerables);
 
 @Component({
   selector: 'app-admin-stats',
+  standalone: true, 
   imports: [CommonModule],
   templateUrl: './admin-stats.html',
   styleUrl: './admin-stats.css',
 })
-export class AdminStats {
-
+export class AdminStats implements OnInit, OnDestroy {
   adminService = inject(AdminService);
+
+  public dashboardData = signal<DashboardData | null>(null);
+
+  private lineChartRef!: Chart;
+  private doughnutChartRef!: Chart;
+  private statsSubscription!: Subscription;
 
   private lineCanvasEl?: HTMLCanvasElement;
   private donutCanvasEl?: HTMLCanvasElement;
@@ -37,17 +44,16 @@ export class AdminStats {
     }
   }
 
-  public dashboardData = signal<DashboardData | null>(null);
-
-  private lineChartRef!: Chart;
-  private doughnutChartRef!: Chart;
-  private statsSubscription!: Subscription;
-
   ngOnInit() {
     this.statsSubscription = this.adminService.allstats$.subscribe({
       next: (res) => {
         if (res) {
           this.dashboardData.set(res);
+          
+          if (this.lineCanvasEl && this.donutCanvasEl) {
+            this.initOrUpdateLineChart(this.lineCanvasEl, res);
+            this.initOrUpdateDonutChart(this.donutCanvasEl, res);
+          }
         }
       },
       error: (err) => console.error('Subscription error:', err)
@@ -55,30 +61,15 @@ export class AdminStats {
     const currentYear = new Date().getFullYear().toString();
     const currentMonth = (new Date().getMonth() + 1).toString();
     this.fetchStats(currentMonth, currentYear);
-
-  }
-
-  private fetchStats(month: string, year: string): void {
-    debugger;
-    this.adminService.getAllstats(year, month).subscribe({
-      error: (err) => console.error('HTTP Error fetching stats:', err)
-    });
   }
 
   public onFilterChange(month: string, year: string): void {
     this.fetchStats(month, year);
   }
 
-  private refreshDashboardGraphics(data: DashboardData): void {
-    // Using requestAnimationFrame ensures the DOM has completely calculated 
-    // canvas dimensions before Chart.js tries to draw the line layout
-    requestAnimationFrame(() => {
-      if (this.lineCanvasEl) {
-        this.initOrUpdateLineChart(this.lineCanvasEl, data);
-      }
-      if (this.donutCanvasEl) {
-        this.initOrUpdateDonutChart(this.donutCanvasEl, data);
-      }
+  private fetchStats(month: string, year: string): void {
+    this.adminService.getAllstats(year, month).subscribe({
+      error: (err) => console.error('HTTP Error fetching stats:', err)
     });
   }
 
@@ -86,11 +77,10 @@ export class AdminStats {
     const daysLabels = data.monthlyGraph.map(item => `Day ${item.day}`);
     const bookingCounts = data.monthlyGraph.map(item => item.bookings);
 
-    // FIX: If chart already exists, update data arrays and redraw instead of breaking
     if (this.lineChartRef) {
       this.lineChartRef.data.labels = daysLabels;
       this.lineChartRef.data.datasets[0].data = bookingCounts;
-      this.lineChartRef.update('none'); // Update smoothly without reset animation glitching
+      this.lineChartRef.update(); 
       return;
     }
 
@@ -131,8 +121,6 @@ export class AdminStats {
 
   private initOrUpdateDonutChart(canvas: HTMLCanvasElement, data: DashboardData): void {
     const departmentData = [data.department.flights, data.department.hotels, data.department.tours];
-
-    // FIX: Update existing donut slices smoothly on month dropdown mutation
     if (this.doughnutChartRef) {
       this.doughnutChartRef.data.datasets[0].data = departmentData;
       this.doughnutChartRef.update();
@@ -170,5 +158,4 @@ export class AdminStats {
     if (this.lineChartRef) this.lineChartRef.destroy();
     if (this.doughnutChartRef) this.doughnutChartRef.destroy();
   }
-
 }

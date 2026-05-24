@@ -33,8 +33,22 @@
         <div class="col-md-3">
           <div class="form-floating custom-input-group">
             <span class="input-icon material-symbols-rounded">location_on</span>
-            <input type="text" class="form-control border-0 bg-light ps-5" id="dest" placeholder="City" [(ngModel)]="searchData.location">
+            
+            <input type="text" 
+                   class="form-control border-0 bg-light ps-5" 
+                   id="dest" 
+                   placeholder="City" 
+                   [(ngModel)]="searchData.location"
+                   (ngModelChange)="onSearchChange($event)"
+                   list="hotelDestList"
+                   autocomplete="off">
             <label for="dest" class="ms-4 text-muted inputlabel">Destination</label>
+
+            <datalist id="hotelDestList">
+              @for (item of loc(); track item.location) {
+                <option [value]="item.location"></option>
+              }
+            </datalist>
           </div>
         </div>
 
