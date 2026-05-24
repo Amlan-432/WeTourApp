@@ -1,1 +1,113 @@
-<p>stats works!</p>
+@if(hotelService.is_loading()) {
+  <!-- Clean light spinner container -->
+  <div class="d-flex justify-content-center align-items-center min-vh-100 bg-light p-5">
+    <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+} @else {
+  <!-- Soft gray/blue background for the main dashboard -->
+  <div class="container-fluid bg-light min-vh-100 p-4 dashboard-container">
+    
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-5 flex-wrap gap-3">
+      <div>
+        <h2 class="fw-bold mb-0 text-dark header-title">Hotel Performance Overview</h2>
+        <p class="text-muted small mb-0 mt-1">Track your revenue and booking metrics for the month</p>
+      </div>
+      
+      <!-- Sleek Pill-shaped Filter Group -->
+      <div class="d-flex align-items-center gap-2 filter-group">
+        <div class="icon-wrapper d-flex align-items-center justify-content-center">
+           <span class="material-icons text-primary">calendar_today</span>
+        </div>
+        
+        <!-- Month Dropdown -->
+        <select 
+          (change)="onMonthChange($event)" 
+          class="form-select form-select-sm premium-dropdown">
+          @for (month of months; track month.value) {
+            <option [value]="month.value" [selected]="month.value === selectedMonth()">
+              {{ month.name }}
+            </option>
+          }
+        </select>
+
+        <div class="vr text-muted opacity-25"></div> <!-- Small divider -->
+
+        <!-- Year Dropdown -->
+        <select 
+          (change)="onYearChange($event)" 
+          class="form-select form-select-sm premium-dropdown">
+          @for (year of years; track year) {
+            <option [value]="year" [selected]="year === selectedYear()">
+              {{ year }}
+            </option>
+          }
+        </select>
+      </div>
+    </div>
+    
+    <!-- KPI Cards Row -->
+    <div class="row g-4 mb-4">
+      
+      <!-- Revenue Card -->
+      <div class="col-md-6 col-lg-4">
+        <div class="card premium-card p-4 h-100 border-0 shadow-sm rounded-4">
+          <div class="d-flex justify-content-between align-items-start">
+            <div>
+              <p class="text-muted small text-uppercase fw-bold mb-1 tracking-wide">Total Revenue</p>
+              <h3 class="fw-bold text-dark mb-0">
+                ${{ dashboardData()?.totalRevenue | number:'1.2-2' }}
+              </h3>
+            </div>
+            <!-- Circular soft-colored icon background -->
+            <div class="icon-thumb bg-success-subtle text-success p-3 rounded-circle d-flex align-items-center justify-content-center">
+              <span class="material-icons">account_balance_wallet</span>
+            </div>
+          </div>
+          <div class="mt-4 text-muted small d-flex align-items-center">
+            <span class="text-success material-icons fs-6 me-2 bg-success-subtle rounded-circle p-1">trending_up</span> 
+            <span>Up-to-date monthly earnings</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bookings Card -->
+      <div class="col-md-6 col-lg-4">
+        <div class="card premium-card p-4 h-100 border-0 shadow-sm rounded-4">
+          <div class="d-flex justify-content-between align-items-start">
+            <div>
+              <p class="text-muted small text-uppercase fw-bold mb-1 tracking-wide">Total Bookings</p>
+              <h3 class="fw-bold text-dark mb-0">{{ dashboardData()?.totalBookings }}</h3>
+            </div>
+            <div class="icon-thumb bg-primary-subtle text-primary p-3 rounded-circle d-flex align-items-center justify-content-center">
+              <span class="material-icons">hotel</span>
+            </div>
+          </div>
+          <div class="mt-4 text-muted small d-flex align-items-center">
+            <span class="text-primary material-icons fs-6 me-2 bg-primary-subtle rounded-circle p-1">check_circle</span> 
+            <span>Confirmed reservations this month</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chart Row -->
+    <div class="row">
+      <div class="col-12">
+        <div class="card premium-card p-4 border-0 shadow-sm rounded-4">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h5 class="fw-bold text-dark mb-0">Daily Revenue Timeline</h5>
+            <span class="badge bg-light text-dark border px-3 py-2 rounded-pill shadow-sm">Last 31 Days</span>
+          </div>
+          
+          <div class="chart-container" style="position: relative; height: 350px; width: 100%;">
+            <canvas #revenueChart></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+}

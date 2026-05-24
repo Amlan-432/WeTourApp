@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { BehaviorSubject, catchError, delay, Observable, of, Subject, tap, throwError } from 'rxjs';
 import { Authservice } from '../AuthService/authservice';
 import { HttpClient, HttpParams, HttpStatusCode } from '@angular/common/http';
+import{HotelManDashboardData} from '../../../Models/hotelManData'
 
 
 
@@ -23,6 +24,7 @@ export class Hotelservice {
   private http = inject(HttpClient);
   is_loading = signal<boolean>(false);
   has_error = signal<boolean>(false);
+  hotelManDash$= new BehaviorSubject<HotelManDashboardData|null>(null);
 
 
 
@@ -35,6 +37,13 @@ export class Hotelservice {
 
   updateSearch(criteria: SearchCriteria): void {
     this.searchCriteria.next(criteria);
+  }
+
+
+  getOrigin(code: string): Observable<{ statusCode: number, data: any[], msg: string, success: boolean }> {
+
+    return this.http.get<{ statusCode: number, data: any[], msg: string, success: boolean }>(`${this.API_URL}/traveller/searchOrigin/${code}`);
+
   }
 
 
@@ -224,6 +233,24 @@ export class Hotelservice {
         })
       )
 
+  }
+
+  getHotelDashData(year:string,month:string): Observable<{ statusCode: number, msg: string, data:HotelManDashboardData, success: boolean }>{
+    this.is_loading.set(true);
+    const params = new HttpParams().set('year',year).set('month',month);
+    return this.http.get<{ statusCode: number, msg: string, data:HotelManDashboardData, success: boolean }>(`${this.API_URL}/hotelManager/dash`,{params}).pipe(
+      tap(res=>{
+        if(res.success){
+          this.hotelManDash$.next(res.data);
+        }
+        this.is_loading.set(false);
+      }),
+      catchError(err => {
+        this.has_error.set(true);
+        this.is_loading.set(false);
+        return throwError(() => err)
+      })
+    );
   }
 
 

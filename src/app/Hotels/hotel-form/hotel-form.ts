@@ -14,7 +14,6 @@ import { ChatBox } from '../../chatAi/chat-box/chat-box';
 })
 export class HotelForm {
 
-  // 1. Defined a proper type/interface for searchData if possible
   searchData = { 
     location: '', 
     people: 1, 
@@ -26,12 +25,13 @@ export class HotelForm {
   private hotelservice = inject(Hotelservice);
   private authservice=inject(Authservice);
 
+  
+
   onSearch() {
     const startDate = new Date(this.searchData.start);
     const endDate = new Date(this.searchData.end);
     startDate.setHours(0, 0, 0, 0);
 
-    // Validation checks
     if (!this.searchData.location.trim()) {
       alert("Please enter a destination");
       return;
@@ -50,7 +50,6 @@ export class HotelForm {
 
     this.hotelservice.updateSearch({ ...this.searchData });
 
-    // Navigate to the hotels page
     this.authservice.currentUser.subscribe(res=>{
     
       

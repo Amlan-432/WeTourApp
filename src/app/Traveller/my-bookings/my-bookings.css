@@ -39,7 +39,7 @@
 }
 
 .btn-filter:hover, .btn-filter.active {
-  background: #17a2b8; /* Your teal accent color */
+  background: #17a2b8; 
   color: white;
   border-color: #17a2b8;
 }
@@ -88,4 +88,84 @@
   font-weight: 500;
   padding: 6px 12px;
   border-radius: 6px;
+}
+
+.btn-filter {
+  background-color: #212529;
+  color: #adb5bd;
+  border: 1px solid #343a40;
+  border-radius: 30px;
+  padding: 0.4rem 1.2rem;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+.btn-filter:hover {
+  background-color: #2c3034;
+  color: #fff;
+}
+.btn-filter.active {
+  background-color: #0dcaf0;
+  color: #212529;
+  font-weight: 600;
+  border-color: #0dcaf0;
+}
+
+.custom-card {
+  background-color: #1a1e21;
+  border: 1px solid #2d3238;
+  border-radius: 12px;
+}
+.hotel-thumb {
+  background-color: #2d3238;
+  padding: 8px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #0dcaf0;
+}
+
+.custom-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(4px);
+  z-index: 1050;
+}
+
+.custom-modal-content {
+  width: 100%;
+  max-width: 480px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  animation: fadeInModal 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.custom-textarea:focus {
+  background-color: rgba(255, 255, 255, 0.03);
+  color: #fff;
+  border-color: #0dcaf0;
+  box-shadow: 0 0 0 0.25rem rgba(13, 202, 240, 0.15);
+}
+
+.star-clickable {
+  cursor: pointer;
+  font-size: 24px;
+  transition: transform 0.1s ease;
+}
+.star-clickable:hover {
+  transform: scale(1.15);
+}
+
+@keyframes fadeInModal {
+  from {
+    opacity: 0;
+    transform: translateY(-15px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
