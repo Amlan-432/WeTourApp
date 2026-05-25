@@ -112,7 +112,6 @@ export class HotelForm {
     }
  
     const checkIn = new Date(this.searchData.start);
-    // Add 1 day to the check-in date
     checkIn.setDate(checkIn.getDate() + 1);
  
     const year = checkIn.getFullYear();
@@ -124,7 +123,7 @@ export class HotelForm {
   onCheckInChange() {
   if (this.searchData.start && this.searchData.end) {
     if (new Date(this.searchData.end) <= new Date(this.searchData.start)) {
-      this.searchData.end = ''; // Reset check-out if it's now invalid
+      this.searchData.end = ''; 
     }
   }
 }

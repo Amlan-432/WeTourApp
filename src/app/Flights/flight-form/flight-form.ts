@@ -60,7 +60,7 @@ export class FlightForm {
       from: ['', [Validators.required]],
       to: ['', [Validators.required]],
       date: ['', Validators.required],
-      people: [1, [Validators.required, Validators.min(1), Validators.max(9)]]
+      people: [1, [Validators.required, Validators.min(1), Validators.max(6)]]
     });
   }
 

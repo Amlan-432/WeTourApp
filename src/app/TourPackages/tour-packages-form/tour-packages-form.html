@@ -36,7 +36,7 @@
             <span class="material-icons fs-6 me-1">calendar_month</span> START DATE
           </label>
           <input type="date" [(ngModel)]="startDate"
-            class="form-control border-0 p-0 fw-bold fs-5 shadow-none bg-transparent">
+            class="form-control border-0 p-0 fw-bold fs-5 shadow-none bg-transparent"  [min]="getCurrentDate()">
         </div>
       </div>
 

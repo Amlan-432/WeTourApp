@@ -39,12 +39,27 @@ export class AdminService {
     );
   }
 
+  changeRole(userID:string,updatedRole:string):Observable<{statusCode:number,data:any[],message:string,success:boolean}>{
+    debugger;
+    this.isLoading.set(true);
+    const params = new HttpParams().set('user_id',userID).set('updatedRole',updatedRole);
+    return this.http.patch<{statusCode:number,data:any[],message:string,success:boolean}>(`${this.API_URL}/users`,{},{params}).pipe(
+      tap(res=>{
+        if(res.success){
+          this.isLoading.set(false);
+        }
+      }),
+     catchError(err => {
+      this.hasErrors = true;
+      this.isLoading.set(false);
+      return throwError(() => err);
+    }));
+  }
+
   getAllFlightsIns():Observable<{statusCode:number,data:any[],message:string,success:boolean}>{
     this.isLoading.set(true);
-    debugger;
     return this.http.get<{statusCode:number,data:any[],message:string,success:boolean}>(`${this.API_URL}/flight`).pipe(
       tap(flights=>{
-        debugger;
         if(flights.success){
           this.allFlightsIns$.next(flights.data);
         }
@@ -72,17 +87,14 @@ export class AdminService {
 
   getAllPackages(): Observable<{ statusCode: number, msg: string, data: any[], success: boolean }> {
   this.isLoading.set(true);
-  debugger;
   return this.http.get<{ statusCode: number, msg: string, data: any[], success: boolean }>(`${this.API_URL}/TourPackage`).pipe(
     tap(res => {
-      debugger;
       if (res.success) {
         this.allTourPackage$.next(res.data);
       }
       this.isLoading.set(false);
     }),
     catchError(err => {
-      debugger;
       this.hasErrors = true;
       this.isLoading.set(false);
       return throwError(() => err);

@@ -83,6 +83,14 @@ export class TourPackagesForm {
     });
   }
 
+    getCurrentDate(){
+    const date = new Date(Date.now());
+    const year = date.getFullYear();
+    const month = String(date.getMonth()+1).padStart(2,'0');
+    const day = date.getDate().toString().padStart(2,'0');
+    return `${year}-${month}-${day}`;
+  }
+
   ngOnDestroy() {
     if (this.searchSubscription) {
       this.searchSubscription.unsubscribe();

@@ -55,7 +55,7 @@
         <div class="col-md-2">
           <div class="form-floating custom-input-group">
             <span class="input-icon material-symbols-rounded">group</span>
-            <input type="number" class="form-control border-0 bg-light ps-5" id="ppl" placeholder="People" [(ngModel)]="searchData.people">
+            <input type="number" class="form-control border-0 bg-light ps-5" id="ppl" min="1" max="6" placeholder="People" [(ngModel)]="searchData.people">
             <label for="ppl" class="ms-4 text-muted inputlabel">People</label>
           </div>
         </div>

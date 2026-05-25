@@ -16,8 +16,6 @@ export class CreatePackage {
    router = inject(Router);
 
   packageForm!: FormGroup;
-
-  // Enums pulled explicitly from your Mongoose Schema limits
   travelModes = ['Flight', 'Train', 'Bus', 'Cruise'];
   statusOptions = ['Active', 'Draft', 'Archieved'];
 
@@ -42,10 +40,9 @@ export class CreatePackage {
         hotel_name: ['', Validators.required],
         star_rating: [3, [Validators.required, Validators.min(1), Validators.max(5)]],
         room_type: [''],
-        amenities: [''] // Text input tracked as a comma-separated string, split on submit
+        amenities: [''] 
       }),
 
-      // Nested Travel Object Block
       travel: this.fb.group({
         mode: ['Flight', Validators.required],
         departure_from: ['', Validators.required],
@@ -53,15 +50,13 @@ export class CreatePackage {
         carrier: [''],
         is_round_trip: [true]
       }),
-
-      // Nested Guide Object Block
       guide: this.fb.group({
         name: [''],
-        languages: [''], // Text input tracked as a comma-separated string, split on submit
+        languages: [''], 
         is_included: [true],
         guide_rating: [0, [Validators.min(0), Validators.max(5)]]
       })
-    }, { validators: this.dateTimelineValidator }); // Interlocks baseline timeline targets
+    }, { validators: this.dateTimelineValidator }); 
   }
 
 //date validator
@@ -75,9 +70,7 @@ export class CreatePackage {
     return null;
   }
 
-  /**
-   * Process and transform raw user parameters into strict arrays matching Mongoose shapes
-   */
+
   onSubmit(): void {
     if (this.packageForm.invalid) {
       this.packageForm.markAllAsTouched();
@@ -85,8 +78,6 @@ export class CreatePackage {
     }
 
     const rawValue = this.packageForm.value;
-    
-    // Transform text inputs containing commas into strict string[] values for MongoDB
     const schemaCompliantPayload = {
       ...rawValue,
       accommodation: {
@@ -104,7 +95,6 @@ export class CreatePackage {
     };
 
     console.log('Processed Form Payload ready for your backend API:', schemaCompliantPayload);
-    // Call your backend service save method here...
     this.packService.addPackage(schemaCompliantPayload).subscribe({
       next:(res)=>{
         if(res){
@@ -120,4 +110,34 @@ export class CreatePackage {
   goBack(): void {
     this.router.navigateByUrl('/landingDash/packageManDash');
   }
+
+  getCurrentDate(){
+    const date = new Date(Date.now());
+    const year = date.getFullYear();
+    const month = String(date.getMonth()+1).padStart(2,'0');
+    const day = date.getDate().toString().padStart(2,'0');
+    return `${year}-${month}-${day}`;
+  }
+
+    getMinCheckoutDate(): string {
+    if (!this.packageForm.value.start_date) {
+      return this.getCurrentDate();
+    }
+ 
+    const checkIn = new Date(this.packageForm.value.start_date);
+    checkIn.setDate(checkIn.getDate() + 1);
+ 
+    const year = checkIn.getFullYear();
+    const month = String(checkIn.getMonth() + 1).padStart(2, '0');
+    const day = String(checkIn.getDate()).padStart(2, '0');
+ 
+    return `${year}-${month}-${day}`;
+  }
+  onCheckInChange() {
+  if (this.packageForm.value.start_date && this.packageForm.value.end_date) {
+    if (new Date(this.packageForm.value.end_date) <= new Date(this.packageForm.value.start_date)) {
+      this.packageForm.value.end_date = ''; 
+    }
+  }
+}
 }
