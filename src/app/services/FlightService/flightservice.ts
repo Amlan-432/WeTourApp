@@ -97,9 +97,9 @@ export class Flightservice {
   }
 
 
-  bookFlight(user_Id:string,template_Id:string,date:string,total_price:number,passengers:any[]):Observable<{ statusCode: number, data: any[], msg: string, success: boolean }>{
+  bookFlight(template_Id:string,date:string,total_price:number,passengers:any[]):Observable<{ statusCode: number, data: any[], msg: string, success: boolean }>{
     this.isLoading.set(true);
-    return this.http.post<{ statusCode: number, data: any[], msg: string, success: boolean }>(`${this.API_URL_Traveller}/flights`,{user_Id,template_Id,date,total_price,passengers}).pipe(
+    return this.http.post<{ statusCode: number, data: any[], msg: string, success: boolean }>(`${this.API_URL_Traveller}/flights`,{template_Id,date,total_price,passengers}).pipe(
       tap(res=>{
         if(res.success){
           this.bookFlightdetails$.next(res.data);
@@ -129,7 +129,7 @@ export class Flightservice {
 
   getFlightBookedDetails():Observable<{ statusCode: number, data: any[], msg: string, success: true }>{
     this.isLoading.set(true);
-    return this.http.get<{ statusCode: number, data: any[], msg: string, success: true }>(`${this.API_URL_Traveller}/flight/bookingDetails`).pipe(
+    return this.http.get<{ statusCode: number, data: any[], msg: string, success: true }>(`${this.API_URL_Traveller}/flight/bookingDetails`,{ withCredentials: true }).pipe(
       tap(res=>{
         if(res.success){
           this.userAllbfd$.next(res.data);

@@ -41,7 +41,7 @@
         </a>
 
         <div class="ms-lg-4 mt-3 mt-lg-0">
-          @if(!isLoggedIn()){
+          @if(!authservice.isLoggedin){
           <button class="btn btn-login-gradient px-4" [routerLink]="['/login']">Login</button>
           } @else {
           <div class="dropdown custom-profile-dropdown">

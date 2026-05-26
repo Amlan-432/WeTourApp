@@ -1,18 +1,19 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { Tokenservice } from '../services/tokenService/tokenservice';
+import { Authservice } from '../services/AuthService/authservice';
+import { firstValueFrom } from 'rxjs';
 
-export const accessServiceGuard: CanActivateFn = (route, state) => {
+export const accessServiceGuard: CanActivateFn = async (route, state) => {
 
   
-  const tokenService=inject(Tokenservice);
-  const token = localStorage.getItem('WeTourjwt_token');
+  const authService = inject(Authservice);
   const router = inject(Router);
+  const user = await firstValueFrom(authService.currentUser);
   
-  if(token){
-    const decodedtoken = tokenService.tokenDecode(token);
+  if(user){
     
-    if(decodedtoken.user.role==='TRAVELLER'){
+    if(user.role==='TRAVELLER'){
       return true;
     }
     alert("u dont have access");

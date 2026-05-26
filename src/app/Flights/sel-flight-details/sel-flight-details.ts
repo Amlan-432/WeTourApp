@@ -145,16 +145,14 @@ export class SelFlightDetails {
         }
       });
 
-      const token = localStorage.getItem('WeTourjwt_token')??"";
-      const payload = this.tokenService.tokenDecode(token);
-      const user_Id = payload.user?.user_id||"";
+      
       const template_id = this.flight()?._id||"";
       const fdate = this.flightService.fdate();
       const total_price = this.totalPrice();
       console.log(total_price);
       
 
-      this.flightService.bookFlight(user_Id,template_id,fdate,total_price,finalPassengers).subscribe({
+      this.flightService.bookFlight(template_id,fdate,total_price,finalPassengers).subscribe({
         next:res=>{
           if(res.success){
             this.authService.currentUser.subscribe(res => {

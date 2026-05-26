@@ -13,10 +13,26 @@ export class AdminDashboard {
   router=inject(Router);
   private authService = inject(Authservice);
 
-    onLogout(){
-    localStorage.removeItem('WeTourjwt_token');
-    this.authService.currentUser.next(null);
-    this.router.navigateByUrl('');
-  }
+  onLogout() {
+  this.authService.logout().subscribe({
+    next: (res) => {
+      console.log("Logged out successfully on backend:", res);
+      this.authService.currentUser.next(null);
+      this.authService.isLoggedin = false;
+       this.authService.xsrf().subscribe({
+        next: () => {
+          console.log("Fresh guest CSRF token initialized for the next user.");
+          this.router.navigateByUrl('/login'); 
+        }
+      }); 
+    },
+    error: (err) => {
+      console.error("Logout failed:", err);
+      this.authService.currentUser.next(null);
+      this.authService.isLoggedin = false;
+      this.router.navigateByUrl('/login');
+    }
+  });
+}
 
 }

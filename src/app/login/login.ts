@@ -60,12 +60,13 @@ export class Login {
 
   onSubmit() {
     if (this.loginForm.valid) {
-      // debugger;
+      debugger;
       this.isLoading.set(true);
       setTimeout(()=>{
         this.authService.loginUser(this.loginForm.value.email,this.loginForm.value.password).subscribe({
           next:res=>{
-            if(res.success && res.data.token){
+            if(res.success){
+              debugger;
                 this.router.navigateByUrl('').then(()=>{this.isLoading.set(false)});
               }
           },

@@ -1,15 +1,15 @@
 import { inject } from '@angular/core';
 import { CanMatchFn } from '@angular/router';
 import { Tokenservice } from '../services/tokenService/tokenservice';
+import { Authservice } from '../services/AuthService/authservice';
+import { firstValueFrom } from 'rxjs';
 
-export const adminGuard: CanMatchFn = (route, segments) => {
-  const tokenService=inject(Tokenservice);
-  const token = localStorage.getItem('WeTourjwt_token');
+export const adminGuard: CanMatchFn =async  (route, segments) => {
+  const authService = inject(Authservice);
+  const user = await firstValueFrom(authService.currentUser);
   
-  if(token){
-    const decodedtoken = tokenService.tokenDecode(token);
-    
-    if(decodedtoken.user.role==='ADMIN'){
+  if(user){
+    if(user.role==='ADMIN'){
       return true;
     }
   }
