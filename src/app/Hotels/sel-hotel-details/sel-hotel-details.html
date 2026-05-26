@@ -130,7 +130,6 @@
               "{{review.comment}}"
             </p>
 
-            <!-- Sub-ratings Breakdown (Optional) -->
             <div class="d-flex flex-wrap gap-2 mt-2">
               <span *ngFor="let item of review.rating | keyvalue" class="badge bg-light text-muted fw-normal border">
                 {{item.key}}: {{item.value}}
@@ -139,7 +138,6 @@
           </div>
         </div>
 
-        <!-- Empty State -->
         <ng-template #noReviews>
           <div class="text-center py-4">
             <span class="material-symbols-rounded fs-1 text-light mb-2">rate_review</span>

@@ -73,7 +73,6 @@ export class TourPackagesSearched {
   }
 
 
-  // Appends current input row values into the formatted array context 
   addTraveller() {
     if (!this.formName || !this.formEmail || !this.formGender || !this.formIdNumber) {
       alert('Please fill out all companion information fields before adding.');
@@ -99,15 +98,13 @@ export class TourPackagesSearched {
     this.formIdNumber = '';
   }
 
-  // Slice out target element indexing positional changes
   removeTraveller(index: number) {
     this.travellersList.update(prev => prev.filter((_, i) => i !== index));
   }
 
-  // Clean context clear helper when modal close exits
   closeModal() {
     this.selectedPackage.set({});
-    this.travellersList.set([]); // Flush list
+    this.travellersList.set([]); 
   }
 
 }

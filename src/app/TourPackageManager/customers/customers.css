@@ -7,7 +7,7 @@
     --primary-color: #4f46e5;
     --primary-light: #eef2ff;
     
-    /* Status Colors */
+ 
     --status-confirmed-bg: #ecfdf5;
     --status-confirmed-text: #065f46;
     --status-cancelled-bg: #fef2f2;
@@ -39,7 +39,7 @@
     overflow: hidden;
   }
 
-  /* Header Panel Styling */
+
   .ledger-header {
     display: flex;
     justify-content: space-between;
@@ -92,7 +92,7 @@
     font-weight: 600;
   }
 
-  /* Table Custom Layout Architecture */
+ 
   .table-wrapper {
     overflow-x: auto;
   }
@@ -129,14 +129,13 @@
     background-color: #f8fafc;
   }
 
-  /* Index Data Styling */
+
   .index-num {
     font-weight: 700;
     color: #94a3b8;
     font-size: 0.85rem;
   }
 
-  /* Guest Profile Layout */
   .guest-profile {
     display: flex;
     align-items: center;
@@ -171,7 +170,6 @@
     color: var(--text-muted);
   }
 
-  /* Contact Stack Layout */
   .contact-stack, .date-stack, .package-info {
     display: flex;
     flex-direction: column;
@@ -211,14 +209,14 @@
     font-weight: 500;
   }
 
-  /* Pricing Presentation Badge */
+
   .price-badge {
     font-weight: 700;
     color: var(--text-main);
     font-size: 1.05rem;
   }
 
-  /* Smart Status & Payment Component Matrix */
+
   .status-cell-wrapper {
     display: flex;
     flex-direction: column;
@@ -245,7 +243,7 @@
     border-radius: 50%;
   }
 
-  /* Dyn-Colors Driven by data attributes */
+
   .badge-status[data-status="confirmed"] { background: var(--status-confirmed-bg); color: var(--status-confirmed-text); }
   .badge-status[data-status="confirmed"] .status-dot { background: var(--status-confirmed-text); }
 
@@ -268,7 +266,6 @@
   .badge-payment[data-payment="paid"] { background: var(--payment-paid-bg); color: var(--payment-paid-text); }
   .badge-payment[data-payment="refunded"] { background: var(--payment-refunded-bg); color: var(--payment-refunded-text); }
 
-  /* Dim Row System for Cancelled Entries */
   .row-cancelled td {
     opacity: 0.65;
   }
@@ -277,7 +274,6 @@
     color: var(--text-muted);
   }
 
-  /* Loader Box styling */
   .loading-box {
     display: flex;
     flex-direction: column;
@@ -299,7 +295,6 @@
 
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* Empty State Illustration view styling */
   .empty-state-card {
     text-align: center;
     background: var(--bg-surface);

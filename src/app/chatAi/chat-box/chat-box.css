@@ -1,4 +1,4 @@
-/* Floating Circular Ball */
+
 .chat-launcher {
   position: fixed;
   bottom: 30px;
@@ -25,14 +25,13 @@
   background: #222;
 }
 
-/* Chat Box */
 .wetour-chat-container {
   position: fixed;
-  bottom: 105px; /* Sits exactly above the ball */
+  bottom: 105px;
   right: 30px;
   width: 380px;
   height: 550px;
-  background: #121212; /* Premium Dark Background */
+  background: #121212; 
   border-radius: 20px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
   display: flex;
@@ -51,7 +50,6 @@
   pointer-events: auto;
 }
 
-/* Header with Online Status */
 .chat-header {
   padding: 20px;
   background: #1f1f1f;
@@ -71,7 +69,6 @@
   box-shadow: 0 0 8px #28a745;
 }
 
-/* Messages Area */
 .chat-messages {
   flex: 1;
   padding: 20px;
@@ -109,7 +106,6 @@
   border-bottom-left-radius: 4px;
 }
 
-/* Input Area */
 .chat-input-area {
   padding: 15px;
   background: #1f1f1f;

@@ -1,6 +1,4 @@
-/* ==========================================================================
-   1. NATIVE SCROLLABLE PAGE FRAMEWORK
-   ========================================================================== */
+
 .page-wrapper {
   width: 100%;
   max-width: 1000px;
@@ -9,7 +7,7 @@
   box-sizing: border-box;
 }
 
-/* Form Container Floating Canvas Sheet */
+
 .form-container-card {
   background: #ffffff;
   border: 1px solid #e2e8f0;
@@ -18,7 +16,7 @@
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
 }
 
-/* Form Header Title Section */
+
 .form-header {
   display: flex;
   align-items: center;
@@ -56,9 +54,7 @@
   color: #64748b;
 }
 
-/* ==========================================================================
-   2. SECTION LAYOUT STRUCTURE
-   ========================================================================== */
+
 .form-section {
   margin-bottom: 32px;
   display: flex;
@@ -83,9 +79,7 @@
   color: #64748b;
 }
 
-/* ==========================================================================
-   3. RESPONSIVE INTUITIVE INPUT GRID FORM LINES
-   ========================================================================== */
+
 .form-row-grid {
   display: flex;
   gap: 20px;
@@ -98,7 +92,7 @@
   min-width: 0;
 }
 
-/* Aligns error inputs to match layout flow perfectly */
+
 .match-button-height {
   align-items: flex-start;
 }
@@ -125,7 +119,6 @@
   font-size: 12px;
 }
 
-/* Input Fields Functional Decorators */
 .control-input {
   padding: 10px 14px;
   border: 1px solid #cbd5e1;
@@ -142,9 +135,7 @@
   box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
 }
 
-/* ==========================================================================
-   4. INVENTORY NESTED BLOCKS CONFIGURATION
-   ========================================================================== */
+
 .highlight-section-bg {
   background: #f8fafc;
   border: 1px solid #e2e8f0;
@@ -186,9 +177,7 @@
   border-color: #6366f1;
 }
 
-/* ==========================================================================
-   5. FIELD MESSAGES & ACTION FOOTER
-   ========================================================================== */
+
 .error-msg {
   color: #ef4444;
   font-size: 12px;

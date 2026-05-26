@@ -28,7 +28,6 @@
   border-radius: 8px;
 }
 
-/* Table Card */
 .table-card {
   border-radius: 15px;
   overflow: hidden;
@@ -62,7 +61,6 @@
 .type-pill.hotel { background: #f3e5f5; color: #7b1fa2; }
 .type-pill.package { background: #e8f5e9; color: #388e3c; }
 
-/* Status Badges */
 .status-badge {
   border: none;
   border-radius: 6px;

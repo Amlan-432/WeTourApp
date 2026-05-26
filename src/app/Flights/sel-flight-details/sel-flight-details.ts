@@ -26,8 +26,6 @@ export class SelFlightDetails {
   selectedClassName = signal<string>('');
   selectedSeats = signal<string[]>([]);
 
-
-  // --- Reactive Form for Passengers ---
   bookingForm: FormGroup = this.fb.group({
     passengers: this.fb.array([])
   });

@@ -1,4 +1,4 @@
-/* Color Palette */
+
 :root {
   --brand-cream: #d4a373;
   --brand-brown: #6d4c41;
@@ -8,7 +8,7 @@
 
 .text-brown { color: var(--brand-brown); }
 
-/* Sidebar Filter Card */
+
 .filter-card {
   background: white;
   border: 1px solid #eee !important;
@@ -32,7 +32,7 @@
   opacity: 0.9;
 }
 
-/* Hotel Card Styling */
+
 .hotel-list-card {
   border-radius: 24px !important;
   box-shadow: 0 10px 30px rgba(0,0,0,0.05) !important;
@@ -84,7 +84,7 @@
 
 .favorite-icon:hover { color: #e63946; }
 
-/* View Details Button */
+
 .btn-view-details {
   background-color: var(--brand-orange);
   color: rgb(234, 68, 68);
@@ -96,7 +96,7 @@
   font-size: 14px;
 }
 
-/* Login Pill */
+
 .btn-login-pill {
   background: #333;
   color: white;
@@ -105,5 +105,5 @@
   font-weight: 600;
 }
 
-/* Range Thumb */
+
 .custom-range::-webkit-slider-thumb { background: var(--brand-brown); }

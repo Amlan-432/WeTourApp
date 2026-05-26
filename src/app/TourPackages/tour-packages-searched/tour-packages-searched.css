@@ -1,4 +1,4 @@
-/* Container Rounding */
+
 .rounded-card {
   border-radius: 12px !important;
 }
@@ -11,7 +11,6 @@
   border-radius: 8px;
 }
 
-/* Custom Price Badge[cite: 1] */
 .badge-pill-price {
   background-color: #fff9f0;
   color: #d87d00;
@@ -20,7 +19,6 @@
   font-weight: 600;
 }
 
-/* Animations */
 .hover-up {
   transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
@@ -38,7 +36,6 @@
   transform: scale(1.1);
 }
 
-/* Utilities */
 .line-clamp-2 {
   display: -webkit-box;
   
@@ -46,7 +43,6 @@
   overflow: hidden;
 }
 
-/* Brand Button Styling[cite: 1] */
 .btn-voyage-book {
   background: #d87d00;
   color: white;

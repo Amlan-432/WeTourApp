@@ -119,10 +119,10 @@ export class Stats implements OnInit, AfterViewInit {
         plugins: {
           legend: { display: false },
           tooltip: {
-            backgroundColor: '#ffffff', // White tooltip
+            backgroundColor: '#ffffff', 
             titleColor: '#333333',
             bodyColor: '#0dcaf0',
-            borderColor: '#e9ecef', // Light border
+            borderColor: '#e9ecef', 
             borderWidth: 1,
             padding: 12,
             displayColors: false,
@@ -132,8 +132,8 @@ export class Stats implements OnInit, AfterViewInit {
         scales: {
           y: {
             beginAtZero: true,
-            grid: { color: 'rgba(0, 0, 0, 0.05)' }, // Light grey grid lines
-            ticks: { color: '#6c757d', callback: (value) => '$' + value } // Dark grey text
+            grid: { color: 'rgba(0, 0, 0, 0.05)' },
+            ticks: { color: '#6c757d', callback: (value) => '$' + value } 
           },
           x: {
             grid: { display: false },

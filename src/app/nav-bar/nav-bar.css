@@ -1,4 +1,4 @@
-/* Base Styles */
+
 body {
   font-family: 'Poppins', sans-serif;
 }
@@ -10,16 +10,14 @@ body {
   z-index: 2000;
 }
 
-
-/* Logo Styling */
 .logo-container {
-  background-color: #fdf8f3; /* Very light cream background */
+  background-color: #fdf8f3; 
   width: 45px;
   height: 45px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 12px; /* Rounded square look */
+  border-radius: 12px; 
   transition: all 0.3s ease;
 }
 
@@ -36,30 +34,26 @@ body {
   transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-/* Hover effect for the brand */
 .navbar-brand:hover .logo-container {
   
-  transform: rotate(-10deg); /* Playful tilt */
+  transform: rotate(-10deg); 
 }
 
 .navbar-brand:hover .logo-icon {
   color: #ffffff;
 }
 
-/* If you use an actual image instead */
 .brand-img {
   height: 40px;
   width: auto;
   object-fit: contain;
 }
 
-/* Ensure the brand text stays centered with the logo */
 .brand-text-wrapper {
   display: flex;
   align-items: baseline;
 }
 
-/* Brand Styles */
 .brand-cursive {
   font-family: 'Dancing Script', cursive !important;
   color: #d4a373;
@@ -75,7 +69,6 @@ body {
   color: #333;
 }
 
-/* Nav Links */
 .custom-nav-link {
   position: relative;
   font-weight: 500;
@@ -98,7 +91,6 @@ body {
   transform: translateY(-2px);
 }
 
-/* The Underline Animation */
 .custom-nav-link::after {
   content: '';
   position: absolute;
@@ -122,7 +114,6 @@ body {
   color: #d4a373 !important;
 }
 
-/* Professional Button */
 .btn-login-gradient {
   background-color: #d4a373;
   color: white;
@@ -154,20 +145,18 @@ body {
   color: #666;
 }
 
-/* Styling for the Material Icon Avatar */
 .avatar-icon {
-  font-size: 40px; /* Size of the avatar */
+  font-size: 40px;
   color: #555;
   transition: color 0.2s ease-in-out;
   vertical-align: middle;
 }
 
 .avatar-icon:hover {
-  color: #0d6efd; /* Primary color on hover */
+  color: #0d6efd;
   cursor: pointer;
 }
 
-/* Remove the Bootstrap dropdown arrow */
 .no-caret::after {
   display: none !important;
 }
@@ -176,13 +165,12 @@ body {
   padding: 0.6rem 1.2rem;
 }
 
-/* Mobile Adjustments */
 @media (max-width: 991.98px) {
   .navbar-nav {
     padding: 1rem 0;
   }
   .custom-nav-link::after {
-    display: none; /* Hide underline on mobile for cleaner list */
+    display: none; 
   }
   .custom-nav-link {
     padding: 0.8rem 0 !important;

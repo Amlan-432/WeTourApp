@@ -33,7 +33,6 @@ export class ChatBox {
   }
   }
 
-  // Auto-scroll to bottom when new messages arrive
   ngAfterViewChecked() {
     this.scrollToBottom();
   }

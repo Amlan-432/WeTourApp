@@ -1,4 +1,4 @@
-/* Base Layout */
+
 .admin-container {
   display: flex;
   min-height: 100vh;
@@ -6,12 +6,11 @@
   background-color: #f4f7fe !important;
 }
 
-/* Sidebar Styling - Locked to the left */
 .sidebar {
-  width: 280px;         /* Fixed width for sidebar */
+  width: 280px;        
   min-width: 280px;
   height: 100vh;
-  position: sticky;      /* Keeps sidebar visible while scrolling content */
+  position: sticky;      
   top: 0;
   background: white;
   display: flex;
@@ -21,13 +20,13 @@
 }
 
 .logo-container {
-  background-color: #fdf8f3; /* Very light cream background */
+  background-color: #fdf8f3; 
   width: 45px;
   height: 45px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 12px; /* Rounded square look */
+  border-radius: 12px; 
   transition: all 0.3s ease;
 }
 
@@ -39,9 +38,6 @@
   transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-
-
-/* Sidebar Navigation - Link styles */
 .sidebar-nav .nav-link {
   color: #a3aed1;
   font-weight: 500;
@@ -52,32 +48,30 @@
   align-items: center;
   gap: 12px;
   transition: all 0.3s ease;
-  text-decoration: none; /* Remove underline */
+  text-decoration: none; 
   cursor: pointer;
 }
 
-/* Angular Active Class Hook 
-   This matches the [routerLinkActive]="active-link" in your HTML */
 .sidebar-nav .nav-link.active-link {
   background: linear-gradient(135deg, #8b5cf6, #6366f1) !important;
   color: white !important;
   box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
 }
 
-/* Ensure icons turn white when active */
+
 .sidebar-nav .nav-link.active-link .material-icons-round {
   color: white;
 }
 
-/* Content Area Fix */
+
 .content-area {
-  flex-grow: 1;         /* Takes up all remaining width on the right */
+  flex-grow: 1;      
   background-color: #f8f9fa;
   padding: 25px;
-  min-width: 0;         /* Prevents content from breaking flexbox layout */
+  min-width: 0;         
 }
 
-/* Typography override for the stats dashboard */
+
 .brand-cursive {
   font-family: 'Dancing Script', cursive;
   font-size: 1.8rem;
@@ -90,10 +84,10 @@
   font-weight: 700;
 }
 
-/* Header & Banner Styles */
+
 .hero-banner {
   background: linear-gradient(135deg, #8b5cf6, #6366f1);
-  border-radius: 20px; /* Rounded corners like your screenshot */
+  border-radius: 20px; 
   padding: 40px;
   color: white;
   position: relative;
@@ -101,14 +95,13 @@
   margin-bottom: 24px;
 }
 
-/* Responsive adjustment */
 @media (max-width: 992px) {
   .sidebar {
     width: 80px;
     padding: 24px 8px;
   }
   .brand-text, .nav-link span:not(.material-icons-round) {
-    display: none; /* Hide text on small screens, show icons only */
+    display: none; 
   }
   .main-content {
     margin-left: 80px;

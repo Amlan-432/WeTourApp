@@ -4,7 +4,6 @@
   border-radius: 12px;
 }
 
-/* Search Box Styling */
 .search-box {
   position: relative;
   min-width: 250px;
@@ -28,7 +27,6 @@
   color: rgb(15, 15, 15);
 }
 
-/* Filter Buttons */
 .btn-filter {
   background: #2b2b2b;
   color: #aaa;
@@ -44,7 +42,6 @@
   border-color: #17a2b8;
 }
 
-/* Table Styling */
 .custom-table thead th {
   background: #252525;
   color: #888;

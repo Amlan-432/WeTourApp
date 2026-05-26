@@ -22,7 +22,6 @@
 
     .traveler-img {
       max-width: 300px;
-      /* Combines a subtle up/down bob with a slight forward tilt to simulate movement */
       animation: bobbing 0.8s infinite alternate ease-in-out;
     }
 

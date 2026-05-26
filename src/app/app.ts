@@ -18,7 +18,7 @@ export class App {
   constructor(private router: Router) {}
 
   ngOnInit() {
-    this.updateNavbarVisibility(this.router.url); // Initial check for page refreshes
+    this.updateNavbarVisibility(this.router.url); 
 
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
@@ -29,8 +29,6 @@ export class App {
   }
 
   private updateNavbarVisibility(url: string) {
-    // This looks for "landingDash" anywhere in the final URL
-    // Since your URL is /landingDash/admin, this will return true and hide the nav
     const isDashboard = url.includes('admin')|| url.includes('hotelManager') || url.includes('packageManDash') ;
     this.showNavbar = !isDashboard;
   }

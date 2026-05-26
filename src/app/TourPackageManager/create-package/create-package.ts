@@ -35,7 +35,6 @@ export class CreatePackage {
       max_capacity: [20, [Validators.required, Validators.min(1)]],
       status: ['Active', Validators.required],
 
-      // Nested Accommodation Object Block
       accommodation: this.fb.group({
         hotel_name: ['', Validators.required],
         star_rating: [3, [Validators.required, Validators.min(1), Validators.max(5)]],
@@ -59,7 +58,6 @@ export class CreatePackage {
     }, { validators: this.dateTimelineValidator }); 
   }
 
-//date validator
   private dateTimelineValidator(group: FormGroup): { [key: string]: boolean } | null {
     const start = group.get('start_date')?.value;
     const end = group.get('end_date')?.value;

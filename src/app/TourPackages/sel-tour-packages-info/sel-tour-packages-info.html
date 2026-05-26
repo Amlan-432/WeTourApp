@@ -9,11 +9,9 @@
   <div class="container py-5">
   <div class="row justify-content-center">
     <div class="col-md-9 col-lg-8">
-      
-      <!-- Main Voucher Container Card -->
+
       <div class="card border-0 shadow-lg rounded-3 overflow-hidden">
-        
-        <!-- Header Banner Block -->
+
         <div class="card-header border-0 p-4 text-white d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3" 
              style="background: linear-gradient(135deg, #1e3a8a, #2563eb);">
           <div>
@@ -35,19 +33,15 @@
           </div>
         </div>
 
-        <!-- Main Content Body -->
         <div class="card-body p-4 bg-white">
-          
-          <!-- Info Details Segment Matrix -->
+
           <div class="row g-4 mb-4">
-            
-            <!-- Left Column: Flight & Hotel Itinerary Details -->
+ 
             <div class="col-sm-6 border-end-sm">
               <h6 class="text-uppercase tracking-widest text-muted fw-bold small border-bottom pb-2 mb-3">
                 Itinerary Parameters
               </h6>
-              
-              <!-- Flight Sub-Node -->
+
               <div class="d-flex align-items-start mb-3" *ngIf="confirmedPackageDetails()?.package_id?.travel">
                 <i class="material-icons text-primary me-3 mt-1">flight_takeoff</i>
                 <div>
@@ -61,7 +55,6 @@
                 </div>
               </div>
 
-              <!-- Hotel Sub-Node -->
               <div class="d-flex align-items-start mb-3" *ngIf="confirmedPackageDetails()?.package_id?.accommodation">
                 <i class="material-icons text-primary me-3 mt-1">hotel</i>
                 <div>
@@ -75,7 +68,6 @@
                 </div>
               </div>
 
-              <!-- Scheduled Timeline Node -->
               <div class="d-flex align-items-start mb-3" *ngIf="confirmedPackageDetails()?.package_id?.start_date">
                 <i class="material-icons text-primary me-3 mt-1">date_range</i>
                 <div>
@@ -87,7 +79,6 @@
                 </div>
               </div>
 
-              <!-- Activities Node -->
               <div class="d-flex align-items-start" *ngIf="confirmedPackageDetails()?.package_id?.activities">
                 <i class="material-icons text-primary me-3 mt-1">explore</i>
                 <div>
@@ -99,13 +90,13 @@
               </div>
             </div>
 
-            <!-- Right Column: Status & Metadata Verification Metrics -->
+
             <div class="col-sm-6">
               <h6 class="text-uppercase tracking-widest text-muted fw-bold small border-bottom pb-2 mb-3">
                 Status Matrix
               </h6>
 
-              <!-- Reservation Status -->
+
               <div class="d-flex align-items-center mb-3">
                 <i class="material-icons text-primary me-3">verified</i>
                 <div>
@@ -117,7 +108,6 @@
                 </div>
               </div>
 
-              <!-- Payment Status -->
               <div class="d-flex align-items-center mb-3">
                 <i class="material-icons text-primary me-3">payment</i>
                 <div>
@@ -130,7 +120,7 @@
                 </div>
               </div>
 
-              <!-- Timestamp -->
+
               <div class="d-flex align-items-start">
                 <i class="material-icons text-primary me-3 mt-1">schedule</i>
                 <div>
@@ -144,7 +134,7 @@
 
           </div>
 
-          <!-- Passenger Manifest Section -->
+
           <div class="mt-4" *ngIf="confirmedPackageDetails()?.travellers?.length > 0">
             <h6 class="text-uppercase tracking-widest text-muted fw-bold small border-bottom pb-2 mb-3">
               Manifest Verification Particulars
@@ -185,7 +175,7 @@
 
         </div>
 
-        <!-- Financial Summary Bottom Accent Bar -->
+
         <div class="card-footer p-4 border-0 d-flex justify-content-between align-items-center" 
              style="background-color: #f8fafc; border-top: 1px solid #e2e8f0 !important;">
           <div class="d-flex align-items-center">

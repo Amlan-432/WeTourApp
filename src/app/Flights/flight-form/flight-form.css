@@ -104,7 +104,6 @@
 
 .feature-icon span { font-size: 30px; }
 
-/* Existing Nav styles retained... */
 .brand-cursive {
     font-family: 'Dancing Script', cursive !important;
     color: #d4a373;
@@ -134,8 +133,6 @@
 .category-btn:hover {
   background: #eee;
 }
-
-/* Input Icon Positioning */
 .custom-input-group {
   position: relative;
 }
@@ -153,5 +150,5 @@
               url(../../../../public/assets/wetourFlight.jpg);
   background-size: cover;
   background-position: center;
-  padding-top: 50px; /* Adjust this to move the card higher/lower */
+  padding-top: 50px; 
 }

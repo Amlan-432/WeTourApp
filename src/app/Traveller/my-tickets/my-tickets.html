@@ -29,7 +29,6 @@
               </div>
               <div>
                 <span class="text-secondary small d-block">STATUS</span>
-                <!-- Dynamic Status Badge -->
                 <span class="badge rounded-pill" 
                   [ngClass]="{
                     'bg-success-subtle text-success': booking.booking_status === 'Confirmed',
@@ -42,7 +41,6 @@
             </div>
 
             <div class="text-end">
-              <!-- Cancel Button for the whole PNR -->
               @if (booking.booking_status !== 'Cancelled') {
                 <button class="btn btn-outline-danger btn-sm d-flex align-items-center gap-2 px-3" 
                         (click)="cancelBooking(booking.pnr_number)">
@@ -57,12 +55,10 @@
                 {{ booking.passengers.length }} Passenger(s)
               </div>
             </div>
-  
-            <!-- Iterate through each passenger in this booking -->
+
             @for (passenger of booking.passengers; track passenger?.ticket_number) {
             <div class="ticket-card card flex-row mb-3 border-0 overflow-hidden">
-  
-              <!-- Main Ticket Body -->
+
               <div class="ticket-main p-4 flex-grow-1 bg-secondary bg-opacity-10">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                   <span class="airline-name fw-bold text-info fs-5">
@@ -114,8 +110,7 @@
                   </div>
                 </div>
               </div>
-  
-              <!-- Ticket Stub -->
+
               <div class="ticket-stub p-4 text-center border-start border-dark border-dashed bg-secondary bg-opacity-25"
                 style="min-width: 150px;">
                 <label class="text-secondary small d-block">GATE</label>

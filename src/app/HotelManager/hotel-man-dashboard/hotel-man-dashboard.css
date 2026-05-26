@@ -1,5 +1,5 @@
 :host {
-  /* Consolidated Variables */
+
   --primary-gradient: linear-gradient(90deg, #7b61ff 0%, #6345ed 100%);
   --sidebar-width: 280px;
   --bg-main: #f4f7fe;
@@ -10,7 +10,6 @@
   --font-brand: 'Dancing Script', cursive;
 }
 
-/* Layout Container */
 .admin-container {
   display: flex;
   height: 100vh;
@@ -18,7 +17,6 @@
   background-color: var(--bg-main);
 }
 
-/* Sidebar Core */
 .sidebar {
   width: var(--sidebar-width);
   min-width: var(--sidebar-width);
@@ -33,16 +31,16 @@
   box-sizing: border-box;
 }
 
-/* Branding Section */
+
 
 .logo-container {
-  background-color: #fdf8f3; /* Very light cream background */
+  background-color: #fdf8f3; 
   width: 45px;
   height: 45px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 12px; /* Rounded square look */
+  border-radius: 12px; 
   transition: all 0.3s ease;
 }
 
@@ -68,7 +66,7 @@
   letter-spacing: -0.5px;
 }
 
-/* Navigation Links */
+
 .sidebar-nav {
   flex-grow: 1;
 }
@@ -87,7 +85,7 @@
   cursor: pointer;
 }
 
-/* Hover and Active States */
+
 .sidebar-nav .nav-link:hover:not(.active-link) {
   background-color: var(--bg-hover);
   color: #7b61ff;
@@ -103,7 +101,6 @@
   font-size: 22px;
 }
 
-/* Footer / Logout Section */
 .sidebar-footer {
   border-top: 1px solid #f1f4f9;
   padding-top: 1rem;
@@ -124,10 +121,9 @@
   opacity: 0.8;
 }
 
-/* Content Area */
 .content-area {
   flex-grow: 1;
   overflow-y: auto;
   padding: 2.5rem;
-  min-width: 0; /* Prevents flexbox overflow issues */
+  min-width: 0; 
 }

@@ -1,4 +1,4 @@
-/* Color Palette Variables */
+
 :host {
   --primary: #2563eb;
   --primary-hover: #1d4ed8;
@@ -13,7 +13,7 @@
   --radius: 12px;
 }
 
-/* Structural & Header Layouts */
+
 .inventory-container {
   padding: 2rem;
   background-color: var(--bg-app);
@@ -27,14 +27,14 @@
 .inventory-header h2 { margin: 0; font-size: 1.75rem; font-weight: 700; }
 .subtitle { margin: 0.25rem 0 0; color: var(--text-muted); font-size: 0.95rem; }
 
-/* Dynamic Card Grid Layout */
+
 .hotel-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 1.5rem;
 }
 
-/* Beautiful Property Card Elements */
+
 .property-card {
   background: var(--bg-card);
   border-radius: var(--radius);
@@ -94,7 +94,7 @@
 }
 .loc .material-icons { font-size: 1.1rem; }
 
-/* Structured Inventory Data Table */
+
 .inventory-specs {
   background: #f8fafc;
   border-radius: 8px;
@@ -113,7 +113,7 @@
 .count-val { color: var(--text-main); font-weight: 600; }
 .price-val { font-weight: 700; color: var(--primary); }
 
-/* Amenities Tags */
+
 .amenities-tags {
   display: flex;
   flex-wrap: wrap;
@@ -129,7 +129,7 @@
   border-radius: 4px;
 }
 
-/* Flexbox Action Buttons Setup */
+
 .card-actions {
   display: flex;
   gap: 8px;
@@ -159,7 +159,7 @@
 .btn-success { background: var(--success); color: white; }
 .btn-success:hover { filter: brightness(0.9); }
 
-/* Modern Modal Overlay Styles */
+
 .modal-overlay {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;

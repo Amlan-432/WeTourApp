@@ -1,11 +1,9 @@
 .packages-wrapper { font-family: 'Noto Serif', serif; }
 .cursive-accent { font-family: 'Dancing Script', cursive; font-size: 1.4rem; color: #7b61ff; }
 
-/* Search Bar */
 .search-bar { border-radius: 12px; background: white; padding: 5px; }
 .search-bar input:focus { box-shadow: none; }
 
-/* Card Styling */
 .package-card {
   border-radius: 20px;
   transition: all 0.3s ease;
@@ -31,7 +29,6 @@
   box-shadow: 0 4px 10px rgba(123, 97, 255, 0.3);
 }
 
-/* Detail Boxes */
 .detail-box {
   background: #f8f9fa;
   padding: 10px;
@@ -44,7 +41,6 @@
 .detail-box label { font-size: 0.65rem; text-transform: uppercase; color: #999; margin: 0; display: block; }
 .detail-box h6 { font-size: 0.85rem; margin: 0; font-weight: 700; color: #333; }
 
-/* Progress Bar */
 .progress { background-color: #eee; border-radius: 10px; }
 .progress-bar { transition: width 1s ease-in-out; }
 
@@ -52,11 +48,9 @@
 .btn-outline-dark { border-radius: 12px; border-color: #ddd; }.packages-wrapper { font-family: 'Noto Serif', serif; }
 .cursive-accent { font-family: 'Dancing Script', cursive; font-size: 1.4rem; color: #7b61ff; }
 
-/* Search Bar */
 .search-bar { border-radius: 12px; background: white; padding: 5px; }
 .search-bar input:focus { box-shadow: none; }
 
-/* Card Styling */
 .package-card {
   border-radius: 20px;
   transition: all 0.3s ease;
@@ -82,7 +76,6 @@
   box-shadow: 0 4px 10px rgba(123, 97, 255, 0.3);
 }
 
-/* Detail Boxes */
 .detail-box {
   background: #f8f9fa;
   padding: 10px;
@@ -95,7 +88,6 @@
 .detail-box label { font-size: 0.65rem; text-transform: uppercase; color: #999; margin: 0; display: block; }
 .detail-box h6 { font-size: 0.85rem; margin: 0; font-weight: 700; color: #333; }
 
-/* Progress Bar */
 .progress { background-color: #85f86e; border-radius: 10px; }
 .progress-bar { transition: width 1s ease-in-out; }
 

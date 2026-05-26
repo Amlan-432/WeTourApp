@@ -65,7 +65,6 @@
   background-color: #cbd5e0;
 }
 
-/* Invalid state for password mismatch */
 .is-invalid {
   border-color: #e53e3e !important;
 }
@@ -76,7 +75,6 @@
   border-color: #e53e3e !important;
 }
 
-/* Custom Toast Styling */
 .custom-toast {
   position: fixed;
   top: 20px;
@@ -110,13 +108,11 @@
   color: #d4a373;
 }
 
-/* Input group error styling */
 .custom-input-group.border-danger .input-group-text {
   border-color: #e53e3e !important;
 }
 
 
-/* Error message text style */
 .error-msg {
   color: #e53e3e;
   font-size: 0.75rem;
@@ -126,7 +122,6 @@
   animation: fadeIn 0.3s ease-in;
 }
 
-/* Border styling for input groups when invalid */
 .is-invalid-group {
   border-color: #e53e3e !important;
 }
@@ -140,10 +135,10 @@
   border-color: #e53e3e !important;
 }
 
-/* Input error state */
+
 .form-control.is-invalid {
   border-color: #e53e3e !important;
-  background-image: none; /* Removes the default bootstrap exclamation icon if not wanted */
+  background-image: none; 
 }
 
 @keyframes fadeIn {

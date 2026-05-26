@@ -33,9 +33,6 @@ export class Login {
     });
   }
 
-
-
-  // Function to generate random 6-character string
   generateNewCaptcha() {
     const chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     let result = '';
@@ -43,14 +40,12 @@ export class Login {
       result += chars.charAt(Math.floor(Math.random() * chars.length));
     }
     this.generatedCaptcha = result;
-    
-    // Clear the input field when a new captcha is generated
+
     if (this.loginForm) {
       this.loginForm.get('captcha')?.reset();
     }
   }
 
-  // Custom Validator: Checks if input matches generated string
   validateCaptcha(control: AbstractControl): ValidationErrors | null {
     if (control.value && control.value !== this.generatedCaptcha) {
       return { captchaMismatch: true };

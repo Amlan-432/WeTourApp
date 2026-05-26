@@ -7,11 +7,9 @@
     <div class="container py-5">
   <div class="row justify-content-center">
     <div class="col-xl-9">
-      
-      <!-- Subtle Card Container -->
+    
       <div class="card border-0 shadow-sm rounded-4 overflow-hidden" style="background-color: #fcfbfa;">
-        
-        <!-- Minimalist Header -->
+
         <div class="card-header p-4 bg-white border-bottom border-light d-flex align-items-center justify-content-between">
           <div class="d-flex align-items-center gap-3">
             <i class="material-icons text-secondary fs-2">add_location_alt</i>
@@ -25,24 +23,20 @@
           </button>
         </div>
 
-        <!-- Form Layout -->
+      
         <form [formGroup]="packageForm" (ngSubmit)="onSubmit()" class="card-body p-4 p-md-5">
-          
-          <!-- Cross-Field Date Error Alert Banner -->
           <div class="alert alert-danger d-flex align-items-center mb-4 border-0 rounded-3" 
                *ngIf="packageForm.errors?.['invalidDates'] && (packageForm.get('start_date')?.touched || packageForm.get('end_date')?.touched)">
             <i class="material-icons me-2 fs-5">error_outline</i>
             <div class="small"><strong>Date Range Error:</strong> End date must be strictly after the designated start date.</div>
           </div>
 
-          <!-- SECTION 1: Core Parameters -->
           <div class="mb-5">
             <h6 class="text-secondary fw-bold text-uppercase tracking-wider small mb-4 pb-2 border-bottom border-light">
               01. Core Parameters
             </h6>
             
             <div class="row g-4">
-              <!-- Destination Input -->
               <div class="col-md-6">
                 <label class="form-label text-muted small fw-medium">Destination *</label>
                 <input type="text" 
@@ -56,7 +50,6 @@
                 </div>
               </div>
 
-              <!-- Total Base Price Input -->
               <div class="col-md-3">
                 <label class="form-label text-muted small fw-medium">Base Price (INR) *</label>
                 <input type="number" 
@@ -70,7 +63,6 @@
                 </div>
               </div>
 
-              <!-- Max Capacity Configuration -->
               <div class="col-md-3">
                 <label class="form-label text-muted small fw-medium">Max Capacity *</label>
                 <input type="number" 
@@ -84,7 +76,6 @@
                 </div>
               </div>
 
-              <!-- Start Date Picker Input -->
               <div class="col-md-4">
                 <label class="form-label text-muted small fw-medium">Start Date *</label>
                 <input type="date" 
@@ -96,7 +87,6 @@
                 </div>
               </div>
 
-              <!-- End Date Picker Input -->
               <div class="col-md-4">
                 <label class="form-label text-muted small fw-medium">End Date *</label>
                 <input type="date" 
@@ -108,7 +98,6 @@
                 </div>
               </div>
 
-              <!-- Status Select -->
               <div class="col-md-4">
                 <label class="form-label text-muted small fw-medium">Status State *</label>
                 <select formControlName="status" class="form-select form-control-custom">
@@ -217,19 +206,15 @@
             </h6>
             
             <div class="row g-4 align-items-center">
-              <!-- Guide Full Name -->
               <div class="col-md-5">
                 <label class="form-label text-muted small fw-medium">Guide Name</label>
                 <input type="text" formControlName="name" class="form-control form-control-custom" placeholder="Johnathan Smith">
               </div>
-
-              <!-- Spoken Languages -->
               <div class="col-md-7">
                 <label class="form-label text-muted small fw-medium">Languages Spoken</label>
                 <input type="text" formControlName="languages" class="form-control form-control-custom" placeholder="English, Japanese, Spanish">
               </div>
 
-              <!-- Guide Included Status Toggle Switch -->
               <div class="col-md-6 mt-4">
                 <div class="form-check form-switch">
                   <input class="form-check-input switch-custom" type="checkbox" formControlName="is_included" id="guideIncludedSwitch">
@@ -237,7 +222,6 @@
                 </div>
               </div>
 
-              <!-- Current Evaluator Rating Score Input -->
               <div class="col-md-6 mt-4">
                 <div class="d-flex align-items-center gap-2">
                   <label class="text-muted small fw-medium text-nowrap mb-0">Initial Rating Set:</label>
@@ -247,20 +231,18 @@
             </div>
           </div>
 
-          <!-- SECTION 5: Media Context & Itinerary Properties -->
+
           <div class="mb-5">
             <h6 class="text-secondary fw-bold text-uppercase tracking-wider small mb-4 pb-2 border-bottom border-light">
               05. Assets & Itineraries
             </h6>
             
             <div class="row g-4">
-              <!-- Image Pointer Link URL Address -->
               <div class="col-12">
                 <label class="form-label text-muted small fw-medium">Banner Image URL</label>
                 <input type="url" formControlName="image_url" class="form-control form-control-custom" placeholder="https://domain.com/assets/destination.jpg">
               </div>
 
-              <!-- Activities Text Content Description Field -->
               <div class="col-12">
                 <label class="form-label text-muted small fw-medium">Planned Activities Summary</label>
                 <textarea formControlName="activities" 
@@ -271,7 +253,6 @@
             </div>
           </div>
 
-          <!-- FORM ACTION BUTTON BLOCK BAR -->
           <div class="d-flex justify-content-end align-items-center gap-3 pt-4 border-top border-light">
             <button class="btn btn-clean text-secondary px-4 py-2 small fw-medium d-inline-flex align-items-center gap-2" 
                     type="button" 

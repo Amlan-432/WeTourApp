@@ -1,5 +1,5 @@
 <div class="container-fluid bg-dark text-light min-vh-100 p-4">
-  <!-- Header Section -->
+
   <div class="d-flex justify-content-between align-items-center mb-5">
     <div>
       <h2 class="fw-bold mb-0 text-white">All Bookings</h2>
@@ -14,7 +14,6 @@
     </div>
   </div>
 
-  <!-- Filters Row -->
   <div class="d-flex gap-2 mb-4 overflow-auto pb-2">
     <button class="btn btn-filter" [class.active]="filterStatus() === 'All'" (click)="updateFilter('All')">All</button>
     <button class="btn btn-filter" [class.active]="filterStatus() === 'Confirmed'"
@@ -25,7 +24,6 @@
       (click)="updateFilter('Cancelled')">Cancelled</button>
   </div>
 
-  <!-- Bookings Table -->
   <div class="card custom-card overflow-hidden">
     <div class="table-responsive">
       <table class="table table-dark table-hover mb-0 custom-table">
@@ -70,7 +68,6 @@
             </td>
             <td class="align-middle text-end">
               <div class="d-flex justify-content-end gap-2">
-                <!-- Review Action Button -->
                 <button class="btn btn-sm d-flex align-items-center gap-1"
                   [class.btn-outline-info]="booking.status.toLowerCase() === 'completed'"
                   [class.btn-dark]="booking.status.toLowerCase() !== 'completed'"
@@ -101,12 +98,10 @@
     </div>
   </div>
 
-  <!-- Popup Form Backdrop Layer Modal -->
   @if (showReviewModal()) {
   <div class="custom-modal-backdrop d-flex align-items-center justify-content-center" (click)="closeModal()">
     <div class="custom-modal-content bg-dark border border-secondary p-4 rounded-4" (click)="$event.stopPropagation()">
 
-      <!-- Modal Header -->
       <div class="d-flex justify-content-between align-items-center mb-4 border-bottom border-secondary pb-2">
         <div>
           <h4 class="fw-bold text-white mb-0">Write Review</h4>
@@ -117,10 +112,8 @@
         </button>
       </div>
 
-      <!-- Modal Body Form -->
       <form (ngSubmit)="submitReviewForm()">
 
-        <!-- Dynamic Star Sliders/Selectors Area -->
         <div class="mb-4">
           <h6 class="text-secondary small text-uppercase fw-bold mb-3">Rate Categories</h6>
 
@@ -138,7 +131,6 @@
           }
         </div>
 
-        <!-- Description Comments Area -->
         <div class="mb-4">
           <label class="form-label text-secondary small text-uppercase fw-bold mb-2">Your Experience</label>
           <textarea class="form-control bg-transparent text-white border-secondary custom-textarea" rows="4"
@@ -147,7 +139,6 @@
           <div class="text-end text-muted small mt-1">{{ reviewComment().length }}/500</div>
         </div>
 
-        <!-- Control Layout Options Button Footer -->
         <div class="d-flex justify-content-end gap-2 border-top border-secondary pt-3 mt-2">
           <button type="button" class="btn btn-secondary px-4 btn-sm" (click)="closeModal()">Cancel</button>
           <button type="submit" class="btn btn-info px-4 btn-sm text-dark fw-bold" [disabled]="!reviewComment().trim()">

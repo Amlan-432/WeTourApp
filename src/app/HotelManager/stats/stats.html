@@ -1,28 +1,24 @@
 @if(hotelService.is_loading()) {
-  <!-- Clean light spinner container -->
   <div class="d-flex justify-content-center align-items-center min-vh-100 bg-light p-5">
     <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
       <span class="visually-hidden">Loading...</span>
     </div>
   </div>
 } @else {
-  <!-- Soft gray/blue background for the main dashboard -->
+
   <div class="container-fluid bg-light min-vh-100 p-4 dashboard-container">
-    
-    <!-- Header -->
+
     <div class="d-flex justify-content-between align-items-center mb-5 flex-wrap gap-3">
       <div>
         <h2 class="fw-bold mb-0 text-dark header-title">Hotel Performance Overview</h2>
         <p class="text-muted small mb-0 mt-1">Track your revenue and booking metrics for the month</p>
       </div>
-      
-      <!-- Sleek Pill-shaped Filter Group -->
+
       <div class="d-flex align-items-center gap-2 filter-group">
         <div class="icon-wrapper d-flex align-items-center justify-content-center">
            <span class="material-icons text-primary">calendar_today</span>
         </div>
-        
-        <!-- Month Dropdown -->
+
         <select 
           (change)="onMonthChange($event)" 
           class="form-select form-select-sm premium-dropdown">
@@ -33,9 +29,7 @@
           }
         </select>
 
-        <div class="vr text-muted opacity-25"></div> <!-- Small divider -->
-
-        <!-- Year Dropdown -->
+        <div class="vr text-muted opacity-25"></div> 
         <select 
           (change)="onYearChange($event)" 
           class="form-select form-select-sm premium-dropdown">
@@ -47,11 +41,9 @@
         </select>
       </div>
     </div>
-    
-    <!-- KPI Cards Row -->
+
     <div class="row g-4 mb-4">
-      
-      <!-- Revenue Card -->
+
       <div class="col-md-6 col-lg-4">
         <div class="card premium-card p-4 h-100 border-0 shadow-sm rounded-4">
           <div class="d-flex justify-content-between align-items-start">
@@ -61,7 +53,7 @@
                 ${{ dashboardData()?.totalRevenue | number:'1.2-2' }}
               </h3>
             </div>
-            <!-- Circular soft-colored icon background -->
+  
             <div class="icon-thumb bg-success-subtle text-success p-3 rounded-circle d-flex align-items-center justify-content-center">
               <span class="material-icons">account_balance_wallet</span>
             </div>
@@ -73,7 +65,6 @@
         </div>
       </div>
 
-      <!-- Bookings Card -->
       <div class="col-md-6 col-lg-4">
         <div class="card premium-card p-4 h-100 border-0 shadow-sm rounded-4">
           <div class="d-flex justify-content-between align-items-start">
@@ -93,7 +84,6 @@
       </div>
     </div>
 
-    <!-- Chart Row -->
     <div class="row">
       <div class="col-12">
         <div class="card premium-card p-4 border-0 shadow-sm rounded-4">

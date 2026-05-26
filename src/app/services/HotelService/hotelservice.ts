@@ -115,8 +115,6 @@ export class Hotelservice {
 
 
 
-  //-------------------------For Hotel Manager---------------------------------------------
-
   getAllHotelsManager(): Observable<{ statusCode: number, msg: string, data: any[], success: true }> {
 
     this.is_loading.set(true);

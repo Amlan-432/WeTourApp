@@ -1,7 +1,7 @@
-/* Branding */
+
 .brand-cursive {
   font-family: 'Dancing Script', cursive;
-  color: #ffc107; /* Warning Gold */
+  color: #ffc107; 
 }
 
 .shadow-text {
@@ -14,10 +14,10 @@
               url('https://img.freepik.com/premium-photo/hotel-relaxing-near-waterpool-beach_643934-5460.jpg');
   background-size: cover;
   background-position: center;
-  padding-top: 50px; /* Adjust this to move the card higher/lower */
+  padding-top: 50px; 
 }
 
-/* Category Buttons (The new Nav) */
+
 .category-btn {
   border: none;
   background: transparent;
@@ -41,7 +41,7 @@
   background: #eee;
 }
 
-/* Input Icon Positioning */
+
 .custom-input-group {
   position: relative;
 }
@@ -57,7 +57,7 @@
   pointer-events: none;
 }
 
-/* Search Pill Styling */
+
 .btn-search-pill {
   background: #ffc107;
   border: none;
@@ -70,7 +70,7 @@
   background: #ffca2c;
 }
 
-/* Ensure material icons align perfectly */
+
 .material-symbols-rounded {
   vertical-align: middle;
   font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;

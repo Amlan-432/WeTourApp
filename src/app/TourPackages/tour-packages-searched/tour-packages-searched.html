@@ -7,7 +7,6 @@
 }@else {
 
   <div class="container py-5 fade-in">
-  <!-- Header Section -->
   <div class="row justify-content-center mb-5">
     <div class="col-md-6 text-center">
       <h2 class="dancing-script display-4 mb-2" style="color: #4a3f35;">Your Curated Results</h2>
@@ -15,12 +14,12 @@
     </div>
   </div>
 
-  <!-- Results Grid -->
+ 
   <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
     <div *ngFor="let pkg of searchedPackage()" class="col">
       <div class="card h-100 border-0 bg-white shadow-sm transition-all hover-up overflow-hidden rounded-card">
         
-        <!-- Destination Image Container -->
+  
         <div class="card-img-container" style="height: 220px; overflow: hidden; position: relative;">
           <img [src]="pkg.image_url || 'assets/placeholder-travel.jpg'" 
                class="card-img-top w-100 h-100" 
@@ -28,7 +27,6 @@
                [alt]="pkg.destination">
         </div>
 
-        <!-- Card Body -->
         <div class="card-body p-4">
           <h5 class="fw-bold mb-2" style="font-family: 'Noto Serif'; color: #4a3f35;">{{ pkg.destination }}</h5>
           <p class="text-muted small mb-2">
@@ -50,7 +48,6 @@
       </div>
     </div>
 
-    <!-- Empty State -->
     <div class="col-12 text-center py-5" *ngIf="searchedPackage().length === 0">
       <i class="material-icons display-1 text-muted mb-3 opacity-25">explore_off</i>
       <h4 class="fw-bold" style="color: #4a3f35;">No Voyages Found</h4>
@@ -61,14 +58,13 @@
     </div>
   </div>
 
-  <!-- Details Modal -->
 <div class="modal fade show d-block" *ngIf="selectedPackage()?._id" 
      style="background: rgba(74, 63, 53, 0.4); backdrop-filter: blur(8px); z-index: 2001;">
   <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
     <div class="modal-content border-0 shadow-lg overflow-hidden rounded-modal">
       <div class="row g-0">
         
-        <!-- Modal Sidebar: Image -->
+
         <div class="col-md-5 d-none d-md-block">
           <img [src]="selectedPackage()?.image_url || 'assets/placeholder-travel.jpg'" 
                class="w-100 h-100" 
@@ -76,7 +72,7 @@
                [alt]="selectedPackage()?.destination">
         </div>
         
-        <!-- Modal Content Body -->
+
         <div class="col-md-7 bg-white p-4 p-md-5 position-relative" style="max-height: 90vh; overflow-y: auto;">
           <button type="button" class="btn-close position-absolute top-0 end-0 m-3" 
                   (click)="closeModal()"></button>
@@ -92,7 +88,6 @@
              </span>
           </div>
 
-          <!-- Features section -->
           <div class="row mb-4 gy-2 border-bottom pb-3">
             <div class="col-6 small" *ngIf="selectedPackage()?.accommodation?.hotel_name">
               <i class="material-icons text-muted me-2 align-middle" style="font-size: 1.2rem;">hotel</i>
@@ -104,7 +99,6 @@
             </div>
           </div>
 
-          <!-- Dynamic Travellers List View -->
           <div class="mb-4" *ngIf="travellersList().length > 0">
             <h6 class="text-uppercase fw-bold small tracking-widest text-muted mb-2">Added Travellers ({{ travellersList().length }})</h6>
             <div class="d-flex flex-wrap gap-2 mb-3">
@@ -116,12 +110,10 @@
             </div>
           </div>
 
-          <!-- Add Traveller Form Segment -->
           <div class="card bg-light border-0 p-3 mb-4 rounded-3">
             <h6 class="fw-bold small mb-3 text-uppercase tracking-widest" style="color: #4a3f35;"> Add Traveller Details</h6>
             
             <div class="row g-2">
-              <!-- Name -->
               <div class="col-12">
                 <div class="input-group input-group-sm">
                   <span class="input-group-text bg-white border-end-0"><i class="material-icons text-muted" style="font-size: 1.1rem;">person</i></span>
@@ -129,7 +121,6 @@
                 </div>
               </div>
 
-              <!-- Email -->
               <div class="col-7">
                 <div class="input-group input-group-sm">
                   <span class="input-group-text bg-white border-end-0"><i class="material-icons text-muted" style="font-size: 1.1rem;">email</i></span>
@@ -137,7 +128,6 @@
                 </div>
               </div>
 
-              <!-- Gender -->
               <div class="col-5">
                 <div class="input-group input-group-sm">
                   <span class="input-group-text bg-white border-end-0"><i class="material-icons text-muted" style="font-size: 1.1rem;">wc</i></span>
@@ -150,7 +140,6 @@
                 </div>
               </div>
 
-              <!-- ID Type Selection -->
               <div class="col-5">
                 <div class="input-group input-group-sm">
                   <span class="input-group-text bg-white border-end-0"><i class="material-icons text-muted" style="font-size: 1.1rem;">assignment_ind</i></span>
@@ -163,7 +152,6 @@
                 </div>
               </div>
 
-              <!-- ID Number -->
               <div class="col-7">
                 <div class="input-group input-group-sm">
                   <span class="input-group-text bg-white border-end-0"><i class="material-icons text-muted" style="font-size: 1.1rem;">badge</i></span>
@@ -171,7 +159,6 @@
                 </div>
               </div>
 
-              <!-- Dynamic Append Button -->
               <div class="col-12 mt-2">
                 <button type="button" class="btn btn-outline-dark btn-sm w-100 d-flex align-items-center justify-content-center gap-1 fw-bold" (click)="addTraveller()">
                   <i class="material-icons" style="font-size: 1.1rem;">person_add</i> Add Traveller to Array
@@ -180,7 +167,6 @@
             </div>
           </div>
 
-          <!-- Main Booking Action Trigger -->
           <button class="btn btn-dark w-100 py-3 rounded-pill fw-bold" 
                   [disabled]="travellersList().length === 0"
                   (click)="goToPayment(selectedPackage()?._id)">

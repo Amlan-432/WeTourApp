@@ -1,6 +1,6 @@
-/* Color Palette Variables & Host Configuration */
+
 :host {
-  --primary: #1e3a8a;       /* Darker Navy color chosen from your original layout */
+  --primary: #1e3a8a;       
   --primary-hover: #172554;
   --danger: #ef4444;
   --danger-hover: #fee2e2;
@@ -14,7 +14,7 @@
   --radius: 12px;
 }
  
-/* Structural Layout Frame */
+
 .inventory-container {
   padding: 2rem;
   background-color: var(--bg-app);
@@ -55,15 +55,13 @@
   font-weight: 600;
   font-size: 0.85rem;
 }
- 
-/* Dynamic Card Grid Framework */
+
 .tour-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
   gap: 1.5rem;
 }
- 
-/* Base Card Presentation Layer */
+
 .property-card {
   background: var(--bg-card);
   border-radius: var(--radius);
@@ -91,8 +89,7 @@
   height: 100%;
   object-fit: cover;
 }
- 
-/* Multi-State Dynamic Badge Overlay Elements */
+
 .status-badge {
   position: absolute;
   top: 12px;
@@ -149,7 +146,7 @@
  
 .loc .material-icons { font-size: 1.1rem; }
  
-/* Structural Content Presentation Grid Layout Matrix */
+
 .inventory-specs {
   background: #f8fafc;
   border-radius: 8px;
@@ -179,7 +176,6 @@
 .count-val { color: var(--text-main); font-weight: 600; }
 .route-val { font-weight: 600; color: #2563eb; }
  
-/* Amenities Layout Tags Element Styling */
 .amenities-tags {
   display: flex;
   flex-wrap: wrap;
@@ -198,7 +194,7 @@
   text-transform: capitalize;
 }
  
-/* Collapsible / Supplementary Activity Field Rules */
+
 .activities-preview {
   margin-bottom: 1.25rem;
   background-color: #fafafa;
@@ -220,8 +216,7 @@
   -webkit-box-orient: vertical;  
   overflow: hidden;
 }
- 
-/* Button & Action Control Mechanics */
+
 .card-actions {
   display: flex;
   gap: 8px;
@@ -252,8 +247,7 @@
 .btn-secondary:hover { background: #e5e7eb; }
 .btn-success { background: var(--success); color: white; }
 .btn-success:hover { filter: brightness(0.9); }
- 
-/* Modal Design System Layer Layout rules */
+
 .modal-overlay {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
@@ -332,8 +326,7 @@
   border-bottom-left-radius: var(--radius);
   border-bottom-right-radius: var(--radius);
 }
- 
-/* Auxiliary Elements View UI */
+
 .loading-wrapper {
   display: flex;
   justify-content: center;

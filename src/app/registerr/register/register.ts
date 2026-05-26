@@ -66,8 +66,6 @@ export class Register {
   }
 
 
-
-  // Add this method inside your Register class
 getErrorMessage(controlName: string): string {
   const control = this.registerForm.get(controlName);
   
@@ -79,10 +77,9 @@ getErrorMessage(controlName: string): string {
   if (control.errors['pattern']) return 'Please enter a valid 10-digit phone number';
   if (control.errors['exists']) return control.errors['exists'];
   
-  // Custom password errors from your passValidators
+
   if (control.errors['passError']) return 'password must be of 6 characters and must contains a uppercase(A-Z), a lowecase(a-z), a numeric digit(0-9) , and a special character(@!#$%&*)';
 
-  // Cross-field validation (Confirm Password)
   if (controlName === 'confirmPassword' && this.registerForm.hasError('passwordMismatch')) {
     return 'Passwords do not match';
   }

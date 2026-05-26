@@ -12,7 +12,6 @@
     @if(allBookings().length > 0) {
       <div class="ledger-card">
         
-        <!-- Header Panel -->
         <div class="ledger-header">
           <div class="header-left">
             <div class="icon-square">
@@ -28,7 +27,7 @@
           </div>
         </div>
    
-        <!-- Responsive Table Container -->
+
         <div class="table-wrapper">
           <table class="modern-table">
             <thead>
@@ -45,13 +44,11 @@
             <tbody>
               @for (booking of allBookings(); track booking._id || $index) {
                 <tr [class.row-cancelled]="(booking.booking_status | lowercase) === 'cancelled'">
-                  
-                  <!-- Index Badge -->
+
                   <td>
                     <span class="index-num">{{ ($index + 1) | number:'2.0' }}</span>
                   </td>
-                  
-                  <!-- Guest Name Profile -->
+
                   <td>
                     <div class="guest-profile">
                       <div class="avatar-initial">
@@ -63,8 +60,7 @@
                       </div>
                     </div>
                   </td>
-                  
-                  <!-- Contact info -->
+
                   <td>
                     <div class="contact-stack">
                       <span class="phone-link">
@@ -74,8 +70,7 @@
                       <span class="email-sub">{{ booking.user_id?.email || 'no-email@registry.com' }}</span>
                     </div>
                   </td>
-                  
-                  <!-- Package Context -->
+
                   <td>
                     <div class="package-info">
                       <span class="pkg-title">{{ booking.packageName || booking.title || 'Standard Premium Stay' }}</span>
@@ -85,23 +80,20 @@
                       </span>
                     </div>
                   </td>
-                  
-                  <!-- Dates -->
+
                   <td>
                     <div class="date-stack">
                       <span class="main-date">{{ booking.createdAt | date:'dd MMM yyyy' }}</span>
                       <span class="sub-time">{{ booking.createdAt | date:'hh:mm a' }}</span>
                     </div>
                   </td>
-                  
-                  <!-- Financial Total -->
+
                   <td>
                     <div class="price-badge">
                       ₹{{ (booking.total_price || 0).toLocaleString('en-IN') }}
                     </div>
                   </td>
-                  
-                  <!-- Multi-layer Badges -->
+
                   <td>
                     <div class="status-cell-wrapper">
                       <span class="badge-status" [attr.data-status]="booking.booking_status | lowercase">
@@ -121,7 +113,7 @@
         </div>
       </div>
     } @else {
-      <!-- Elegant Empty State Layout -->
+
       <div class="empty-state-card">
         <div class="empty-illustration">
           <span class="material-symbols-rounded">layers_clear</span>

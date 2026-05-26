@@ -49,7 +49,6 @@ export class AdminBookings {
 
   updateStatus(booking: any, newStatus: string) {
     booking.status = newStatus;
-    // Logic to update backend would go here
   }
 
   deleteBooking(id: string) {

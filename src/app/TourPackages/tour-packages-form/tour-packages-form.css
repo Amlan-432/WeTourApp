@@ -3,7 +3,6 @@
   outline: none;
 }
 
-/* Subtle hover effect for the fields */
 .col-md-4:hover {
   background-color: #fcfaf8;
   transition: background-color 0.3s ease;

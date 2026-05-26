@@ -2,33 +2,29 @@
 .title-font { font-weight: 700; color: #2c3e50; margin: 0; }
 .accent-subtitle { font-family: 'Dancing Script', cursive; font-size: 1.4rem; color: #7b61ff; }
 
-/* Search & Filter Pills */
 .search-pill { border-radius: 50px; background: white; flex-grow: 1; }
 .search-pill input:focus { box-shadow: none; }
 .role-dropdown { border-radius: 50px; width: 200px; border: none; padding-left: 20px; font-weight: 600; font-size: 0.9rem; }
 
-/* Table Styling */
 .table-card { border-radius: 20px; overflow: hidden; }
 .table thead th { background: #fcfbff; color: #7b61ff; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px; padding: 20px; border: none; }
 .table tbody td { padding: 20px; border-bottom: 1px solid #f1f1f1; }
 
-/* Profile Avatar */
 .avatar-circle { width: 45px; height: 45px; background: #7b61ff20; color: #7b61ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.2rem; }
 
-/* Role Badges */
 .role-badge { padding: 4px 12px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; }
 .role-badge.admin { background: #fee2e2; color: #dc2626; }
 .role-badge.traveller { background: #e0f2fe; color: #0284c7; }
 .role-badge.hotel-manager { background: #fef3c7; color: #d97706; }
 .role-badge.package-manager { background: #f0fdf4; color: #16a34a; }
 
-/* Status Indicators */
+
 .status-dot { width: 8px; height: 8px; border-radius: 50%; }
 .status-dot.active { background: #22c55e; box-shadow: 0 0 8px #22c55e; }
 .status-dot.inactive { background: #94a3b8; }
 .status-dot.suspended { background: #ef4444; }
 
-/* Action Buttons */
+
 .btn-action { width: 32px; height: 32px; border-radius: 8px; border: none; background: #f8f9fa; color: #64748b; transition: all 0.2s; display: flex; align-items: center; justify-content: center; }
 .btn-action.edit:hover { background: #e0f2fe; color: #0284c7; }
 .btn-action.toggle:hover { background: #fef3c7; color: #d97706; }

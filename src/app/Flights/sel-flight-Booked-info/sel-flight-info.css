@@ -19,7 +19,6 @@ body {
     margin: auto;
 }
 
-/* Premium Airline Header Accent */
 .ticket-header {
     border-bottom: 2px dashed #e2e8f0;
     padding: 24px;
@@ -37,7 +36,6 @@ body {
 
 .airline-logo-placeholder .material-icons-round {
     color: #6366f1;
-    /* Premium Indigo Brand Color */
     font-size: 28px;
 }
 
@@ -104,7 +102,6 @@ body {
     color: #1e293b;
 }
 
-/* Highlighted PNR Box */
 .pnr-box {
     background: #f1f5f9;
     border-radius: 12px;
@@ -120,7 +117,6 @@ body {
     letter-spacing: 1px;
 }
 
-/* Ticket Stub Divider Circles */
 .ticket-stub-divider {
     position: relative;
     height: 20px;
@@ -135,7 +131,6 @@ body {
     width: 20px;
     height: 20px;
     background: #0f1423;
-    /* Matches page background */
     border-radius: 50%;
 }
 

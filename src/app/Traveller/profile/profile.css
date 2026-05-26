@@ -38,20 +38,18 @@
   font-size: 18px;
 }
 
-/* Container to keep the shuffle button relative to the image */
 .avatar-wrapper {
   width: 150px;
   height: 150px;
 }
 
-/* The shuffle button floating on the bottom right of the avatar */
 .shuffle-btn {
   width: 36px;
   height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2px solid #1a1a1a; /* Matches dark theme background */
+  border: 2px solid #1a1a1a; 
   transition: transform 0.3s ease, background-color 0.2s;
 }
 
@@ -64,7 +62,7 @@
   font-size: 20px;
 }
 
-/* Ensure the avatar image looks consistent */
+
 .avatar-wrapper img {
   background-color: #2b2b2b;
   padding: 4px;

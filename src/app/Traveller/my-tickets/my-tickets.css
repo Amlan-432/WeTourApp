@@ -6,7 +6,6 @@
   position: relative;
 }
 
-/* Boarding Pass Flight Path Graphic */
 .flight-icon-divider .line {
   height: 1px;
   background: #e54d4d;
@@ -25,7 +24,6 @@
   transform: rotate(90deg);
 }
 
-/* Ticket Stub Separation */
 .ticket-stub {
   background: #c2c1c1;
   min-width: 140px;
@@ -39,7 +37,6 @@
   
 }
 
-/* Placeholder Styling */
 .search-box .form-control {
   padding-left: 40px;
   background: #d2d1d1;
@@ -68,6 +65,5 @@
   justify-content: center;
 }
 
-/* Visual Polishes */
 .border-dashed { border-style: dashed !important; }
 .text-info { color: #17a2b8 !important; }
