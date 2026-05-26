@@ -27,7 +27,6 @@
       <table class="table table-hover mb-0">
         <thead>
           <tr>
-            <th>Booking ID</th>
             <th>Customer</th>
             <th>Service Type</th>
             <th>Details</th>
@@ -39,7 +38,6 @@
         </thead>
         <tbody>
           <tr *ngFor="let booking of filteredBookings()">
-            <td class="fw-bold text-primary">{{ booking.bookingId }}</td>
             <td>{{ booking.username }}</td>
             <td>
               <span class="type-pill"

@@ -90,7 +90,7 @@
                 <input type="date" 
                        formControlName="start_date" 
                        class="form-control form-control-custom"
-                       [ngClass]="{'is-invalid': (packageForm.get('start_date')?.invalid || packageForm.errors?.['invalidDates']) && packageForm.get('start_date')?.touched, 'is-valid': packageForm.get('start_date')?.valid && !packageForm.errors?.['invalidDates'] && packageForm.get('start_date')?.touched}">
+                       [ngClass]="{'is-invalid': (packageForm.get('start_date')?.invalid || packageForm.errors?.['invalidDates']) && packageForm.get('start_date')?.touched, 'is-valid': packageForm.get('start_date')?.valid && !packageForm.errors?.['invalidDates'] && packageForm.get('start_date')?.touched}"  (change)="onCheckInChange()" [min]="getCurrentDate()">
                 <div class="invalid-feedback">
                   <span *ngIf="packageForm.get('start_date')?.errors?.['required']">Start date target is required.</span>
                 </div>
@@ -102,7 +102,7 @@
                 <input type="date" 
                        formControlName="end_date" 
                        class="form-control form-control-custom"
-                       [ngClass]="{'is-invalid': (packageForm.get('end_date')?.invalid || packageForm.errors?.['invalidDates']) && packageForm.get('end_date')?.touched, 'is-valid': packageForm.get('end_date')?.valid && !packageForm.errors?.['invalidDates'] && packageForm.get('end_date')?.touched}">
+                       [ngClass]="{'is-invalid': (packageForm.get('end_date')?.invalid || packageForm.errors?.['invalidDates']) && packageForm.get('end_date')?.touched, 'is-valid': packageForm.get('end_date')?.valid && !packageForm.errors?.['invalidDates'] && packageForm.get('end_date')?.touched}"  [min]="getMinCheckoutDate()">
                 <div class="invalid-feedback">
                   <span *ngIf="packageForm.get('end_date')?.errors?.['required']">End date context is required.</span>
                 </div>
@@ -118,14 +118,14 @@
             </div>
           </div>
 
-          <!-- SECTION 2: Accommodation Parameters -->
+  
           <div class="mb-5" formGroupName="accommodation">
             <h6 class="text-secondary fw-bold text-uppercase tracking-wider small mb-4 pb-2 border-bottom border-light">
               02. Accommodation Architecture
             </h6>
             
             <div class="row g-4">
-              <!-- Hotel Name Input -->
+              
               <div class="col-md-6">
                 <label class="form-label text-muted small fw-medium">Hotel Name *</label>
                 <input type="text" 
@@ -138,7 +138,7 @@
                 </div>
               </div>
 
-              <!-- Star Rating Select Options -->
+             
               <div class="col-md-2">
                 <label class="form-label text-muted small fw-medium">Rating (1-5) *</label>
                 <input type="number" 
@@ -151,13 +151,11 @@
                 </div>
               </div>
 
-              <!-- Room Type -->
+          
               <div class="col-md-4">
                 <label class="form-label text-muted small fw-medium">Room Type Allocation</label>
                 <input type="text" formControlName="room_type" class="form-control form-control-custom" placeholder="Deluxe Ocean View">
               </div>
-
-              <!-- Amenities Array Field -->
               <div class="col-12">
                 <label class="form-label text-muted small fw-medium">Amenities Provided</label>
                 <input type="text" formControlName="amenities" class="form-control form-control-custom" placeholder="Free Wi-Fi, Swimming Pool, Spa">
@@ -165,23 +163,19 @@
               </div>
             </div>
           </div>
-
-          <!-- SECTION 3: Transit Routing -->
           <div class="mb-5" formGroupName="travel">
             <h6 class="text-secondary fw-bold text-uppercase tracking-wider small mb-4 pb-2 border-bottom border-light">
               03. Transit Logistics
             </h6>
             
             <div class="row g-4 align-items-end">
-              <!-- Mode Select -->
+
               <div class="col-md-3">
                 <label class="form-label text-muted small fw-medium">Travel Mode *</label>
                 <select formControlName="mode" class="form-select form-control-custom">
                   <option *ngFor="let m of travelModes" [value]="m">{{ m }}</option>
                 </select>
               </div>
-
-              <!-- Departure Port Hub -->
               <div class="col-md-4">
                 <label class="form-label text-muted small fw-medium">Departure Hub Origin *</label>
                 <input type="text" 
@@ -193,8 +187,6 @@
                   Departure origin is mandatory.
                 </div>
               </div>
-
-              <!-- Arrival Point Terminal -->
               <div class="col-md-5">
                 <label class="form-label text-muted small fw-medium">Arrival Station Terminal *</label>
                 <input type="text" 
@@ -206,14 +198,10 @@
                   Destination port context is mandatory.
                 </div>
               </div>
-
-              <!-- Carrier Context Details -->
               <div class="col-md-8">
                 <label class="form-label text-muted small fw-medium">Carrier Line Provider</label>
                 <input type="text" formControlName="carrier" class="form-control form-control-custom" placeholder="e.g., Singapore Airlines, Eurostar">
               </div>
-
-              <!-- Round Trip Switch -->
               <div class="col-md-4">
                 <div class="form-check form-switch py-2">
                   <input class="form-check-input switch-custom" type="checkbox" formControlName="is_round_trip" id="roundTripSwitch">
@@ -223,7 +211,6 @@
             </div>
           </div>
 
-          <!-- SECTION 4: Guide Support Node -->
           <div class="mb-5" formGroupName="guide">
             <h6 class="text-secondary fw-bold text-uppercase tracking-wider small mb-4 pb-2 border-bottom border-light">
               04. Assigned Guide Profile

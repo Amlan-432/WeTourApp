@@ -1,6 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { BehaviorSubject, catchError, Observable, tap, throwError } from 'rxjs';
+import {HotelManDashboardData} from '../../../Models/hotelManData';
 
 
 @Injectable({
@@ -10,7 +11,7 @@ export class PackageService {
 
   private http = inject(HttpClient);
 
-  // Setup Base URLs pointing to port 8000
+
   private readonly API_URL_User: string = "http://localhost:8000/user";
   private readonly API_URL_Traveller: string = "http://localhost:8000/traveller";
   private readonly API_URL_Package: string = "http://localhost:8000/package"; 
@@ -18,6 +19,7 @@ export class PackageService {
   packages = new BehaviorSubject<any[]>([]); 
   getAllPackage$ = new BehaviorSubject<any[]>([]);
   guestList$ = new BehaviorSubject<any[]>([]);
+  dashStats$ =new BehaviorSubject<HotelManDashboardData|null>(null);
   isLoading = signal<boolean>(false);
   hasErrors: boolean = false;
   bookedPackageDetails$ = new BehaviorSubject<any | null>(null);
@@ -25,6 +27,9 @@ export class PackageService {
 
 
   //user
+  getdestination(word:string):Observable<{statusCode:number,msg:string,data:any[],success:boolean}>{
+    return this.http.get<{statusCode:number,msg:string,data:any[],success:boolean}>(`${this.API_URL_User}/dropDest/${word}`);
+  }
 
   searchPackage(dest:string,start_date:string):Observable<{statusCode:number,msg:string,data:any[],success:boolean}>{
     this.isLoading.set(true);
@@ -157,10 +162,11 @@ bookingGuestList(): Observable<{ statusCode: number, msg: string, data: any[], s
 
 
 //traveller
-bookPackage( packageId: string, travellers: any[]): Observable<{ statusCode: number, msg: string, data: any, success: boolean }> {
+bookPackage( packageId: string, packageUserId:string, travellers: any[]): Observable<{ statusCode: number, msg: string, data: any, success: boolean }> {
   this.isLoading.set(true);
   const payload = {
     package_id: packageId,
+    PackageUserId:packageUserId,
     travellers: travellers
   };
   return this.http.post<{ statusCode: number, msg: string, data: any, success: boolean }>(
@@ -193,9 +199,8 @@ cancelPackageBooking(bookingId: string): Observable<{ statusCode: number, msg: s
   ).pipe(
     tap(res => {
       if (res.success) {
-        this.searchPackage('', '').subscribe(); 
+        this.isLoading.set(false);
       }
-      this.isLoading.set(false);
     }),
     catchError(err => {
       this.hasErrors = true;
@@ -204,5 +209,23 @@ cancelPackageBooking(bookingId: string): Observable<{ statusCode: number, msg: s
     })
   );
 }
+
+ getPackageDashData(year:string,month:string): Observable<{ statusCode: number, msg: string, data:HotelManDashboardData, success: boolean }>{
+    this.isLoading.set(true);
+    const params = new HttpParams().set('year',year).set('month',month);
+    return this.http.get<{ statusCode: number, msg: string, data:HotelManDashboardData, success: boolean }>(`${this.API_URL_Package}/dash`,{params}).pipe(
+      tap(res=>{
+        if(res.success){
+          this.dashStats$.next(res.data);
+        }
+        this.isLoading.set(false);
+      }),
+      catchError(err => {
+        this.hasErrors=true;
+        this.isLoading.set(false);
+        return throwError(() => err)
+      })
+    );
+  }
   
 }

@@ -39,9 +39,31 @@ users = signal<any[]>([]);
     });
   }
 
+
+
+
+
+  onRoleChange(userId: string, newRole: string) {
+    this.adminservice.changeRole(userId, newRole).subscribe({
+      next: (res) => {
+        if (res.success) {
+          this.users.update(allUsers => 
+            allUsers.map(u => u._id === userId ? { ...u, role: newRole } : u)
+          );
+          console.log('Role updated successfully');
+        } else {
+          alert('Failed to update role: ' + (res.message || 'Unknown error'));
+        }
+      },
+      error: (err) => {
+        alert('An error occurred while updating the role.');
+      }
+    });
+  }
+
   deleteUser(id: string) {
     //api to delete in database -->>
-    this.users.update(allUsers => allUsers.filter(u => u._id !== id));
+    //this.users.update(allUsers => allUsers.filter(u => u._id !== id));
   }
 
   // toggleStatus(user: any) {

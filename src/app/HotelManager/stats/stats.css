@@ -1,0 +1,83 @@
+/* Overall Dashboard styling */
+.dashboard-container {
+  background-color: #f4f7f6 !important; /* Soft, premium off-white */
+}
+
+.header-title {
+  letter-spacing: -0.5px;
+}
+
+/* Premium Card Styling & Hover Animations */
+.premium-card {
+  background: #ffffff;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.premium-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.06) !important;
+}
+
+/* Icons inside cards */
+.icon-thumb {
+  width: 52px;
+  height: 52px;
+  transition: transform 0.3s ease;
+}
+
+.premium-card:hover .icon-thumb {
+  transform: scale(1.1) rotate(5deg);
+}
+
+.tracking-wide {
+  letter-spacing: 0.8px;
+}
+
+/* Beautiful Custom Filter Pill */
+.filter-group {
+  background: #ffffff;
+  padding: 6px 16px 6px 8px;
+  border-radius: 50px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  border: 1px solid #f0f0f0;
+}
+
+.icon-wrapper {
+  width: 34px;
+  height: 34px;
+  background: #f4f7f6;
+  border-radius: 50px;
+}
+
+.icon-wrapper .material-icons {
+  font-size: 18px;
+}
+
+/* Clean up native select elements */
+.premium-dropdown {
+  border: none !important;
+  background-color: transparent !important;
+  font-weight: 500;
+  color: #2b3440;
+  cursor: pointer;
+  box-shadow: none !important;
+  padding-right: 28px;
+  width: auto;
+}
+
+.premium-dropdown:focus {
+  outline: none;
+  box-shadow: none !important;
+}
+
+/* Tweak material icon alignment */
+.material-icons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.badge {
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}

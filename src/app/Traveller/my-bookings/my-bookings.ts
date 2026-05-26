@@ -1,7 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HotelBooking } from '../../../Models/hotelBooking';
+import { Userservice } from '../../services/UserService/userservice';
+import { Hotelservice } from '../../services/HotelService/hotelservice';
+import { PackageService } from '../../services/packageService/package-service';
 
 @Component({
   selector: 'app-my-bookings',
@@ -10,30 +12,138 @@ import { HotelBooking } from '../../../Models/hotelBooking';
   styleUrl: './my-bookings.css',
 })
 export class MyBookings {
-
-  allBookings = signal<HotelBooking[]>([
-    { h_id: 'WT-9921', hotelName: 'Grand Hyatt', guestName: 'Sam Raymond', roomType: 'Deluxe Suite', checkIn: '2026-06-12', checkOut: '2026-06-15', status: 'Confirmed', price: 450, image: 'hotel1.jpg' },
-    { h_id: 'WT-8842', hotelName: 'Ocean Breeze Resort', guestName: 'Sam Raymond', roomType: 'Sea View', checkIn: '2026-07-01', checkOut: '2026-07-05', status: 'Pending', price: 320, image: 'hotel2.jpg' },
-    { h_id: 'WT-1120', hotelName: 'Mountain Lodge', guestName: 'Sam Raymond', roomType: 'Cabin', checkIn: '2026-01-10', checkOut: '2026-01-12', status: 'Past', price: 210, image: 'hotel3.jpg' },
-    { h_id: 'WT-4431', hotelName: 'City Center Inn', guestName: 'Sam Raymond', roomType: 'Standard', checkIn: '2026-03-05', checkOut: '2026-03-07', status: 'Cancelled', price: 150, image: 'hotel4.jpg' }
-  ]);
-
-  // UI State
+  userService = inject(Userservice);
+  hotelService = inject(Hotelservice);
+  packageService = inject(PackageService);
+  allBookings = signal<any[]>([]);
   filterStatus = signal<string>('All');
   searchQuery = signal<string>('');
 
-  // Computed signal for filtered bookings
-  filteredBookings = computed(() => {
-    return this.allBookings().filter(b => {
-      const matchesStatus = this.filterStatus() === 'All' || b.status === this.filterStatus();
-      const matchesSearch = b.hotelName.toLowerCase().includes(this.searchQuery().toLowerCase()) || 
-                            b.h_id.toLowerCase().includes(this.searchQuery().toLowerCase());
+  showReviewModal = signal<boolean>(false);
+  selectedBooking = signal<any | null>(null);
+
+  reviewComment = signal<string>('');
+  dynamicCriteria = signal<string[]>([]);
+  criteriaRatings = signal<{ [key: string]: number }>({});
+
+filteredBookings = computed(() => {
+    const data = this.allBookings();
+    const filter = this.filterStatus().toLowerCase();
+    const search = this.searchQuery().toLowerCase().trim();
+
+    return data.filter(booking => {
+      let matchesStatus = true;
+      if (filter === 'confirmed') {
+        matchesStatus = booking.status.toLowerCase() === 'confirmed' || booking.status.toLowerCase() === 'pending';
+      } else if (filter !== 'all') {
+        matchesStatus = booking.status.toLowerCase() === filter;
+      }
+      const matchesSearch = !search || 
+        booking.bookingId.toLowerCase().includes(search) || 
+        booking.title.toLowerCase().includes(search);
+
       return matchesStatus && matchesSearch;
     });
   });
 
-  updateFilter(status: string) {
+  ngOnInit(){
+    this.userService.myBookings().subscribe();
+    this.userService.myBookings$.subscribe({
+      next:res=>{
+        if(res){
+          this.allBookings.set(res);
+        }
+      },
+      error:err=>{console.log(err);
+      }
+    })
+  }
+
+updateFilter(status: string) {
     this.filterStatus.set(status);
   }
+
+  openReviewModal(booking: any) {
+    this.selectedBooking.set(booking);
+    this.reviewComment.set('');
+    if (booking.type === 'Hotel') {
+      this.dynamicCriteria.set(['Cleanliness', 'Comfort', 'Location', 'Service']);
+    } else {
+      this.dynamicCriteria.set(['Itinerary', 'Transport', 'Food', 'Value']);
+    }
+
+    const initialRatings: { [key: string]: number } = {};
+    this.dynamicCriteria().forEach(criterion => {
+      initialRatings[criterion] = 5;
+    });
+    this.criteriaRatings.set(initialRatings);
+    
+    this.showReviewModal.set(true);
+  }
+
+  closeModal() {
+    this.showReviewModal.set(false);
+    this.selectedBooking.set(null);
+  }
+
+  setRating(criterion: string, value: number) {
+    this.criteriaRatings.update(current => ({
+      ...current,
+      [criterion]: value
+    }));
+  }
+
+  submitReviewForm() {
+    const booking = this.selectedBooking();
+    if (!booking) return;
+
+    const payload = {
+      itemId: booking.itemId, 
+      category: booking.type,     
+      rating: this.criteriaRatings(),
+      comment: this.reviewComment()
+    };
+
+   this.userService.addReview(payload).subscribe({
+      next: (res) => {
+        alert('Thank you for sharing your experience!');
+        this.closeModal();
+      },
+      error: (err) => {
+        console.error('Submission failed', err);
+        alert(err.error?.message || 'Failed to post review. Please try again.');
+      }
+    });
+  }
+
+updateBookingStatusInState(id: string, newStatus: string) {
+  this.allBookings.update(currentBookings => 
+    currentBookings.map(booking => 
+      booking.bookingId === id ? { ...booking, status: newStatus } : booking
+    )
+  );
+}
+
+cancelBooking(id: string, type: string) {
+  if (type === 'Hotel') {
+    this.hotelService.cancelBooking(id).subscribe({
+      next: res => {
+        if (res.success) {
+          alert('Cancelled booking successfully');
+          this.updateBookingStatusInState(id, 'Cancelled'); 
+        }
+      }
+    });
+  } else if (type === 'Package') {
+    this.packageService.cancelPackageBooking(id).subscribe({
+      next: res => {
+        if (res.success) {
+          alert('Cancelled booking successfully');
+          this.updateBookingStatusInState(id, 'Cancelled');
+        }
+      }
+    });
+  }
+}
 
 }

@@ -56,7 +56,9 @@ export class TourPackagesSearched {
 
   goToPayment(pkgId: string) {
     console.log(pkgId);
-    this.packageService.bookPackage(pkgId, this.travellersList()).subscribe({
+    const packageUserId = this.selectedPackage().user_id;
+    
+    this.packageService.bookPackage(pkgId,packageUserId, this.travellersList()).subscribe({
       next: (res) => {
         if (res) {
           this.authService.currentUser.subscribe((res: any) => {

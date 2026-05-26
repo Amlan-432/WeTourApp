@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Authservice } from '../../services/AuthService/authservice';
 import { PackageService } from '../../services/packageService/package-service';
+import { catchError, debounceTime, distinctUntilChanged, of, Subject, Subscription, switchMap } from 'rxjs';
+import { Userservice } from '../../services/UserService/userservice';
 
 @Component({
   selector: 'app-tour-packages-form',
@@ -16,11 +18,46 @@ export class TourPackagesForm {
    private router = inject(Router);
    private authService=inject(Authservice);
    packService = inject(PackageService);
+   
 
-
-  // Signals for the three search criteria
   dest! :string
   startDate!:Date;
+  public destinations = signal<any[]>([]);
+
+  private searchTerms = new Subject<string>();
+  private searchSubscription!: Subscription;
+
+  ngOnInit(){
+    this.searchSubscription = this.searchTerms.pipe(
+      debounceTime(300),       
+      distinctUntilChanged(),     
+      switchMap((term: string) => {
+        debugger;
+        if (!term.trim() || term.trim().length < 2) {
+          return of({ data: [] }); 
+        }
+
+        return this.packService.getdestination(term).pipe(
+          catchError((err) => {
+            console.error('API Error:', err);
+            return of({ data: [] }); 
+          })
+        );
+      })
+    ).subscribe({
+      next: (res: any) => {
+        this.destinations.set(res?.data || []);
+      }
+    });
+  }
+
+  public onSearchChange(value: string): void {
+    this.searchTerms.next(value);
+  }
+
+
+
+
 
   onSearch() {
     const sDate = new Date(this.startDate).toString();
@@ -45,5 +82,20 @@ export class TourPackagesForm {
       }
     });
   }
+
+    getCurrentDate(){
+    const date = new Date(Date.now());
+    const year = date.getFullYear();
+    const month = String(date.getMonth()+1).padStart(2,'0');
+    const day = date.getDate().toString().padStart(2,'0');
+    return `${year}-${month}-${day}`;
+  }
+
+  ngOnDestroy() {
+    if (this.searchSubscription) {
+      this.searchSubscription.unsubscribe();
+    }
+  }
+
 
 }

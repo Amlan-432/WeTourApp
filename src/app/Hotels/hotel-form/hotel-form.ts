@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { Hotelservice } from '../../services/HotelService/hotelservice';
 import { Authservice } from '../../services/AuthService/authservice';
 import { ChatBox } from '../../chatAi/chat-box/chat-box';
+import { catchError, debounceTime, distinctUntilChanged, of, Subject, Subscription, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-hotel-form',
@@ -14,7 +15,6 @@ import { ChatBox } from '../../chatAi/chat-box/chat-box';
 })
 export class HotelForm {
 
-  // 1. Defined a proper type/interface for searchData if possible
   searchData = { 
     location: '', 
     people: 1, 
@@ -26,12 +26,45 @@ export class HotelForm {
   private hotelservice = inject(Hotelservice);
   private authservice=inject(Authservice);
 
+    public loc = signal<any[]>([]);
+
+  private searchTerms = new Subject<string>();
+  private searchSubscription!: Subscription;
+
+  ngOnInit(){
+    this.searchSubscription = this.searchTerms.pipe(
+      debounceTime(300),       
+      distinctUntilChanged(),     
+      switchMap((term: string) => {
+        debugger;
+        if (!term.trim() || term.trim().length < 2) {
+          return of({ data: [] }); 
+        }
+
+        return this.hotelservice.getloc(term).pipe(
+          catchError((err) => {
+            console.error('API Error:', err);
+            return of({ data: [] }); 
+          })
+        );
+      })
+    ).subscribe({
+      next: (res: any) => {
+        debugger;
+        this.loc.set(res?.data || []);
+      }
+    });
+  }
+
+  public onSearchChange(value: string): void {
+    this.searchTerms.next(value);
+  }
+
   onSearch() {
     const startDate = new Date(this.searchData.start);
     const endDate = new Date(this.searchData.end);
     startDate.setHours(0, 0, 0, 0);
 
-    // Validation checks
     if (!this.searchData.location.trim()) {
       alert("Please enter a destination");
       return;
@@ -50,7 +83,6 @@ export class HotelForm {
 
     this.hotelservice.updateSearch({ ...this.searchData });
 
-    // Navigate to the hotels page
     this.authservice.currentUser.subscribe(res=>{
     
       
@@ -80,7 +112,6 @@ export class HotelForm {
     }
  
     const checkIn = new Date(this.searchData.start);
-    // Add 1 day to the check-in date
     checkIn.setDate(checkIn.getDate() + 1);
  
     const year = checkIn.getFullYear();
@@ -92,9 +123,15 @@ export class HotelForm {
   onCheckInChange() {
   if (this.searchData.start && this.searchData.end) {
     if (new Date(this.searchData.end) <= new Date(this.searchData.start)) {
-      this.searchData.end = ''; // Reset check-out if it's now invalid
+      this.searchData.end = ''; 
     }
   }
 }
+
+  ngOnDestroy() {
+    if (this.searchSubscription) {
+      this.searchSubscription.unsubscribe();
+    }
+  }
 
 }

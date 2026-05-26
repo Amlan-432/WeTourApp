@@ -1,6 +1,4 @@
-/* ==========================================================================
-   GLOBAL CONTAINER & BASE THEME
-   ========================================================================== */
+
 :host {
   display: block;
   background-color: #f8fafc;
@@ -15,9 +13,6 @@
   margin: 0 auto;
 }
 
-/* ==========================================================================
-   DYNAMIC HEADER & CONTROL CENTER SELECTORS
-   ========================================================================== */
 .dashboard-header {
   display: flex;
   justify-content: space-between;
@@ -29,6 +24,7 @@
 
 .header-main h1 {
   font-size: 2.25rem;
+  font-family: 'Dancing Script';
   font-weight: 800;
   color: #1e293b;
   margin: 0 0 0.35rem 0;
@@ -37,6 +33,7 @@
 
 .header-main p {
   color: #64748b;
+  font-family: 'Noto Serif';
   font-size: 0.95rem;
   margin: 0;
 }
@@ -71,7 +68,7 @@
   cursor: pointer;
   outline: none;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.01);
-  appearance: none; /* Strip standard native operating system arrows */
+  appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2364748b'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 12px center;
@@ -89,9 +86,6 @@
   box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
 }
 
-/* ==========================================================================
-   HIGH-IMPACT RIBBON METRIC CARDS
-   ========================================================================== */
 .kpi-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -118,7 +112,6 @@
   box-shadow: 0 10px 25px rgba(15, 23, 42, 0.05);
 }
 
-/* Custom left accent borders matching specific system components */
 .card-blue { border-left-color: #2563eb; }
 .card-purple { border-left-color: #7c3aed; }
 .card-green { border-left-color: #10b981; }
@@ -152,9 +145,6 @@
   user-select: none;
 }
 
-/* ==========================================================================
-   CHARTS & ANALYTICS LAYOUT GRID
-   ========================================================================== */
 .analytics-layout {
   display: grid;
   grid-template-columns: 2fr 1fr;
@@ -186,19 +176,15 @@
   color: #94a3b8;
 }
 
-/* Responsive frame container ensuring HTML5 fluid Canvas scaling */
 .canvas-holder {
   position: relative;
   width: 100%;
   height: 340px;
 }
 
-/* ==========================================================================
-   RESPONSIVE BREAKPOINTS (MEDIA QUERIES)
-   ========================================================================== */
 @media (max-width: 1024px) {
   .analytics-layout {
-    grid-template-columns: 1fr; /* Stack charts vertically on smaller tablets/screens */
+    grid-template-columns: 1fr; 
     gap: 1.5rem;
   }
 }

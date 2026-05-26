@@ -5,12 +5,11 @@
       <h2 class="fw-bold mb-0 text-white">All Bookings</h2>
       <p class="text-secondary small">Manage your upcoming and past weTour journeys</p>
     </div>
-    
     <div class="d-flex gap-3">
       <div class="search-box">
         <span class="material-icons search-icon">search</span>
-        <input type="text" class="form-control " placeholder="Search ID or Hotel..." 
-               [ngModel]="searchQuery()" (ngModelChange)="searchQuery.set($event)">
+        <input type="text" class="form-control" placeholder="Search ID or Title..." [ngModel]="searchQuery()"
+          (ngModelChange)="searchQuery.set($event)">
       </div>
     </div>
   </div>
@@ -18,9 +17,12 @@
   <!-- Filters Row -->
   <div class="d-flex gap-2 mb-4 overflow-auto pb-2">
     <button class="btn btn-filter" [class.active]="filterStatus() === 'All'" (click)="updateFilter('All')">All</button>
-    <button class="btn btn-filter" [class.active]="filterStatus() === 'Confirmed'" (click)="updateFilter('Confirmed')">Upcoming</button>
-    <button class="btn btn-filter" [class.active]="filterStatus() === 'Past'" (click)="updateFilter('Past')">Previous</button>
-    <button class="btn btn-filter" [class.active]="filterStatus() === 'Cancelled'" (click)="updateFilter('Cancelled')">Cancelled</button>
+    <button class="btn btn-filter" [class.active]="filterStatus() === 'Confirmed'"
+      (click)="updateFilter('Confirmed')">Upcoming</button>
+    <button class="btn btn-filter" [class.active]="filterStatus() === 'Past'"
+      (click)="updateFilter('Completed')">Previous</button>
+    <button class="btn btn-filter" [class.active]="filterStatus() === 'Cancelled'"
+      (click)="updateFilter('Cancelled')">Cancelled</button>
   </div>
 
   <!-- Bookings Table -->
@@ -30,64 +32,131 @@
         <thead>
           <tr>
             <th>Booking ID</th>
-            <th>Hotel / Room</th>
-            <th>Check-In/Out</th>
+            <th>Type / Destination</th>
+            <th>Travel Dates</th>
             <th>Price</th>
             <th>Status</th>
             <th class="text-end">Actions</th>
           </tr>
         </thead>
         <tbody>
-          @for (booking of filteredBookings(); track booking.h_id) {
-            <tr>
-              <td class="align-middle fw-bold text-info">{{ booking.h_id }}</td>
-              <td class="align-middle">
-                <div class="d-flex align-items-center">
-                  <div class="hotel-thumb me-3">
-                    <span class="material-icons">hotel</span>
-                  </div>
-                  <div>
-                    <div class="fw-bold">{{ booking.hotelName }}</div>
-                    <div class="small text-secondary">{{ booking.roomType }}</div>
-                  </div>
+          @for (booking of filteredBookings(); track booking.bookingId) {
+          <tr>
+            <td class="align-middle fw-bold text-info small">{{ booking.bookingId }}</td>
+            <td class="align-middle">
+              <div class="d-flex align-items-center">
+                <div class="hotel-thumb me-3">
+                  <span class="material-icons">{{ booking.type === 'Hotel' ? 'hotel' : 'explore' }}</span>
                 </div>
-              </td>
-              <td class="align-middle">
-                <div class="small">{{ booking.checkIn | date:'mediumDate' }}</div>
-                <div class="small text-secondary">to {{ booking.checkOut | date:'mediumDate' }}</div>
-              </td>
-              <td class="align-middle fw-bold">${{ booking.price }}</td>
-              <td class="align-middle">
-                <span class="badge" [ngClass]="{
-                  'bg-success-subtle text-success': booking.status === 'Confirmed',
-                  'bg-warning-subtle text-warning': booking.status === 'Pending',
-                  'bg-danger-subtle text-danger': booking.status === 'Cancelled',
-                  'bg-secondary-subtle text-secondary': booking.status === 'Past'
+                <div>
+                  <div class="fw-bold">{{ booking.title }}</div>
+                  <div class="small text-secondary">Category: {{ booking.type }}</div>
+                </div>
+              </div>
+            </td>
+            <td class="align-middle">
+              <div class="small">{{ booking.date }}</div>
+            </td>
+            <td class="align-middle fw-bold text-success">${{ booking.price }}</td>
+            <td class="align-middle">
+              <span class="badge px-3 py-2 text-uppercase" [ngClass]="{
+                  'bg-success-subtle text-success': booking.status.toLowerCase() === 'confirmed',
+                  'bg-warning-subtle text-warning': booking.status.toLowerCase() === 'pending',
+                  'bg-danger-subtle text-danger': booking.status.toLowerCase() === 'cancelled',
+                  'bg-secondary-subtle text-secondary': booking.status.toLowerCase() === 'past'
                 }">
-                  {{ booking.status }}
-                </span>
-              </td>
-              <td class="align-middle text-end">
-                <button class="btn btn-icon" title="View Details">
-                  <span class="material-icons">visibility</span>
+                {{ booking.status }}
+              </span>
+            </td>
+            <td class="align-middle text-end">
+              <div class="d-flex justify-content-end gap-2">
+                <!-- Review Action Button -->
+                <button class="btn btn-sm d-flex align-items-center gap-1"
+                  [class.btn-outline-info]="booking.status.toLowerCase() === 'completed'"
+                  [class.btn-dark]="booking.status.toLowerCase() !== 'completed'"
+                  [disabled]="booking.status.toLowerCase() !== 'completed'" (click)="openReviewModal(booking)"
+                  [title]="booking.status.toLowerCase() === 'completed' ? 'Write a Review' : 'You can only review completed trips'">
+                  <span class="material-icons" style="font-size: 16px;">rate_review</span>
+                  <span>Review</span>
                 </button>
-                @if (booking.status === 'Confirmed' || booking.status === 'Pending') {
-                  <button class="btn btn-icon text-danger" title="Cancel Booking">
-                    <span class="material-icons">cancel</span>
-                  </button>
-                }
-              </td>
-            </tr>
+                <button (click)="cancelBooking(booking.bookingId, booking.type)" class="btn btn-icon btn-sm"
+                  [ngClass]="(booking.status.toLowerCase() === 'confirmed' || booking.status.toLowerCase() === 'pending') ? 'text-danger' : 'text-secondary opacity-50'"
+                  [disabled]="booking.status.toLowerCase() !== 'confirmed' && booking.status.toLowerCase() !== 'pending'"
+                  [title]="(booking.status.toLowerCase() === 'confirmed' || booking.status.toLowerCase() === 'pending') ? 'Cancel Booking' : 'Action not available'">
+                  <span class="material-icons">cancel</span>
+                </button>
+              </div>
+            </td>
+          </tr>
           } @empty {
-            <tr>
-              <td colspan="6" class="text-center py-5 text-secondary">
-                <span class="material-icons d-block mb-2" style="font-size: 48px;">event_busy</span>
-                No bookings found for this category.
-              </td>
-            </tr>
+          <tr>
+            <td colspan="6" class="text-center py-5 text-secondary">
+              <span class="material-icons d-block mb-2" style="font-size: 48px;">event_busy</span>
+              No items matched this selection.
+            </td>
+          </tr>
           }
         </tbody>
       </table>
     </div>
   </div>
+
+  <!-- Popup Form Backdrop Layer Modal -->
+  @if (showReviewModal()) {
+  <div class="custom-modal-backdrop d-flex align-items-center justify-content-center" (click)="closeModal()">
+    <div class="custom-modal-content bg-dark border border-secondary p-4 rounded-4" (click)="$event.stopPropagation()">
+
+      <!-- Modal Header -->
+      <div class="d-flex justify-content-between align-items-center mb-4 border-bottom border-secondary pb-2">
+        <div>
+          <h4 class="fw-bold text-white mb-0">Write Review</h4>
+          <span class="text-info small fw-semibold">{{ selectedBooking()?.title }}</span>
+        </div>
+        <button class="btn text-secondary p-0" (click)="closeModal()">
+          <span class="material-icons">close</span>
+        </button>
+      </div>
+
+      <!-- Modal Body Form -->
+      <form (ngSubmit)="submitReviewForm()">
+
+        <!-- Dynamic Star Sliders/Selectors Area -->
+        <div class="mb-4">
+          <h6 class="text-secondary small text-uppercase fw-bold mb-3">Rate Categories</h6>
+
+          @for (criterion of dynamicCriteria(); track criterion) {
+          <div class="d-flex justify-content-between align-items-center mb-2 bg-black bg-opacity-20 p-2 rounded">
+            <span class="text-light-emphasis small">{{ criterion }}</span>
+            <div class="star-rating-row d-flex gap-1">
+              @for (star of [1, 2, 3, 4, 5]; track star) {
+              <span class="material-icons star-clickable" [class.text-warning]="star <= criteriaRatings()[criterion]"
+                (click)="setRating(criterion, star)">
+                {{ star <= criteriaRatings()[criterion] ? 'star' : 'star_border' }} </span>
+                  }
+            </div>
+          </div>
+          }
+        </div>
+
+        <!-- Description Comments Area -->
+        <div class="mb-4">
+          <label class="form-label text-secondary small text-uppercase fw-bold mb-2">Your Experience</label>
+          <textarea class="form-control bg-transparent text-white border-secondary custom-textarea" rows="4"
+            maxlength="500" placeholder="Tell us about the services, ambiance, or tour guides..."
+            [ngModel]="reviewComment()" (ngModelChange)="reviewComment.set($event)" name="comment" required></textarea>
+          <div class="text-end text-muted small mt-1">{{ reviewComment().length }}/500</div>
+        </div>
+
+        <!-- Control Layout Options Button Footer -->
+        <div class="d-flex justify-content-end gap-2 border-top border-secondary pt-3 mt-2">
+          <button type="button" class="btn btn-secondary px-4 btn-sm" (click)="closeModal()">Cancel</button>
+          <button type="submit" class="btn btn-info px-4 btn-sm text-dark fw-bold" [disabled]="!reviewComment().trim()">
+            Submit Review
+          </button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+  }
 </div>
